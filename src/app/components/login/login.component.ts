@@ -14,10 +14,11 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class LoginComponent implements OnInit {
   form!: FormGroup;
+  otp!: FormGroup;
   loading: boolean = false;
   browser!: string;
   showErrorMessage!: string;
-  currentLang = 'vi';
+  currentLang = 'en';
   isRequestedOtp: boolean = false;
 
   constructor(
@@ -40,16 +41,13 @@ export class LoginComponent implements OnInit {
     });
     this.browser = this.browserDetectionService.getBrowserInfo();
 
-    const backgroundUrl = 'url(/assets/image/Gradient.png)';
-    const container = this.el.nativeElement.querySelector(
-      '.background-container'
-    );
-
-    this.renderer.setStyle(container, 'backgroundImage', backgroundUrl);
-
     this.form = this.fb.group({
-      vmycode: ['vmy123123', [Validators.required]],
+      vmycode: ['', [Validators.required]],
       browser: [this.browser],
+    });
+
+    this.otp = this.fb.group({
+      otp: ['', [Validators.required]],
     });
 
     this.pageReload();
@@ -71,6 +69,22 @@ export class LoginComponent implements OnInit {
       this.loading = true;
       const data = this.form.value;
       if (data.vmycode === 'vmy123123') {
+        this.showErrorMessage = '';
+        this.loading = false;
+        this.isRequestedOtp = true;
+      } else {
+        this.loading = false;
+        this.showErrorMessage = 'Your VMY doesn’t exist.';
+      }
+    }
+  }
+
+  login() {
+    if (this.otp.status === 'VALID') {
+      this.showErrorMessage = '';
+      this.loading = true;
+      const data = this.otp.value;
+      if (data.otp === '123') {
         this.authService.saveTokens(
           '87834uu43iuwr89uf8ae237ei23u2id392803ioiu2398'
         );
@@ -78,8 +92,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['admin/app-statistic']);
       } else {
         this.loading = false;
-        this.showErrorMessage = 'Your VMY doesn’t exist.';
-        this.isRequestedOtp = true;
+        this.showErrorMessage = 'Wrong OTP.';
       }
     }
   }
@@ -88,13 +101,16 @@ export class LoginComponent implements OnInit {
     return this.form.valid;
   }
 
-  switchLanguage() {
-    const newLang = this.currentLang === 'vi' ? 'en' : 'vi';
-    this.languageService.switchLanguage(newLang);
-    this.currentLang = newLang;
+  isOtpValid(): boolean {
+    return this.otp.valid;
   }
 
   cancel() {
     this.isRequestedOtp = false;
+    this.showErrorMessage = '';
+    this.form.value.vmycode = '';
+    this.isFormValid();
+
+    window.location.reload();
   }
 }
