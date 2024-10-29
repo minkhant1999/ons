@@ -21,22 +21,29 @@
         </tr>
       </thead>
       <tbody class="text-gray-700">
-        <tr class="border-b border-gray-200">
-          <td class="py-3 px-6 text-center">1</td>
-          <td class="py-3 px-6 text-center">file name</td>
-          <td class="py-3 px-6 text-center">reason</td>
-          <td class="py-3 px-6 text-center">26/10/2024</td>
+        <tr *ngFor="let item of tableData" class="border-b border-gray-200">
+          <td class="py-3 px-6 text-center">{{ item.id }}</td>
+          <td class="py-3 px-6 text-center">{{ item.fileName }}</td>
+          <td class="py-3 px-6 text-center">{{ item.reason }}</td>
+          <td class="py-3 px-6 text-center">{{ item.date }}</td>
           <td class="py-3 px-6 text-center">
             <div class="flex items-center justify-center">
               <span
-                class="bg-yellow-400 text-white font-semibold rounded-full px-4 py-2"
+                class="font-semibold rounded-full w-28 py-2"
+                [ngClass]="{
+                  'bg-[#F8F49B] text-[#766E19]': item.status === 'Processing',
+                  'bg-[#FFC2C2] text-[#F33333]': item.status === 'Fail',
+                  'bg-[#E2FFBF] text-[#3FA026]': item.status === 'Imported'
+                }"
               >
-                Processing
+                {{ item.status }}
               </span>
             </div>
           </td>
-          <td class="py-3 px-6 text-center cursor-pointer">
-            <mat-icon>delete</mat-icon>
+          <td class="py-3 px-6 text-center">
+            <mat-icon class="cursor-pointer" (click)="onDelete()">
+              delete
+            </mat-icon>
           </td>
         </tr>
       </tbody>
