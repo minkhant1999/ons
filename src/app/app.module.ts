@@ -20,7 +20,6 @@ import { PaginationComponent } from './modules/custom/pagination/pagination.comp
 import { CustomMenuComponent } from './modules/custom/custom-menu/custom-menu.component';
 import { ButtonComponent } from './modules/custom/button/button.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { RichTextComponent } from './modules/custom/rich-text/rich-text.component';
 import {
   HTTP_INTERCEPTORS,
   HttpClient,
@@ -42,7 +41,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     CustomMenuComponent,
     ButtonComponent,
     PageNotFoundComponent,
-    RichTextComponent,
   ],
   imports: [
     BrowserModule,
