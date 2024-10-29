@@ -55,6 +55,17 @@
         <mat-icon style="color: #235884">menu</mat-icon>
       </button>
 
+      <div class="flex items-center">
+        <button mat-icon-button [matMenuTriggerFor]="logout">
+          <span class="material-icons" style="color: #376e9a"
+            >account_circle</span
+          >
+        </button>
+        <div>
+          <!-- <span class="text-base">{{ username }}</span> -->
+        </div>
+      </div>
+
       <mat-menu #logout="matMenu">
         <button mat-menu-item (click)="logOut()">
           <div
@@ -66,7 +77,7 @@
             "
           >
             <span class="material-icons" style="margin-right: 8px">logout</span>
-            {{ "LOGOUT" | translate }}
+            Login
           </div>
         </button>
       </mat-menu>
