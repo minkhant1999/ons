@@ -21,20 +21,11 @@ export class AdminComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private cookieService: CookieService,
-    private translate: TranslateService,
-    private languageService: LanguageService,
     private _dialog: MatDialog
   ) {
-    translate.setDefaultLang(this.currentLang);
   }
 
   ngOnInit(): void {
-    this.username = this.cookieService.get('username');
-    this.languageService.currentLang$.subscribe((lang) => {
-      this.currentLang = lang;
-      this.translate.use(lang);
-    });
   }
 
   changePassword() {
@@ -44,14 +35,7 @@ export class AdminComponent implements OnInit {
   }
 
   logOut() {
-    localStorage.removeItem('language');
     this.authService.logOut();
     this.router.navigate(['login']);
-  }
-
-  switchLanguage() {
-    const newLang = this.currentLang === 'vi' ? 'en' : 'vi';
-    this.languageService.switchLanguage(newLang);
-    this.currentLang = newLang;
   }
 }

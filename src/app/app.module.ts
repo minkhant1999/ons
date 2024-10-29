@@ -17,7 +17,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NgxEditorModule } from 'ngx-editor';
 import { PaginationComponent } from './modules/custom/pagination/pagination.component';
-import { CronGeneratorComponent } from './modules/admin/pages/notification/components/notification/components/cron-generator/cron-generator.component';
 import { CustomMenuComponent } from './modules/custom/custom-menu/custom-menu.component';
 import { ButtonComponent } from './modules/custom/button/button.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -40,7 +39,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoginComponent,
     CustomInputComponent,
     PaginationComponent,
-    CronGeneratorComponent,
     CustomMenuComponent,
     ButtonComponent,
     PageNotFoundComponent,
@@ -83,4 +81,4 @@ export function HttpLoaderFactory(http: HttpClient) {
   bootstrap: [AppComponent],
   exports: [CustomInputComponent],
 })
-export class AppModule {}
+export class AppModule { }

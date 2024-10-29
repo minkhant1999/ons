@@ -39,13 +39,7 @@
 </mat-sidenav-container> -->
 
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav
-    #sidenav
-    opened
-    mode="side"
-    class="sidenav"
-    [style.width]="sidenavWidth()"
-  >
+  <mat-sidenav #sidenav opened mode="side" class="sidenav" [style.width]="sidenavWidth()">
     <app-custom-sidenav [collapsed]="collapsed()" />
   </mat-sidenav>
 
@@ -56,23 +50,9 @@
       </button>
 
       <div class="flex items-center">
-        <div class="flex justify-end items-center switch">
-          <input
-            id="language-toggle"
-            class="check-toggle check-toggle-round-flat"
-            type="checkbox"
-            [checked]="currentLang === 'en'"
-            (change)="switchLanguage()"
-          />
-          <label for="language-toggle"></label>
-          <span class="on">VI</span>
-          <span class="off">EN</span>
-        </div>
 
         <button mat-icon-button [matMenuTriggerFor]="logout">
-          <span class="material-icons" style="color: #376e9a"
-            >account_circle</span
-          >
+          <span class="material-icons" style="color: #376e9a">account_circle</span>
         </button>
         <div>
           <span class="text-base">{{ username }}</span>
@@ -80,28 +60,13 @@
       </div>
 
       <mat-menu #logout="matMenu">
-        <button mat-menu-item (click)="changePassword()">
-          <div
-            style="
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              width: 100%;
-            "
-          >
-            <span class="material-icons" style="margin-right: 8px">edit</span>
-            {{ "CHANGE_PASSWORD" | translate }}
-          </div>
-        </button>
         <button mat-menu-item (click)="logOut()">
-          <div
-            style="
+          <div style="
               display: flex;
               align-items: center;
               justify-content: center;
               width: 100%;
-            "
-          >
+            ">
             <span class="material-icons" style="margin-right: 8px">logout</span>
             {{ "LOGOUT" | translate }}
           </div>

@@ -16,11 +16,10 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(
     private cookieService: CookieService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const token = this.cookieService.get('accessToken')
-    this.lang = localStorage.getItem('language')  || 'vi'
 
     if (token) request = this.addToken(request, token)
     request = this.addLanguageHeader(request)
