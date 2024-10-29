@@ -16,7 +16,7 @@ export class AdminComponent implements OnInit {
   currentLang = 'vi';
   public username: string = '';
   collapsed = signal(false);
-  sidenavWidth = computed(() => (this.collapsed() ? '65px' : '320px'));
+  sidenavWidth = computed(() => (this.collapsed() ? '65px' : '240px'));
 
   constructor(
     private router: Router,
