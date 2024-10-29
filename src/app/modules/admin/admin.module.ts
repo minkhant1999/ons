@@ -37,4 +37,4 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
   ],
 })
-export class AdminModule { }
+export class AdminModule {}

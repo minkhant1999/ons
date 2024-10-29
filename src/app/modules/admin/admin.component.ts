@@ -13,8 +13,9 @@ import { PasswordChangeComponent } from './model/password-change/password-change
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
-  currentLang = 'vi';
-  public username: string = '';
+  currentLang = 'en';
+  public code: string = 'VMY123123';
+  public userName: string = 'Testing';
   collapsed = signal(false);
   sidenavWidth = computed(() => (this.collapsed() ? '65px' : '320px'));
 
@@ -22,11 +23,9 @@ export class AdminComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private _dialog: MatDialog
-  ) {
-  }
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   changePassword() {
     this._dialog.open(PasswordChangeComponent, {
