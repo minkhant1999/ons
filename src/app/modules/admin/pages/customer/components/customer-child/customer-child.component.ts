@@ -11,6 +11,7 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { CustomerDetailComponent } from '../model/customer-detail/customer-detail.component';
+import { CustomerEditComponent } from '../model/customer-edit/customer-edit.component';
 
 @Component({
   selector: 'app-customer-child',
@@ -114,6 +115,13 @@ export class CustomerChildComponent implements OnInit {
 
   showDetail() {
     this._dialogRef = this.dialog.open(CustomerDetailComponent, {
+      width: '50%',
+      disableClose: true,
+    });
+  }
+
+  openEdit() {
+    this._dialogRef = this.dialog.open(CustomerEditComponent, {
       width: '50%',
       disableClose: true,
     });

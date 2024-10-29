@@ -1,7 +1,11 @@
 <div class="w-full h-full bg-gray-200">
   <div class="p-8 flex justify-end items-center">
-    <button class="bg-[#2A2F4F] rounded-3xl w-[176px] h-[54px] text-white">
-      Create new
+    <button
+      (click)="openCreate()"
+      class="bg-[#2A2F4F] rounded-full px-3 py-2 text-white font-bold flex items-center"
+    >
+      <span class="mr-2">Create new</span>
+      <mat-icon>add_circle</mat-icon>
     </button>
   </div>
   <div class="overflow-x-auto p-8">
@@ -31,7 +35,7 @@
               </span>
             </div>
           </td>
-          <td class="py-3 px-6 text-center">
+          <td class="py-3 px-6 text-center cursor-pointer">
             <mat-icon>delete</mat-icon>
           </td>
         </tr>
