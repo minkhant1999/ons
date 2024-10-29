@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { SelectComponent } from 'src/app/modules/custom/select/select.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-statistic',
   templateUrl: './statistic.component.html',
   styleUrls: ['./statistic.component.scss'],
   standalone: true,
-  imports: [SelectComponent],
+  imports: [RouterOutlet],
 })
-export class StatisticComponent {}
+export class StatisticComponent { }
