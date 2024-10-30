@@ -10,10 +10,6 @@ import { StatisticService } from './statistic.service';
   imports: [RouterOutlet],
 })
 export class StatisticComponent implements OnInit {
-  constructor(private statisticService: StatisticService) {}
-  ngOnInit(): void {
-    this.statisticService.getStatistic().subscribe((data: any) => {
-      console.log(data, 'this is the data');
-    });
-  }
+  constructor() {}
+  ngOnInit(): void {}
 }

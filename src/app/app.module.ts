@@ -28,6 +28,7 @@ import {
 import { AuthInterceptor } from './service/auth.interceptor';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { AutoCompleteComponent } from './modules/custom/auto-complete/auto-complete.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -41,6 +42,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CustomMenuComponent,
     ButtonComponent,
     PageNotFoundComponent,
+    AutoCompleteComponent,
   ],
   imports: [
     BrowserModule,

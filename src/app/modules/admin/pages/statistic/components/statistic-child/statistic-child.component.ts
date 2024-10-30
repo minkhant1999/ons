@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { SelectComponent } from 'src/app/modules/custom/select/select.component';
 import { StatisticChildGetSetService } from './statistic-child-get-set.service';
+import { StatisticService } from '../../statistic.service';
 
 interface SelectStatusType {
   value: string;
@@ -32,7 +33,7 @@ export class StatisticChildComponent implements OnInit {
       value1: '-',
       value2: 1000,
       percentage: '100%',
-      check: 'targe'
+      check: 'targe',
     },
     {
       label: 'Total Revoke',
@@ -40,7 +41,7 @@ export class StatisticChildComponent implements OnInit {
       value1: '-',
       value2: 90,
       percentage: '90%',
-      check: 'Revoke'
+      check: 'Revoke',
     },
     {
       label: 'Total Reuse',
@@ -48,7 +49,7 @@ export class StatisticChildComponent implements OnInit {
       value1: '-',
       value2: 10,
       percentage: '1%',
-      check: 'Reuse'
+      check: 'Reuse',
     },
     {
       label: 'Total Pending',
@@ -56,11 +57,12 @@ export class StatisticChildComponent implements OnInit {
       value1: '-',
       value2: 900,
       percentage: '50%',
-      check: 'Pending'
+      check: 'Pending',
     },
   ];
 
   constructor(
+    private statisticService: StatisticService,
     private fb: FormBuilder,
     private router: Router,
     private _statisticChildGetSetService: StatisticChildGetSetService
@@ -96,6 +98,10 @@ export class StatisticChildComponent implements OnInit {
       township: [''],
       fbbLeader: [''],
       d2d: [''],
+    });
+
+    this.statisticService.getStatistic().subscribe((data: any) => {
+      console.log(data, 'this is the data');
     });
   }
 
