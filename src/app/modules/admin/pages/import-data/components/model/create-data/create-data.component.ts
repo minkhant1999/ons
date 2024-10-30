@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { AdminImgUploadComponent } from 'src/app/modules/custom/admin-img-upload/admin-img-upload.component';
+import { ImportDataService } from '../../../import-data.service';
 
 @Component({
   selector: 'app-create-data',
@@ -19,30 +20,32 @@ import { AdminImgUploadComponent } from 'src/app/modules/custom/admin-img-upload
 })
 export class CreateDataComponent implements OnInit {
   createForm!: FormGroup;
-  fileName: string | null = null;
+  // fileName: string | null = null;
 
   constructor(
     private _dialogRef: MatDialogRef<CreateDataComponent>,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private importService: ImportDataService
   ) {}
 
   ngOnInit(): void {
     this.createForm = this.fb.group({
-      upload: [''],
+      file: [''],
     });
   }
 
   onImageSelected(event: any) {}
-
-  removeFile(): void {
-    this.fileName = null;
-  }
 
   closeCreate() {
     this._dialogRef.close();
   }
 
   createData() {
-    console.log(this.createForm.value, ' create form');
+    const data = this.createForm.value.file.name;
+
+    this.importService.importExcel(data).subscribe((data: any) => {
+      console.log(data);
+    });
+    console.log(this.createForm.value.file.name, ' create form');
   }
 }

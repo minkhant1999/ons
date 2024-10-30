@@ -9,6 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { PaginatorComponent } from 'src/app/modules/custom/paginator/paginator.component';
 import { CreateDataComponent } from '../model/create-data/create-data.component';
 import { AlertService } from 'src/app/modules/service/alert.service';
+import { ImportDataService } from '../../import-data.service';
+import { ApiLoadingComponent } from 'src/app/modules/custom/model/loading/api-loading.component';
 
 @Component({
   selector: 'app-import-data-child',
@@ -19,38 +21,39 @@ import { AlertService } from 'src/app/modules/service/alert.service';
 })
 export class ImportDataChildComponent implements OnInit {
   _dialogRef!: MatDialogRef<any>;
-  public tableData = [
-    {
-      id: 1,
-      fileName: 'file1.txt',
-      reason: 'Check details',
-      date: '26/10/2024',
-      status: 'Processing',
-    },
-    {
-      id: 2,
-      fileName: 'file2.txt',
-      reason: 'Check details',
-      date: '27/10/2024',
-      status: 'Fail',
-    },
-    {
-      id: 3,
-      fileName: 'file3.txt',
-      reason: 'Check details',
-      date: '28/10/2024',
-      status: 'Imported',
-    },
-  ];
+  public tableData: any;
 
-  constructor(private dialog: MatDialog, private _alert: AlertService) {}
+  constructor(
+    private dialog: MatDialog,
+    private _alert: AlertService,
+    private importService: ImportDataService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getAll();
+  }
 
   openCreate() {
     this._dialogRef = this.dialog.open(CreateDataComponent, {
       width: '50%',
       disableClose: true,
+    });
+  }
+
+  getAll() {
+    const loadingRef = this.dialog.open(ApiLoadingComponent, {
+      disableClose: true,
+    });
+
+    this.importService.getFile().subscribe((data: any) => {
+      if (data.errorCode === '00000') {
+        loadingRef.close();
+        this.tableData = data.result;
+      } else {
+        loadingRef.close();
+        this._alert.notify('Something went wrong!', 'FAIL');
+      }
+      console.log(data);
     });
   }
 

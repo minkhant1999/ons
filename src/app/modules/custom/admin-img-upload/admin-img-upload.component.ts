@@ -64,8 +64,8 @@ export class AdminImgUploadComponent implements ControlValueAccessor, OnInit {
 
         reader.readAsDataURL(file);
 
-        this.onChange(file); // Notify Angular forms about the file change
-        this.onTouched(); // Notify Angular forms that the input was touched
+        this.onChange(file);
+        this.onTouched();
         this.imageSelected.emit(file);
       }
     } else if (this.file === 'excel') {
@@ -76,6 +76,8 @@ export class AdminImgUploadComponent implements ControlValueAccessor, OnInit {
 
         if (fileType === 'xls' || fileType === 'xlsx') {
           this.fileName = file.name;
+          this.onChange(file);
+          this.imageSelected.emit(file);
         } else {
           alert('Please upload an Excel file (.xls or .xlsx)');
           input.value = '';

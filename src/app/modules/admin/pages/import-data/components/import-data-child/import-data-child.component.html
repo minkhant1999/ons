@@ -21,19 +21,22 @@
         </tr>
       </thead>
       <tbody class="text-gray-700">
-        <tr *ngFor="let item of tableData" class="border-b border-gray-200">
-          <td class="py-3 px-6 text-center">{{ item.id }}</td>
+        <tr
+          *ngFor="let item of tableData; let i = index"
+          class="border-b border-gray-200"
+        >
+          <td class="py-3 px-6 text-center">{{ i + 1 }}</td>
           <td class="py-3 px-6 text-center">{{ item.fileName }}</td>
           <td class="py-3 px-6 text-center">{{ item.reason }}</td>
-          <td class="py-3 px-6 text-center">{{ item.date }}</td>
+          <td class="py-3 px-6 text-center">{{ item.createdAt }}</td>
           <td class="py-3 px-6 text-center">
             <div class="flex items-center justify-center">
               <span
                 class="font-semibold rounded-full w-28 py-2"
                 [ngClass]="{
-                  'bg-[#F8F49B] text-[#766E19]': item.status === 'Processing',
-                  'bg-[#FFC2C2] text-[#F33333]': item.status === 'Fail',
-                  'bg-[#E2FFBF] text-[#3FA026]': item.status === 'Imported'
+                  'bg-[#F8F49B] text-[#766E19]': item.status === 'PENDING',
+                  'bg-[#FFC2C2] text-[#F33333]': item.status === 'FAIL',
+                  'bg-[#E2FFBF] text-[#3FA026]': item.status === 'SUCCESS'
                 }"
               >
                 {{ item.status }}
