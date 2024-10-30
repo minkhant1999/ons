@@ -43,7 +43,8 @@ export class LoginComponent implements OnInit {
 
     this.form = this.fb.group({
       vmycode: ['', [Validators.required]],
-      browser: [this.browser],
+      requestId: [new Date().toISOString(), [Validators.required]],
+      requestTime: [new Date().toISOString(), [Validators.required]],
     });
 
     this.otp = this.fb.group({
@@ -65,18 +66,24 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.status === 'VALID') {
-      this.loading = true;
-      const data = this.form.value;
-      if (data.vmycode === 'vmy123123') {
-        this.showErrorMessage = '';
-        this.loading = false;
-        this.isRequestedOtp = true;
-      } else {
-        this.loading = false;
-        this.showErrorMessage = 'Your VMY doesn’t exist.';
-      }
-    }
+    let params = this.form.value;
+
+    this._loginServiceService.loginConfirm(params).subscribe((data: any) => {
+      console.log(data);
+    });
+
+    // if (this.form.status === 'VALID') {
+    //   this.loading = true;
+    //   const data = this.form.value;
+    //   if (data.vmycode === 'vmy123123') {
+    //     this.showErrorMessage = '';
+    //     this.loading = false;
+    //     this.isRequestedOtp = true;
+    //   } else {
+    //     this.loading = false;
+    //     this.showErrorMessage = 'Your VMY doesn’t exist.';
+    //   }
+    // }
   }
 
   login() {
