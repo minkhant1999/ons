@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   showErrorMessage!: string;
   currentLang = 'en';
   isRequestedOtp: boolean = false;
+  transId: string = '';
 
   constructor(
     private renderer: Renderer2,
@@ -42,13 +43,16 @@ export class LoginComponent implements OnInit {
     this.browser = this.browserDetectionService.getBrowserInfo();
 
     this.form = this.fb.group({
-      vmycode: ['', [Validators.required]],
+      vmyCode: ['', [Validators.required]],
       requestId: [new Date().toISOString(), [Validators.required]],
       requestTime: [new Date().toISOString(), [Validators.required]],
     });
 
     this.otp = this.fb.group({
+      otpTransId: [''],
       otp: ['', [Validators.required]],
+      requestId: [new Date().toISOString()],
+      requestTime: [new Date().toISOString()],
     });
 
     this.pageReload();
@@ -66,42 +70,38 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    // let params = this.form.value;
+    this.loading = true;
+    let params = this.form.value;
 
-    // this._loginServiceService.loginConfirm(params).subscribe((data: any) => {
-    //   console.log(data);
-    // });
-
-    if (this.form.status === 'VALID') {
-      this.loading = true;
-      const data = this.form.value;
-      if (data.vmycode === 'vmy123123') {
-        this.showErrorMessage = '';
+    this._loginServiceService.login(params).subscribe((data: any) => {
+      if (data.errorCode === '00000') {
         this.loading = false;
         this.isRequestedOtp = true;
+        this.transId = data.result.otpTransId;
       } else {
         this.loading = false;
-        this.showErrorMessage = 'Your VMY doesn’t exist.';
+        this.showErrorMessage = data.message;
       }
-    }
+    });
   }
 
   login() {
-    if (this.otp.status === 'VALID') {
-      this.showErrorMessage = '';
-      this.loading = true;
-      const data = this.otp.value;
-      if (data.otp === '123') {
-        this.authService.saveTokens(
-          '87834uu43iuwr89uf8ae237ei23u2id392803ioiu2398'
-        );
+    this.loading = true;
+    let params = this.otp.value;
+    params.otpTransId = this.transId;
+
+    this._loginServiceService.confirmLogin(params).subscribe((res: any) => {
+      if (res.errorCode === '00000') {
         this.loading = false;
-        this.router.navigate(['admin/app-statistic']);
+        this.authService.saveTokens(res.result.token);
+        this.router.navigate(['admin/app-statistic'], {
+          state: { data: res.result.data },
+        });
       } else {
         this.loading = false;
-        this.showErrorMessage = 'Wrong OTP.';
+        this.showErrorMessage = res.message;
       }
-    }
+    });
   }
 
   isFormValid(): boolean {

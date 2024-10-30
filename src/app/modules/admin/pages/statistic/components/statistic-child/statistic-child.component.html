@@ -1,15 +1,9 @@
 <div class="w-full p-6 bg-gray-200 h-full">
   <div class="w-full p-8 bg-white">
     <form [formGroup]="searchTable" class="grid grid-cols-3 gap-5">
-      <app-select label="Branch Name" selectId="branch_name" [options]="branchStatus" formControlName="status"
-        controlName="status" placeholder="Enter branch name"></app-select>
-      <app-select label="Township" selectId="township" [options]="townShipStatus" formControlName="township"
-        controlName="township" placeholder="Enter township"></app-select>
-      <app-select label="FBB Leader Name" selectId="fbbLeader" [options]="fbbLeaderStatus" formControlName="fbbLeader"
-        controlName="fbbLeader" placeholder="Enter FBB leader name"></app-select>
-      <app-select label="D2D" selectId="d2d" [options]="d2dStaus" formControlName="d2d" controlName="d2d"
-        placeholder="Enter D2D name"></app-select>
-      <div></div>
+
+      <app-auto-complete [label]="'Customer Name'" [placeholder]="'Enter branch name'" [suggestions]="customerData"
+        (selectedSuggestion)="onSuggestionSelected($event)"></app-auto-complete>
       <div class="flex justify-center items-center pt-5">
         <button (click)="searchButton()" class="rounded-2xl bg-blue-600 text-white w-[120px] h-[40px]">
           Search

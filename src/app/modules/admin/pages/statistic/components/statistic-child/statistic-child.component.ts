@@ -1,11 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { SelectComponent } from 'src/app/modules/custom/select/select.component';
 import { StatisticChildGetSetService } from './statistic-child-get-set.service';
 import { StatisticService } from '../../statistic.service';
+import { AutoCompleteComponent } from 'src/app/modules/custom/auto-complete/auto-complete.component';
 
 interface SelectStatusType {
   value: string;
@@ -17,7 +23,13 @@ interface SelectStatusType {
   templateUrl: './statistic-child.component.html',
   styleUrls: ['./statistic-child.component.scss'],
   standalone: true,
-  imports: [SelectComponent, ReactiveFormsModule, MatIconModule, CommonModule],
+  imports: [
+    SelectComponent,
+    ReactiveFormsModule,
+    MatIconModule,
+    CommonModule,
+    AutoCompleteComponent,
+  ],
 })
 export class StatisticChildComponent implements OnInit {
   searchTable!: FormGroup;
@@ -61,43 +73,25 @@ export class StatisticChildComponent implements OnInit {
     },
   ];
 
+  public customerData: SelectStatusType[] = [
+    { value: 'John Doe', label: 'John Doe' },
+    { value: 'Jane Smith', label: 'Jane Smith' },
+    { value: 'Bob Brown', label: 'Bob Brown' },
+    { value: 'John Lee', label: 'John Lee' },
+    { value: 'Tom Joe', label: 'Tom Joe' },
+    { value: 'Jim Black', label: 'Jim Black' },
+  ];
+
   constructor(
     private statisticService: StatisticService,
     private fb: FormBuilder,
     private router: Router,
     private _statisticChildGetSetService: StatisticChildGetSetService
-  ) {
-    this.branchStatus = [
-      { value: 'TEST', label: 'test' },
-      { value: 'TEST1', label: 'test1' },
-      { value: 'TEST2', label: 'test2' },
-    ];
-
-    this.townShipStatus = [
-      { value: 'Yangon', label: 'Yangon' },
-      { value: 'Bago', label: 'Bago' },
-      { value: 'MDL', label: 'MDL' },
-    ];
-
-    this.fbbLeaderStatus = [
-      { value: 'Yung', label: 'Yung' },
-      { value: 'Ming', label: 'Ming' },
-      { value: 'Qing', label: 'Qing' },
-    ];
-
-    this.d2dStaus = [
-      { value: 'Telenor', label: 'Telenor' },
-      { value: 'MyTel', label: 'MyTel' },
-      { value: 'Ooredoo', label: 'Ooredoo' },
-    ];
-  }
+  ) {}
 
   ngOnInit(): void {
     this.searchTable = this.fb.group({
-      status: [''],
-      township: [''],
-      fbbLeader: [''],
-      d2d: [''],
+      testing: [''],
     });
 
     this.statisticService.getStatistic().subscribe((data: any) => {
@@ -115,5 +109,9 @@ export class StatisticChildComponent implements OnInit {
   gotoDetailPage(item: any) {
     this._statisticChildGetSetService.setStatistic(item);
     this.router.navigate(['admin/app-customer']);
+  }
+
+  onSuggestionSelected(selectedCustomer: any) {
+    this.searchTable.get('testing')?.setValue(selectedCustomer.value);
   }
 }
