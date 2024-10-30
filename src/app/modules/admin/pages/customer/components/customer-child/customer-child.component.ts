@@ -12,6 +12,7 @@ import {
 } from '@angular/material/dialog';
 import { CustomerDetailComponent } from '../model/customer-detail/customer-detail.component';
 import { CustomerEditComponent } from '../model/customer-edit/customer-edit.component';
+import { CustomersService } from './customers.service';
 
 @Component({
   selector: 'app-customer-child',
@@ -104,9 +105,11 @@ export class CustomerChildComponent implements OnInit {
   currentDataSource = this.dataSourcePending;
   activeButton = 'Pending';
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private _customer: CustomersService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getAllCustomers();
+  }
 
   showDataSource(dataSource: any[], button: string) {
     this.currentDataSource = dataSource;
@@ -124,6 +127,14 @@ export class CustomerChildComponent implements OnInit {
     this._dialogRef = this.dialog.open(CustomerEditComponent, {
       width: '50%',
       disableClose: true,
+    });
+  }
+
+  getAllCustomers() {
+    this._customer.getCustomers().subscribe((data: any) => {
+      console.log('====================================');
+      console.log(data, 'data data data data');
+      console.log('====================================');
     });
   }
 }
