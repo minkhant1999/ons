@@ -94,5 +94,6 @@
         </tr>
       </tbody>
     </table>
+    <app-paginator [offset]="pageNo - 1" [totalOffset]="totalPages - 1" (change)="getAllCustomers($event)"></app-paginator>
   </div>
 </div>

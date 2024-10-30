@@ -9,7 +9,7 @@ export class CustomersService {
   private readonly _getAllCustomerUrl = SERVICE_URLS.GET_CUSTOMERS;
   constructor(private _http: HttpClient) {}
 
-  getCustomers() {
-    return this._http.get(this._getAllCustomerUrl);
+  getCustomers(params:any) {
+    return this._http.get(this._getAllCustomerUrl,{params});
   }
 }
