@@ -66,24 +66,24 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    let params = this.form.value;
+    // let params = this.form.value;
 
-    this._loginServiceService.loginConfirm(params).subscribe((data: any) => {
-      console.log(data);
-    });
+    // this._loginServiceService.loginConfirm(params).subscribe((data: any) => {
+    //   console.log(data);
+    // });
 
-    // if (this.form.status === 'VALID') {
-    //   this.loading = true;
-    //   const data = this.form.value;
-    //   if (data.vmycode === 'vmy123123') {
-    //     this.showErrorMessage = '';
-    //     this.loading = false;
-    //     this.isRequestedOtp = true;
-    //   } else {
-    //     this.loading = false;
-    //     this.showErrorMessage = 'Your VMY doesn’t exist.';
-    //   }
-    // }
+    if (this.form.status === 'VALID') {
+      this.loading = true;
+      const data = this.form.value;
+      if (data.vmycode === 'vmy123123') {
+        this.showErrorMessage = '';
+        this.loading = false;
+        this.isRequestedOtp = true;
+      } else {
+        this.loading = false;
+        this.showErrorMessage = 'Your VMY doesn’t exist.';
+      }
+    }
   }
 
   login() {
