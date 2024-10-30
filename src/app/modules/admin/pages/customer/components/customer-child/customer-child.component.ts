@@ -14,6 +14,7 @@ import { CustomerDetailComponent } from '../model/customer-detail/customer-detai
 import { CustomerEditComponent } from '../model/customer-edit/customer-edit.component';
 import { CustomersService } from './customers.service';
 import { StatisticChildGetSetService } from '../../../statistic/components/statistic-child/statistic-child-get-set.service';
+import { PaginatorComponent } from 'src/app/modules/custom/paginator/paginator.component';
 
 @Component({
   selector: 'app-customer-child',
@@ -28,9 +29,14 @@ import { StatisticChildGetSetService } from '../../../statistic/components/stati
     MatTableModule,
     MatButtonModule,
     MatDialogModule,
+    PaginatorComponent
   ],
 })
 export class CustomerChildComponent implements OnInit, OnDestroy {
+  pageSize = 10;
+  pageNo = 1
+  totalPages = 0
+
   _dialogRef!: MatDialogRef<any>;
   dataSourcePending = [
     {
@@ -140,8 +146,9 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     });
   }
 
-  getAllCustomers() {
-    this._customer.getCustomers().subscribe((data: any) => {
+  getAllCustomers(pageNo = 1) {
+    this.pageNo = pageNo
+    this._customer.getCustomers({pageNo:this.pageNo,pageSize:this.pageSize}).subscribe((data: any) => {
       console.log('====================================');
       console.log(data, 'data data data data');
       console.log('====================================');
