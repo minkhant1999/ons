@@ -24,7 +24,7 @@ export class AdminComponent implements OnInit {
     this.data = navigation?.extras?.state?.['data'];
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   logOut() {
     this.authService.logOut();

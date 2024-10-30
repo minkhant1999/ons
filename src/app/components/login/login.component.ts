@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     private languageService: LanguageService,
     private translate: TranslateService,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.languageService.currentLang$.subscribe((lang) => {
@@ -108,9 +108,9 @@ export class LoginComponent implements OnInit {
         this.authService.saveTokens(res.result.token);
         this.cookieService.set(
           'vmyCode',
-          JSON.stringify(res.result.data.vmyCode)
+          (res.result.data.vmyCode)
         );
-        this.cookieService.set('role', JSON.stringify(res.result.data.role));
+        this.cookieService.set('role', (res.result.data.role));
         this.router.navigate(['admin/app-statistic'], {
           state: { data: res.result.data },
         });
