@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 import { SelectComponent } from 'src/app/modules/custom/select/select.component';
+import { StatisticChildGetSetService } from './statistic-child-get-set.service';
 
 interface SelectStatusType {
   value: string;
@@ -30,6 +32,7 @@ export class StatisticChildComponent implements OnInit {
       value1: '-',
       value2: 1000,
       percentage: '100%',
+      check: 'targe'
     },
     {
       label: 'Total Revoke',
@@ -37,6 +40,7 @@ export class StatisticChildComponent implements OnInit {
       value1: '-',
       value2: 90,
       percentage: '90%',
+      check: 'Revoke'
     },
     {
       label: 'Total Reuse',
@@ -44,6 +48,7 @@ export class StatisticChildComponent implements OnInit {
       value1: '-',
       value2: 10,
       percentage: '1%',
+      check: 'Reuse'
     },
     {
       label: 'Total Pending',
@@ -51,10 +56,15 @@ export class StatisticChildComponent implements OnInit {
       value1: '-',
       value2: 900,
       percentage: '50%',
+      check: 'Pending'
     },
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private _statisticChildGetSetService: StatisticChildGetSetService
+  ) {
     this.branchStatus = [
       { value: 'TEST', label: 'test' },
       { value: 'TEST1', label: 'test1' },
@@ -91,5 +101,10 @@ export class StatisticChildComponent implements OnInit {
 
   searchButton() {
     console.log(this.searchTable.value, ' search table');
+  }
+
+  gotoDetailPage(item: any) {
+    this._statisticChildGetSetService.setStatistic(item);
+    this.router.navigate(['admin/app-customer']);
   }
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { InputComponent } from 'src/app/modules/custom/input/input.component';
@@ -13,6 +13,7 @@ import {
 import { CustomerDetailComponent } from '../model/customer-detail/customer-detail.component';
 import { CustomerEditComponent } from '../model/customer-edit/customer-edit.component';
 import { CustomersService } from './customers.service';
+import { StatisticChildGetSetService } from '../../../statistic/components/statistic-child/statistic-child-get-set.service';
 
 @Component({
   selector: 'app-customer-child',
@@ -29,7 +30,7 @@ import { CustomersService } from './customers.service';
     MatDialogModule,
   ],
 })
-export class CustomerChildComponent implements OnInit {
+export class CustomerChildComponent implements OnInit, OnDestroy {
   _dialogRef!: MatDialogRef<any>;
   dataSourcePending = [
     {
@@ -103,11 +104,20 @@ export class CustomerChildComponent implements OnInit {
     },
   ];
   currentDataSource = this.dataSourcePending;
-  activeButton = 'Pending';
+  activeButton = '';
 
-  constructor(private dialog: MatDialog, private _customer: CustomersService) {}
+  constructor(
+    private dialog: MatDialog,
+    private _statisticChildGetSetService: StatisticChildGetSetService,
+    private _customer: CustomersService
+  ) {}
 
   ngOnInit(): void {
+    this._statisticChildGetSetService.checkStatistic.subscribe(
+      (data: string) => {
+        this.activeButton = data;
+      }
+    );
     this.getAllCustomers();
   }
 
@@ -136,5 +146,8 @@ export class CustomerChildComponent implements OnInit {
       console.log(data, 'data data data data');
       console.log('====================================');
     });
+  }
+  ngOnDestroy(): void {
+    this._statisticChildGetSetService.clearStatistic();
   }
 }
