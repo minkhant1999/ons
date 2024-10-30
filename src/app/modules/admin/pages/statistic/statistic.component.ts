@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { StatisticService } from './statistic.service';
 
 @Component({
   selector: 'app-statistic',
@@ -8,4 +9,11 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [RouterOutlet],
 })
-export class StatisticComponent { }
+export class StatisticComponent implements OnInit {
+  constructor(private statisticService: StatisticService) {}
+  ngOnInit(): void {
+    this.statisticService.getStatistic().subscribe((data: any) => {
+      console.log(data, 'this is the data');
+    });
+  }
+}
