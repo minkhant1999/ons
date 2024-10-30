@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { InputComponent } from 'src/app/modules/custom/input/input.component';
@@ -12,6 +12,7 @@ import {
 } from '@angular/material/dialog';
 import { CustomerDetailComponent } from '../model/customer-detail/customer-detail.component';
 import { CustomerEditComponent } from '../model/customer-edit/customer-edit.component';
+import { StatisticChildGetSetService } from '../../../statistic/components/statistic-child/statistic-child-get-set.service';
 
 @Component({
   selector: 'app-customer-child',
@@ -28,7 +29,7 @@ import { CustomerEditComponent } from '../model/customer-edit/customer-edit.comp
     MatDialogModule,
   ],
 })
-export class CustomerChildComponent implements OnInit {
+export class CustomerChildComponent implements OnInit, OnDestroy {
   _dialogRef!: MatDialogRef<any>;
   dataSourcePending = [
     {
@@ -102,11 +103,18 @@ export class CustomerChildComponent implements OnInit {
     },
   ];
   currentDataSource = this.dataSourcePending;
-  activeButton = 'Pending';
+  activeButton = '';
 
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private _statisticChildGetSetService: StatisticChildGetSetService
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._statisticChildGetSetService.checkStatistic.subscribe((data: string) => {
+      this.activeButton = data
+    })
+  }
 
   showDataSource(dataSource: any[], button: string) {
     this.currentDataSource = dataSource;
@@ -125,5 +133,9 @@ export class CustomerChildComponent implements OnInit {
       width: '50%',
       disableClose: true,
     });
+  }
+
+  ngOnDestroy(): void {
+    this._statisticChildGetSetService.clearStatistic();
   }
 }
