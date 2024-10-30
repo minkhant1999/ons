@@ -1,3 +1,5 @@
-// const BASE_URL = "http://45.76.158.94:8000/gift-life";
+const BASE_URL = "https://apis-uat.mytelpay.com.mm/fbb-onu";
 
-export const SERVICE_URLS = {};
+export const SERVICE_URLS = {
+  LOGIN: `${BASE_URL}/login/confirm`,
+};
