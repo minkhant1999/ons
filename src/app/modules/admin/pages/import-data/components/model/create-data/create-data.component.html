@@ -1,65 +1,24 @@
 <div class="py-14 px-10">
   <h1 class="flex justify-center font-bold text-xl">Create</h1>
 
-  <div class="mt-5 flex flex-col">
-    <p class="font-medium">
-      Upload file here <span class="text-red-500">*</span>
-    </p>
+  <form [formGroup]="createForm">
+    <div class="mt-5 flex flex-col">
+      <div class="mb-7">
+        <app-admin-img-upload formControlName="upload" (imageSelected)="onImageSelected($event)"
+          [file]="'excel'"></app-admin-img-upload>
+      </div>
 
-    <div class="mt-1">
-      <!-- <label class="cursor-pointer">
-        <button
-          class="px-3 py-3 focus:outline-none bg-[#4485FF] rounded-full font-bold text-white flex items-center"
-        >
-          Upload <mat-icon class="ml-2">cloud_upload</mat-icon>
+      <div class="mt-10 flex justify-center space-x-5">
+        <button (click)="closeCreate()"
+          class="px-3 py-2 rounded-full bg-white text-[#444444] font-bold focus:outline-none">
+          Cancel
         </button>
-        <input
-          type="file"
-          (change)="onFileSelected($event)"
-          accept=".xls, .xlsx"
-          hidden
-        />
-      </label> -->
-      <div>
-        <div (click)="fileUploadfront.click()">
-          <button
-            class="px-3 py-3 focus:outline-none bg-[#4485FF] rounded-full font-bold text-white flex items-center"
-          >
-            Upload <mat-icon class="ml-2">cloud_upload</mat-icon>
-          </button>
-        </div>
-
-        <input
-          #fileUploadfront
-          class="hidden"
-          type="file"
-          (change)="onFileSelected($event)"
-        />
+        <button (click)="createData()"
+          class="px-5 py-2 rounded-full bg-[#FD6D1A] text-white font-bold focus:outline-none">
+          Create
+        </button>
       </div>
     </div>
+  </form>
 
-    <div class="mt-1" *ngIf="fileName">
-      <div class="bg-[#ECECEC] px-3 py-2 rounded-xl flex w-80 space-x-10">
-        <mat-icon>upload_file</mat-icon>
-        <span>{{ fileName }}</span>
-        <mat-icon class="cursor-pointer" (click)="removeFile()"
-          >cancel</mat-icon
-        >
-      </div>
-    </div>
-
-    <div class="mt-10 flex justify-center space-x-5">
-      <button
-        (click)="closeCreate()"
-        class="px-3 py-2 rounded-full bg-white text-[#444444] font-bold focus:outline-none"
-      >
-        Cancel
-      </button>
-      <button
-        class="px-5 py-2 rounded-full bg-[#FD6D1A] text-white font-bold focus:outline-none"
-      >
-        Create
-      </button>
-    </div>
-  </div>
 </div>
