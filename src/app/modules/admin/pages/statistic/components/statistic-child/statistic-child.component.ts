@@ -21,7 +21,7 @@ interface SelectStatusType {
 })
 export class StatisticChildComponent implements OnInit {
   searchTable!: FormGroup;
-
+  staticData: any[] = [];
   public branchStatus: SelectStatusType[] = [];
   public townShipStatus: SelectStatusType[] = [];
   public fbbLeaderStatus: SelectStatusType[] = [];
@@ -101,7 +101,10 @@ export class StatisticChildComponent implements OnInit {
     });
 
     this.statisticService.getStatistic().subscribe((data: any) => {
-      console.log(data, 'this is the data');
+      if (data.errorCode === '00000') {
+        this.staticData = data.result;
+        console.log(this.staticData, 'this is the data from api');
+      }
     });
   }
 
