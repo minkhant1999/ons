@@ -11,6 +11,6 @@ export class LoginServiceService {
   constructor(private http: HttpClient) {}
 
   loginConfirm(params: any) {
-    return this.http.post(this._login, { params });
+    return this.http.post(this._login, params);
   }
 }
