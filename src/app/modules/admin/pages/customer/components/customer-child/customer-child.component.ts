@@ -12,6 +12,7 @@ import {
 } from '@angular/material/dialog';
 import { CustomerDetailComponent } from '../model/customer-detail/customer-detail.component';
 import { CustomerEditComponent } from '../model/customer-edit/customer-edit.component';
+import { CustomersService } from './customers.service';
 import { StatisticChildGetSetService } from '../../../statistic/components/statistic-child/statistic-child-get-set.service';
 
 @Component({
@@ -107,13 +108,17 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
 
   constructor(
     private dialog: MatDialog,
-    private _statisticChildGetSetService: StatisticChildGetSetService
-  ) { }
+    private _statisticChildGetSetService: StatisticChildGetSetService,
+    private _customer: CustomersService
+  ) {}
 
   ngOnInit(): void {
-    this._statisticChildGetSetService.checkStatistic.subscribe((data: string) => {
-      this.activeButton = data
-    })
+    this._statisticChildGetSetService.checkStatistic.subscribe(
+      (data: string) => {
+        this.activeButton = data;
+      }
+    );
+    this.getAllCustomers();
   }
 
   showDataSource(dataSource: any[], button: string) {
@@ -135,6 +140,13 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     });
   }
 
+  getAllCustomers() {
+    this._customer.getCustomers().subscribe((data: any) => {
+      console.log('====================================');
+      console.log(data, 'data data data data');
+      console.log('====================================');
+    });
+  }
   ngOnDestroy(): void {
     this._statisticChildGetSetService.clearStatistic();
   }
