@@ -37,6 +37,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   pageNo = 1;
   totalPages = 0;
   searchForm!: FormGroup;
+  results: any[] = [];
 
   _dialogRef!: MatDialogRef<any>;
   dataSourcePending = [
@@ -131,16 +132,24 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   showDataSource(dataSource: any[], button: string) {
     this.currentDataSource = dataSource;
     this.activeButton = button;
+
+    this._customer
+      .getCustomerStatus({ status: this.activeButton })
+      .subscribe((data: any) => {
+        this.results = data.result;
+      });
   }
 
-  showDetail() {
+  showDetail(id: any) {
+    this._customer.setId(id);
     this._dialogRef = this.dialog.open(CustomerDetailComponent, {
       width: '50%',
       disableClose: true,
     });
   }
 
-  openEdit() {
+  openEdit(id: any) {
+    this._customer.setId(id);
     this._dialogRef = this.dialog.open(CustomerEditComponent, {
       width: '50%',
       disableClose: true,
@@ -152,9 +161,11 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     this._customer
       .getCustomers({ pageNo: this.pageNo, pageSize: this.pageSize })
       .subscribe((data: any) => {
-        console.log(data, 'data data data data');
+        this.results = data.result.content;
+        this.totalPages = data.result.totalPages;
       });
   }
+
   ngOnDestroy(): void {
     this._statisticChildGetSetService.clearStatistic();
   }
