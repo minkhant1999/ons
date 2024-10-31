@@ -76,14 +76,14 @@ export class ImportDataChildComponent implements OnInit {
             if (res.errorCode === '00000') {
               this._alert.deleteNotification(
                 'SUCCESS!',
-                'You deleted successfully.',
+                res.message || 'You deleted successfully.',
                 'SUCCESS'
               );
               this.getAll();
             } else {
               this._alert.deleteNotification(
                 'FAILED!',
-                'Something went wrong.',
+                res.message || 'Something went wrong.',
                 'FAIL'
               );
             }

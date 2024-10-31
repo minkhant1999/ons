@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { AdminImgUploadComponent } from 'src/app/modules/custom/admin-img-upload/admin-img-upload.component';
@@ -32,13 +37,16 @@ export class CreateDataComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm = this.fb.group({
-      file: [''],
+      file: ['', Validators.required],
     });
   }
 
   onImageSelected(event: any) {}
 
   closeCreate() {
+    this.createForm.setValue({
+      file: '',
+    });
     this._dialogRef.close();
   }
 

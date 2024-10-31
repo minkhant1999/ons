@@ -100,9 +100,7 @@ export class LoginComponent implements OnInit {
         this.authService.saveTokens(res.result.token);
         this.cookieService.set('vmyCode', res.result.data.vmyCode);
         this.cookieService.set('role', res.result.data.role);
-        this.router.navigate(['admin/app-statistic'], {
-          state: { data: res.result.data },
-        });
+        this.router.navigate(['admin/app-statistic']);
       } else {
         this.loading = false;
         this.showErrorMessage = res.message;
