@@ -8,4 +8,5 @@ export const SERVICE_URLS = {
   IMPORT_FILE: `${BASE_URL}/file/import`,
   GET_CUSTOMERS: `${BASE_URL}/data/all`,
   GET_CUSTOMER_DETAIL: `${BASE_URL}/data`,
+  GET_CUSTOMER_STATUS: `${BASE_URL}/data`,
 };

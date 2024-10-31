@@ -7,5 +7,6 @@ declare module 'src/assets/app.config' {
     IMPORT_FILE: string;
     GET_CUSTOMERS: string;
     GET_CUSTOMER_DETAIL: string;
+    GET_CUSTOMER_STATUS: string;
   };
 }

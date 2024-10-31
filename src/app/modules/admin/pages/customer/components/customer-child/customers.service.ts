@@ -11,6 +11,7 @@ export class CustomersService {
   private readonly _getAllCustomerUrl = SERVICE_URLS.GET_CUSTOMERS;
 
   private readonly _getCustomerDetailUrl = SERVICE_URLS.GET_CUSTOMER_DETAIL;
+  private readonly _getCustomerStatusUrl = SERVICE_URLS.GET_CUSTOMER_STATUS;
 
   constructor(private _http: HttpClient) {}
 
@@ -28,5 +29,13 @@ export class CustomersService {
 
   getCustomerDetail(id: any) {
     return this._http.get([this._getCustomerDetailUrl, id].join('/'));
+  }
+
+  getCustomerStatus(params: any) {
+    return this._http.get(this._getCustomerStatusUrl, { params });
+  }
+
+  editStatus(body: any, id: any) {
+    return this._http.post([this._getCustomerStatusUrl, id].join('/'), body);
   }
 }

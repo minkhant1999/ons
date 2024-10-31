@@ -131,6 +131,12 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   showDataSource(dataSource: any[], button: string) {
     this.currentDataSource = dataSource;
     this.activeButton = button;
+
+    this._customer
+      .getCustomerStatus({ status: this.activeButton })
+      .subscribe((data: any) => {
+        this.results = data.result;
+      });
   }
 
   showDetail(id: any) {
@@ -141,7 +147,8 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     });
   }
 
-  openEdit() {
+  openEdit(id: any) {
+    this._customer.setId(id);
     this._dialogRef = this.dialog.open(CustomerEditComponent, {
       width: '50%',
       disableClose: true,
