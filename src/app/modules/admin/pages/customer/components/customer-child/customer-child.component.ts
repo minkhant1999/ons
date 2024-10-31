@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { InputComponent } from 'src/app/modules/custom/input/input.component';
 import { MatTableModule } from '@angular/material/table';
@@ -29,13 +29,15 @@ import { PaginatorComponent } from 'src/app/modules/custom/paginator/paginator.c
     MatTableModule,
     MatButtonModule,
     MatDialogModule,
-    PaginatorComponent
+    PaginatorComponent,
   ],
 })
 export class CustomerChildComponent implements OnInit, OnDestroy {
   pageSize = 10;
-  pageNo = 1
-  totalPages = 0
+  pageNo = 1;
+  totalPages = 0;
+  searchForm!: FormGroup;
+  results: any[] = [];
 
   _dialogRef!: MatDialogRef<any>;
   dataSourcePending = [
@@ -130,16 +132,24 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   showDataSource(dataSource: any[], button: string) {
     this.currentDataSource = dataSource;
     this.activeButton = button;
+
+    this._customer
+      .getCustomerStatus({ status: this.activeButton })
+      .subscribe((data: any) => {
+        this.results = data.result;
+      });
   }
 
-  showDetail() {
+  showDetail(id: any) {
+    this._customer.setId(id);
     this._dialogRef = this.dialog.open(CustomerDetailComponent, {
       width: '50%',
       disableClose: true,
     });
   }
 
-  openEdit() {
+  openEdit(id: any) {
+    this._customer.setId(id);
     this._dialogRef = this.dialog.open(CustomerEditComponent, {
       width: '50%',
       disableClose: true,
@@ -147,13 +157,15 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   }
 
   getAllCustomers(pageNo = 1) {
-    this.pageNo = pageNo
-    this._customer.getCustomers({pageNo:this.pageNo,pageSize:this.pageSize}).subscribe((data: any) => {
-      console.log('====================================');
-      console.log(data, 'data data data data');
-      console.log('====================================');
-    });
+    this.pageNo = pageNo;
+    this._customer
+      .getCustomers({ pageNo: this.pageNo, pageSize: this.pageSize })
+      .subscribe((data: any) => {
+        this.results = data.result.content;
+        this.totalPages = data.result.totalPages;
+      });
   }
+
   ngOnDestroy(): void {
     this._statisticChildGetSetService.clearStatistic();
   }

@@ -38,6 +38,13 @@ export class ImportDataChildComponent implements OnInit {
       width: '50%',
       disableClose: true,
     });
+    this._dialogRef.componentInstance.callGetFile.subscribe(
+      (message: string) => {
+        if (message === 'success') {
+          this.getAll();
+        }
+      }
+    );
   }
 
   getAll() {
@@ -53,11 +60,10 @@ export class ImportDataChildComponent implements OnInit {
         loadingRef.close();
         this._alert.notify('Something went wrong!', 'FAIL');
       }
-      console.log(data);
     });
   }
 
-  onDelete() {
+  onDelete(id: any) {
     this._alert
       .deleteNotification(
         'Are u sure?',
@@ -66,7 +72,22 @@ export class ImportDataChildComponent implements OnInit {
       )
       .subscribe((result: boolean) => {
         if (result) {
-          console.log(result, ' hello world');
+          this.importService.deleteFile(id).subscribe((res: any) => {
+            if (res.errorCode === '00000') {
+              this._alert.deleteNotification(
+                'SUCCESS!',
+                res.message || 'You deleted successfully.',
+                'SUCCESS'
+              );
+              this.getAll();
+            } else {
+              this._alert.deleteNotification(
+                'FAILED!',
+                res.message || 'Something went wrong.',
+                'FAIL'
+              );
+            }
+          });
         }
       });
   }

@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  ElementRef,
   EventEmitter,
   forwardRef,
   Input,
   OnInit,
   Output,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -35,9 +37,10 @@ type InputType = 'image' | 'excel';
   ],
 })
 export class AdminImgUploadComponent implements ControlValueAccessor, OnInit {
+  @ViewChild('fileInput', { static: false }) fileInput!: ElementRef;
   @Input() control!: FormControl;
   @Input() isImageRequire!: boolean;
-  @Output() imageSelected = new EventEmitter<File>();
+  @Output() imageSelected = new EventEmitter<File | null>();
   @Input() file: InputType = 'image';
 
   @Input() customErrorMessages: Record<string, string> = {};
@@ -45,11 +48,11 @@ export class AdminImgUploadComponent implements ControlValueAccessor, OnInit {
   @Input() customErrorMessage: Record<string, string> = {};
 
   selectedImage: string | ArrayBuffer | null = null;
-  private onChange = (file: File | null) => { };
-  private onTouched = () => { };
+  private onChange = (file: File | null) => {};
+  private onTouched = () => {};
   fileName: string | null = null;
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   onFileSelected(event: Event) {
     if (this.file === 'image') {
@@ -87,7 +90,11 @@ export class AdminImgUploadComponent implements ControlValueAccessor, OnInit {
   }
 
   removeFile() {
-    this.fileName = null;
+    this.fileName = '';
+    this.selectedImage = null;
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
   }
 
   triggerFileUpload() {

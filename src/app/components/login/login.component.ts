@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     private languageService: LanguageService,
     private translate: TranslateService,
     private dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.languageService.currentLang$.subscribe((lang) => {
@@ -73,20 +73,16 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    const loadingRef = this.dialog.open(ApiLoadingComponent, {
-      disableClose: true,
-    });
     this.loading = true;
     let params = this.form.value;
 
     this._loginServiceService.login(params).subscribe((data: any) => {
       if (data.errorCode === '00000') {
-        loadingRef.close();
         this.loading = false;
         this.isRequestedOtp = true;
         this.transId = data.result.otpTransId;
+        this.showErrorMessage = '';
       } else {
-        loadingRef.close();
         this.loading = false;
         this.showErrorMessage = data.message;
       }
@@ -94,28 +90,18 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    const loadingRef = this.dialog.open(ApiLoadingComponent, {
-      disableClose: true,
-    });
     this.loading = true;
     let params = this.otp.value;
     params.otpTransId = this.transId;
 
     this._loginServiceService.confirmLogin(params).subscribe((res: any) => {
       if (res.errorCode === '00000') {
-        loadingRef.close();
         this.loading = false;
         this.authService.saveTokens(res.result.token);
-        this.cookieService.set(
-          'vmyCode',
-          (res.result.data.vmyCode)
-        );
-        this.cookieService.set('role', (res.result.data.role));
-        this.router.navigate(['admin/app-statistic'], {
-          state: { data: res.result.data },
-        });
+        this.cookieService.set('vmyCode', res.result.data.vmyCode);
+        this.cookieService.set('role', res.result.data.role);
+        this.router.navigate(['admin/app-statistic']);
       } else {
-        loadingRef.close();
         this.loading = false;
         this.showErrorMessage = res.message;
       }

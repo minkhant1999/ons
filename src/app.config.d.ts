@@ -10,5 +10,7 @@ declare module 'src/assets/app.config' {
     TOWNSHIP: string;
     FBBLEADER: string;
     D2D: string;
+    GET_CUSTOMER_DETAIL: string;
+    GET_CUSTOMER_STATUS: string;
   };
 }
