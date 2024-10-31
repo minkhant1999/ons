@@ -29,13 +29,14 @@ import { PaginatorComponent } from 'src/app/modules/custom/paginator/paginator.c
     MatTableModule,
     MatButtonModule,
     MatDialogModule,
-    PaginatorComponent
+    PaginatorComponent,
   ],
 })
 export class CustomerChildComponent implements OnInit, OnDestroy {
   pageSize = 10;
-  pageNo = 1
-  totalPages = 0
+  pageNo = 1;
+  totalPages = 0;
+  results: any[] = [];
 
   _dialogRef!: MatDialogRef<any>;
   dataSourcePending = [
@@ -132,7 +133,8 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     this.activeButton = button;
   }
 
-  showDetail() {
+  showDetail(id: any) {
+    this._customer.setId(id);
     this._dialogRef = this.dialog.open(CustomerDetailComponent, {
       width: '50%',
       disableClose: true,
@@ -147,13 +149,15 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   }
 
   getAllCustomers(pageNo = 1) {
-    this.pageNo = pageNo
-    this._customer.getCustomers({pageNo:this.pageNo,pageSize:this.pageSize}).subscribe((data: any) => {
-      console.log('====================================');
-      console.log(data, 'data data data data');
-      console.log('====================================');
-    });
+    this.pageNo = pageNo;
+    this._customer
+      .getCustomers({ pageNo: this.pageNo, pageSize: this.pageSize })
+      .subscribe((data: any) => {
+        this.results = data.result.content;
+        this.totalPages = data.result.totalPages;
+      });
   }
+
   ngOnDestroy(): void {
     this._statisticChildGetSetService.clearStatistic();
   }
