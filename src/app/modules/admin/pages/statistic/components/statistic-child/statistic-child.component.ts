@@ -107,6 +107,7 @@ export class StatisticChildComponent implements OnInit {
 
   // township
   onTownshipSelected(selectedTownship: any) {
+
     let params = {
       township: selectedTownship.label
     }

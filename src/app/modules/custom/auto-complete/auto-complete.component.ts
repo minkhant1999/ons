@@ -48,7 +48,6 @@ export class AutoCompleteComponent implements OnInit {
   }
 
   private filterSuggestions(value: string = '') {
-    console.log(value, ' testing one')
     this.filteredSuggestions = this.suggestions
       .filter((item) => item.value.toLowerCase().includes(value.toLowerCase()))
       .map((item) => item.value);
