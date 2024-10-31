@@ -90,10 +90,10 @@ export class AdminImgUploadComponent implements ControlValueAccessor, OnInit {
   }
 
   removeFile() {
-    this.fileName = null;
+    this.fileName = '';
     this.selectedImage = null;
     if (this.fileInput) {
-      this.fileInput.nativeElement.value = null;
+      this.fileInput.nativeElement.value = '';
     }
   }
 
