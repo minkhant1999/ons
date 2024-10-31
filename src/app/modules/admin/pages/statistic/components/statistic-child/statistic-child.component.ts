@@ -64,6 +64,7 @@ export class StatisticChildComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.fbbLeaderData.length, ' length')
     this.searchTable = this.fb.group({
       branch: [''],
       township: [''],
@@ -107,7 +108,7 @@ export class StatisticChildComponent implements OnInit {
 
   // township
   onTownshipSelected(selectedTownship: any) {
-
+    this.fbbLeaderData = []
     let params = {
       township: selectedTownship.label
     }

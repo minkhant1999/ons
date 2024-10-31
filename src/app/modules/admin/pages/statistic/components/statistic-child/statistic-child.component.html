@@ -8,8 +8,16 @@
       <app-auto-complete [label]="'Township Name'" [placeholder]="'Enter Township'" [suggestions]="townshipData"
         (selectedSuggestion)="onTownshipSelected($event)"></app-auto-complete>
 
-      <app-auto-complete [label]="'FBB Leader Name'" [placeholder]="'Enter FBB leader name'"
-        [suggestions]="fbbLeaderData" (selectedSuggestion)="onFBBLeaderSelected($event)"></app-auto-complete>
+      <div *ngIf="fbbLeaderData.length > 0; else newTemplate">
+        <app-auto-complete [label]="'FBB Leader Name'" [placeholder]="'Enter FBB leader name'"
+          [suggestions]="fbbLeaderData" (selectedSuggestion)="onFBBLeaderSelected($event)">
+        </app-auto-complete>
+      </div>
+      <ng-template #newTemplate>
+        <app-auto-complete [label]="'FBB Leader Name'" [placeholder]="'Enter FBB leader name'"
+          [suggestions]="fbbLeaderData" (selectedSuggestion)="onFBBLeaderSelected($event)">
+        </app-auto-complete>
+      </ng-template>
 
       <app-auto-complete [label]="'D2D'" [placeholder]="'Enter D2D name'" [suggestions]="b2bData"
         (selectedSuggestion)="onD2DSelected($event)"></app-auto-complete>
