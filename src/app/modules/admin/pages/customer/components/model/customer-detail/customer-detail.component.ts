@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { CustomersService } from '../../customer-child/customers.service';
 
 @Component({
   selector: 'app-customer-detail',
@@ -11,9 +12,19 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [CommonModule, MatIconModule, MatDialogModule],
 })
 export class CustomerDetailComponent implements OnInit {
-  constructor(private _dialogRef: MatDialogRef<CustomerDetailComponent>) {}
+  detail: any;
+  id: any;
+  constructor(
+    private _dialogRef: MatDialogRef<CustomerDetailComponent>,
+    private _customer: CustomersService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.id = this._customer.getId();
+    this._customer.getCustomerDetail(this.id).subscribe((data: any) => {
+      this.detail = data.result;
+    });
+  }
 
   closeDetail() {
     this._dialogRef.close();
