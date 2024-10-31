@@ -15,8 +15,8 @@ export class ImportDataService {
     return this.http.get(this._getAll);
   }
 
-  deleteFile() {
-    return this.http.delete(this._getAll);
+  deleteFile(id: any) {
+    return this.http.delete([this._getAll, id].join('/'));
   }
 
   importExcel(paramas: any) {
