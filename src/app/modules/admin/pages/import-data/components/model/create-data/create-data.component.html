@@ -21,7 +21,11 @@
         <button
           [disabled]="createForm.invalid"
           (click)="createData()"
-          class="px-5 py-2 rounded-full bg-[#FD6D1A] text-white font-bold focus:outline-none"
+          [ngClass]="{
+            'bg-[#FD6D1A]': !createForm.invalid,
+            'bg-[#999]': createForm.invalid
+          }"
+          class="px-5 py-2 rounded-full text-white font-bold focus:outline-none"
         >
           Create
         </button>

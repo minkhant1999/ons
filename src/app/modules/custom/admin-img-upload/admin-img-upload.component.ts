@@ -50,7 +50,7 @@ export class AdminImgUploadComponent implements ControlValueAccessor, OnInit {
   selectedImage: string | ArrayBuffer | null = null;
   private onChange = (file: File | null) => {};
   private onTouched = () => {};
-  fileName: string = '';
+  fileName: string | null = null;
 
   ngOnInit(): void {}
 
@@ -90,10 +90,10 @@ export class AdminImgUploadComponent implements ControlValueAccessor, OnInit {
   }
 
   removeFile() {
-    this.fileName = '';
+    this.fileName = null;
     this.selectedImage = null;
     if (this.fileInput) {
-      this.fileInput.nativeElement.value = ''; // Clear the file input element
+      this.fileInput.nativeElement.value = null;
     }
   }
 
