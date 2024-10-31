@@ -2,8 +2,18 @@
   <div class="w-full p-8 bg-white">
     <form [formGroup]="searchTable" class="grid grid-cols-3 gap-5">
 
-      <app-auto-complete [label]="'Customer Name'" [placeholder]="'Enter branch name'" [suggestions]="customerData"
+      <app-auto-complete [label]="'Branch Name'" [placeholder]="'Enter branch name'" [suggestions]="customerData"
         (selectedSuggestion)="onSuggestionSelected($event)"></app-auto-complete>
+
+      <app-auto-complete [label]="'Township Name'" [placeholder]="'Enter Township'" [suggestions]="townshipData"
+        (selectedSuggestion)="onTownshipSelected($event)"></app-auto-complete>
+
+      <app-auto-complete [label]="'FBB Leader Name'" [placeholder]="'Enter FBB leader name'"
+        [suggestions]="fbbLeaderData" (selectedSuggestion)="onFBBLeaderSelected($event)"></app-auto-complete>
+
+      <app-auto-complete [label]="'D2D'" [placeholder]="'Enter D2D name'" [suggestions]="b2bData"
+        (selectedSuggestion)="onD2DSelected($event)"></app-auto-complete>
+      <div></div>
       <div class="flex justify-center items-center pt-5">
         <button (click)="searchButton()" class="rounded-2xl bg-blue-600 text-white w-[120px] h-[40px]">
           Search
@@ -12,14 +22,14 @@
     </form>
   </div>
 
-  <div class="bg-white mt-10 w-2/3 mx-auto p-4 space-y-4">
+  <div *ngIf="items.length > 0" class="bg-white mt-10 w-2/3 mx-auto p-4 space-y-4">
     <div *ngFor="let item of items" class="flex rounded-md p-2 w-full cursor-pointer" [ngClass]="item.backgroundColor"
-      (click)="gotoDetailPage(item.check)">
+      (click)="gotoDetailPage(item.label)">
       <div class="w-6/12">
         <p class="text-xl text-[#444] font-bold">{{ item.label }}</p>
       </div>
       <div class="w-2/12">
-        <p class="text-xl">{{ item.value1 }}</p>
+        <p class="text-xl"> - </p>
       </div>
       <div class="w-2/12">
         <p class="text-xl font-bold">{{ item.value2 }}</p>
