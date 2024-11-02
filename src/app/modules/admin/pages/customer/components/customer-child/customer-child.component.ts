@@ -15,6 +15,7 @@ import { CustomerEditComponent } from '../model/customer-edit/customer-edit.comp
 import { CustomersService } from './customers.service';
 import { StatisticChildGetSetService } from '../../../statistic/components/statistic-child/statistic-child-get-set.service';
 import { PaginatorComponent } from 'src/app/modules/custom/paginator/paginator.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-customer-child',
@@ -38,6 +39,8 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   totalPages = 0;
   searchForm!: FormGroup;
   results: any[] = [];
+
+  public conditionRole: string = '';
 
   _dialogRef!: MatDialogRef<any>;
   dataSourcePending = [
@@ -117,10 +120,13 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private _statisticChildGetSetService: StatisticChildGetSetService,
-    private _customer: CustomersService
+    private _customer: CustomersService,
+    private cookieService: CookieService
   ) {}
 
   ngOnInit(): void {
+    this.conditionRole = this.cookieService.get('role');
+
     this._statisticChildGetSetService.checkStatistic.subscribe(
       (data: string) => {
         this.activeButton = data;
