@@ -12,5 +12,6 @@ declare module 'src/assets/app.config' {
     D2D: string;
     GET_CUSTOMER_DETAIL: string;
     GET_CUSTOMER_STATUS: string;
+    DOWNLOAD: string;
   };
 }

@@ -13,4 +13,5 @@ export const SERVICE_URLS = {
   D2D: `${BASE_URL}/data/fbbLeader/d2d`,
   GET_CUSTOMER_DETAIL: `${BASE_URL}/data`,
   GET_CUSTOMER_STATUS: `${BASE_URL}/data`,
+  DOWNLOAD: `${BASE_URL}/data/export/excel`,
 };

@@ -42,7 +42,7 @@ export class AdminImgUploadComponent implements ControlValueAccessor, OnInit {
   @Input() isImageRequire!: boolean;
   @Output() imageSelected = new EventEmitter<File | null>();
   @Input() file: InputType = 'image';
-
+  @Output() fileRemoved = new EventEmitter<string>();
   @Input() customErrorMessages: Record<string, string> = {};
   @Input() errors: Record<string, ValidationErrors> | null = {};
   @Input() customErrorMessage: Record<string, string> = {};
@@ -95,6 +95,7 @@ export class AdminImgUploadComponent implements ControlValueAccessor, OnInit {
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
     }
+    this.fileRemoved.emit('success');
   }
 
   triggerFileUpload() {
