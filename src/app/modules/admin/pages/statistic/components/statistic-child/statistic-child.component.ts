@@ -64,7 +64,6 @@ export class StatisticChildComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.fbbLeaderData.length, ' length')
     this.searchTable = this.fb.group({
       branch: [''],
       township: [''],
@@ -91,6 +90,14 @@ export class StatisticChildComponent implements OnInit {
 
   // branch
   onSuggestionSelected(selectedBranch: any) {
+    this.fbbLeaderData = []
+    this.b2bData = []
+    this.townshipData = []
+    if (this.fbbLeaderData.length === 0 && this.b2bData.length === 0 && this.townshipData.length === 0) {
+      this.searchTable.get('fbbLeaderName')?.setValue('')
+      this.searchTable.get('d2dName')?.setValue('')
+      this.searchTable.get('township')?.setValue('')
+    }
     let params = {
       branchCode: selectedBranch.label
     }
@@ -109,6 +116,11 @@ export class StatisticChildComponent implements OnInit {
   // township
   onTownshipSelected(selectedTownship: any) {
     this.fbbLeaderData = []
+    this.b2bData = []
+    if (this.fbbLeaderData.length === 0 && this.b2bData.length === 0) {
+      this.searchTable.get('fbbLeaderName')?.setValue('')
+      this.searchTable.get('d2dName')?.setValue('')
+    }
     let params = {
       township: selectedTownship.label
     }
@@ -126,6 +138,8 @@ export class StatisticChildComponent implements OnInit {
 
   // FBB Leader
   onFBBLeaderSelected(selectedFBBLeader: any) {
+    this.b2bData = []
+    if (this.b2bData.length === 0) this.searchTable.get('d2dName')?.setValue('')
     let params = {
       fbbLeaderVMYCode: selectedFBBLeader.value
     }

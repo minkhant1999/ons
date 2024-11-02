@@ -5,8 +5,14 @@
       <app-auto-complete [label]="'Branch Name'" [placeholder]="'Enter branch name'" [suggestions]="customerData"
         (selectedSuggestion)="onSuggestionSelected($event)"></app-auto-complete>
 
-      <app-auto-complete [label]="'Township Name'" [placeholder]="'Enter Township'" [suggestions]="townshipData"
-        (selectedSuggestion)="onTownshipSelected($event)"></app-auto-complete>
+      <div *ngIf="townshipData.length > 0; else newTownship">
+        <app-auto-complete [label]="'Township Name'" [placeholder]="'Enter Township'" [suggestions]="townshipData"
+          (selectedSuggestion)="onTownshipSelected($event)"></app-auto-complete>
+      </div>
+      <ng-template #newTownship>
+        <app-auto-complete [label]="'Township Name'" [placeholder]="'Enter Township'" [suggestions]="townshipData"
+          (selectedSuggestion)="onTownshipSelected($event)"></app-auto-complete>
+      </ng-template>
 
       <div *ngIf="fbbLeaderData.length > 0; else newTemplate">
         <app-auto-complete [label]="'FBB Leader Name'" [placeholder]="'Enter FBB leader name'"
@@ -19,8 +25,15 @@
         </app-auto-complete>
       </ng-template>
 
-      <app-auto-complete [label]="'D2D'" [placeholder]="'Enter D2D name'" [suggestions]="b2bData"
-        (selectedSuggestion)="onD2DSelected($event)"></app-auto-complete>
+      <div *ngIf="fbbLeaderData.length > 0; else newD2DTemplate">
+        <app-auto-complete [label]="'D2D'" [placeholder]="'Enter D2D name'" [suggestions]="b2bData"
+          (selectedSuggestion)="onD2DSelected($event)"></app-auto-complete>
+      </div>
+      <ng-template #newD2DTemplate>
+        <app-auto-complete [label]="'D2D'" [placeholder]="'Enter D2D name'" [suggestions]="b2bData"
+          (selectedSuggestion)="onD2DSelected($event)"></app-auto-complete>
+      </ng-template>
+
       <div></div>
       <div class="flex justify-center items-center pt-5">
         <button (click)="searchButton()" class="rounded-2xl bg-blue-600 text-white w-[120px] h-[40px]">
