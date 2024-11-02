@@ -41,14 +41,14 @@ export class CustomersService {
     return this._http.post([this._getCustomerStatusUrl, id].join('/'), body);
   }
 
-  // download(): Observable<any> {
-  //   return this._http.get<any>(this._download, {
-  //     responseType: 'blob' as 'json',
-  //     observe: 'response',
-  //   });
-  // }
-
-  download() {
-    return this._http.get(this._download);
+  download(): Observable<any> {
+    return this._http.get<any>(this._download, {
+      responseType: 'blob' as 'json',
+      observe: 'response',
+    });
   }
+
+  // download() {
+  //   return this._http.get(this._download);
+  // }
 }

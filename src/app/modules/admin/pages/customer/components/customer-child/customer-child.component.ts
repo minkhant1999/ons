@@ -203,7 +203,16 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
 
   download() {
     this._customer.download().subscribe((data: any) => {
-      console.log(data, 'this is the dataaaaaaaaaa');
+      if (data.status === 200) {
+        console.log('mother fucker');
+        const blob = data.body!;
+        const objectUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = objectUrl;
+        a.download = 'CUSTOMER.xlsx';
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+      }
     });
   }
 }
