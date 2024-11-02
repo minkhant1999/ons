@@ -1,5 +1,6 @@
 import { Component, computed, Input, OnInit, signal } from '@angular/core';
 import { menuItem } from '../../service/menu-items';
+import { CookieService } from 'ngx-cookie-service';
 
 export type MenuItem = {
   icon: string;
@@ -16,6 +17,8 @@ export type MenuItem = {
 })
 export class CustomSidenavComponent implements OnInit {
   sideNavCollapsed = signal(false);
+  public role = this.cookieService.get('role');
+
   @Input() set collapsed(val: boolean) {
     this.sideNavCollapsed.set(val);
   }
@@ -23,14 +26,21 @@ export class CustomSidenavComponent implements OnInit {
   public menuItems: MenuItem[] = [];
   public menuItem = signal<MenuItem[]>([]);
 
-  constructor() { }
+  constructor(
+    private cookieService: CookieService
+  ) { }
 
   ngOnInit(): void {
     this.getPermissionMenuList();
   }
 
   public getPermissionMenuList() {
-    this.menuItem.set(menuItem);
+    const result = this.role === 'HO'
+      ? menuItem
+      : menuItem.filter(item => item.label !== 'Import Data');
+
+
+    this.menuItem.set(result);
   }
 
   profilePicSize = computed(() => (this.sideNavCollapsed() ? '38' : '50'));

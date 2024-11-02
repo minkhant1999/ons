@@ -23,15 +23,15 @@ export class StatisticService {
     return this.http.get(`${this._branch}`, { params });
   }
 
-  getTownship(params: any): Observable<any> {
+  getTownship(params: any = {}): Observable<any> {
     return this.http.get(`${this._township}`, { params })
   }
 
-  getFBBLeader(params: any): Observable<any> {
+  getFBBLeader(params: any = {}): Observable<any> {
     return this.http.get(`${this._fbbLeader}`, { params })
   }
 
-  getD2D(params: any): Observable<any> {
+  getD2D(params: any = {}): Observable<any> {
     return this.http.get(`${this._b2b}`, { params })
   }
 }

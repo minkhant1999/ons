@@ -6,6 +6,7 @@ import { ImportDataComponent } from './pages/import-data/import-data.component';
 import { StatisticChildComponent } from './pages/statistic/components/statistic-child/statistic-child.component';
 import { CustomerChildComponent } from './pages/customer/components/customer-child/customer-child.component';
 import { ImportDataChildComponent } from './pages/import-data/components/import-data-child/import-data-child.component';
+import { getCookie } from '../service/get-group-cookie'
 
 // Define CustomRoute without redeclaring pathMatch
 interface CustomRoute extends Omit<Route, 'children'> {
@@ -15,56 +16,59 @@ interface CustomRoute extends Omit<Route, 'children'> {
   children?: CustomRoute[]; // Nested children use CustomRoute type
 }
 
-// Define routeRawArray using CustomRoute
-const routeRawArray: CustomRoute[] = [
-  {
-    path: '',
-    component: StatisticComponent,
-    children: [
-      {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'app-statistic'
-      },
-      {
-        path: 'app-statistic',
-        component: StatisticChildComponent,
-      }
-    ]
-  },
-  {
-    path: '',
-    component: CustomerComponent,
-    children: [
-      {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'app-customer'
-      },
-      {
-        path: 'app-customer',
-        component: CustomerChildComponent
-      }
-    ]
-  },
-  {
-    path: '',
-    component: ImportDataComponent,
-    children: [
-      {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'app-import-data'
-      },
-      {
-        path: 'app-import-data',
-        component: ImportDataChildComponent
-      }
-    ]
-  },
-];
-
 export function generateRoutes(): Routes {
+
+  const role = getCookie('role')
+
+  const routeRawArray: Routes = [
+    {
+      path: '',
+      component: StatisticComponent,
+      children: [
+        {
+          path: '',
+          pathMatch: 'full' as const, // Ensuring TypeScript recognizes this as literal "full"
+          redirectTo: 'app-statistic'
+        },
+        {
+          path: 'app-statistic',
+          component: StatisticChildComponent,
+        }
+      ]
+    },
+    {
+      path: '',
+      component: CustomerComponent,
+      children: [
+        {
+          path: '',
+          pathMatch: 'full' as const,
+          redirectTo: 'app-customer'
+        },
+        {
+          path: 'app-customer',
+          component: CustomerChildComponent
+        }
+      ]
+    },
+    // Conditionally add 'Import Data' route based on role
+    ...(role === 'HO' ? [{
+      path: '',
+      component: ImportDataComponent,
+      children: [
+        {
+          path: '',
+          pathMatch: 'full' as const,
+          redirectTo: 'app-import-data'
+        },
+        {
+          path: 'app-import-data',
+          component: ImportDataChildComponent
+        }
+      ]
+    }] : [])
+  ];
+
   const finalResult: Routes = [
     ...routeRawArray,
     {

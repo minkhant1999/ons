@@ -13,6 +13,7 @@ import { StatisticChildGetSetService } from './statistic-child-get-set.service';
 import { StatisticService } from '../../statistic.service';
 import { AutoCompleteComponent } from 'src/app/modules/custom/auto-complete/auto-complete.component';
 import { Observable } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 
 type DataField = 'townshipData' | 'fbbLeaderData' | 'b2bData';
 interface SelectStatusType {
@@ -43,6 +44,8 @@ interface SelectStatistic {
 export class StatisticChildComponent implements OnInit {
   searchTable!: FormGroup;
   staticData: any[] = [];
+  public conditionRole = ''
+
   public branchStatus: SelectStatusType[] = [];
   public townShipStatus: SelectStatusType[] = [];
   public fbbLeaderStatus: SelectStatusType[] = [];
@@ -60,7 +63,8 @@ export class StatisticChildComponent implements OnInit {
     private statisticService: StatisticService,
     private fb: FormBuilder,
     private router: Router,
-    private _statisticChildGetSetService: StatisticChildGetSetService
+    private _statisticChildGetSetService: StatisticChildGetSetService,
+    private cookieService: CookieService
   ) { }
 
   ngOnInit(): void {
@@ -71,15 +75,33 @@ export class StatisticChildComponent implements OnInit {
       d2dName: ['']
     });
 
-    this.statisticService.getBranch().subscribe((data: any) => {
-      if (data.errorCode === '00000') {
-        const result = data.result;
-        this.customerData = result.map((item: string) => ({
-          value: item,
-          label: item
-        }))
-      }
-    });
+    this.conditionRole = this.cookieService.get('role');
+    console.log(this.conditionRole, ' conditionRole')
+
+    if (this.conditionRole === 'HO' || this.conditionRole === 'BM') {
+      this.statisticService.getBranch().subscribe((data: any) => {
+        if (data.errorCode === '00000') {
+          const result = data.result;
+          this.customerData = result.map((item: string) => ({
+            value: item,
+            label: item
+          }))
+        }
+      });
+    } else if (this.conditionRole === 'BCM') {
+      this.statisticService.getTownship().subscribe((data: any) => {
+        if (data.errorCode === '00000') {
+          const result = data.result
+          this.townshipData = result?.map((item: string) => ({
+            value: item,
+            label: item
+          }))
+        }
+      });
+    } else if (this.conditionRole === 'FBB_LEADER') {
+      console.log('FBB_LEADER ')
+    }
+
   }
 
   gotoDetailPage(item: any) {

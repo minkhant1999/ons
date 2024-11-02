@@ -21,6 +21,7 @@ export class AutoCompleteComponent implements OnInit {
   @Input() label: string = 'Select';
   @Input() placeholder: string = 'Type to search...';
   @Input() suggestions: { value: string; label: string; }[] = [];
+  @Input() banInput: boolean = false
   @Output() selectedSuggestion = new EventEmitter<any>();
 
   currentIndex: number = -1;
