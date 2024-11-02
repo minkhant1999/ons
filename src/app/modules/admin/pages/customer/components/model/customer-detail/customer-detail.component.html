@@ -62,7 +62,12 @@
       <div class="flex justify-between p-1 mb-3 font-medium">
         <p>Status</p>
         <button
-          class="px-3 py-2 cursor-default rounded-full bg-[#EBC1FF] text-[#B934F8] focus:outline-none"
+          class="px-3 py-2 cursor-default rounded-full focus:outline-none"
+          [ngClass]="{
+            'bg-[#F8F49B] text-[#766E19]': detail.status === 'PENDING',
+            'bg-[#A1CDFF] text-[#166292]': detail.status === 'REVOKE',
+            'bg-[#EBC1FF] text-[#B934F8]': detail.status === 'REUSE'
+          }"
         >
           {{ detail.status }}
         </button>

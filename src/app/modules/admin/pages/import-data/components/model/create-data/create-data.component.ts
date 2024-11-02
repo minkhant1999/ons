@@ -37,12 +37,16 @@ export class CreateDataComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm = this.fb.group({
-      file: ['', Validators.required],
+      file: [null, Validators.required],
     });
   }
 
-  onImageSelected(event: any) {}
-
+  onImageSelected(file: File | null) {
+    this.createForm.get('file')?.setValue(file);
+  }
+  onFileRemoved() {
+    this.createForm.get('file')?.setValue(null);
+  }
   closeCreate() {
     this.createForm.setValue({
       file: '',

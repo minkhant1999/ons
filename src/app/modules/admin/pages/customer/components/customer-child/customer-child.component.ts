@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { InputComponent } from 'src/app/modules/custom/input/input.component';
 import { MatTableModule } from '@angular/material/table';
@@ -15,6 +20,7 @@ import { CustomerEditComponent } from '../model/customer-edit/customer-edit.comp
 import { CustomersService } from './customers.service';
 import { StatisticChildGetSetService } from '../../../statistic/components/statistic-child/statistic-child-get-set.service';
 import { PaginatorComponent } from 'src/app/modules/custom/paginator/paginator.component';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-customer-child',
@@ -30,15 +36,18 @@ import { PaginatorComponent } from 'src/app/modules/custom/paginator/paginator.c
     MatButtonModule,
     MatDialogModule,
     PaginatorComponent,
+    ReactiveFormsModule,
   ],
 })
 export class CustomerChildComponent implements OnInit, OnDestroy {
-  pageSize = 10;
-  pageNo = 1;
-  totalPages = 0;
+  // pageSize = 10;
+  // pageNo = 1;
+  // totalPages = 0;
+  offset: number = 0;
+  size: number = 10;
+  totalOffset: number = 0;
   searchForm!: FormGroup;
   results: any[] = [];
-
   _dialogRef!: MatDialogRef<any>;
   dataSourcePending = [
     {
@@ -117,10 +126,14 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private _statisticChildGetSetService: StatisticChildGetSetService,
-    private _customer: CustomersService
+    private _customer: CustomersService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
+    this.searchForm = this.fb.group({
+      ftthAccount: [''],
+    });
     this._statisticChildGetSetService.checkStatistic.subscribe(
       (data: string) => {
         this.activeButton = data;
@@ -156,17 +169,35 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     });
   }
 
-  getAllCustomers(pageNo = 1) {
-    this.pageNo = pageNo;
-    this._customer
-      .getCustomers({ pageNo: this.pageNo, pageSize: this.pageSize })
-      .subscribe((data: any) => {
-        this.results = data.result.content;
-        this.totalPages = data.result.totalPages;
-      });
+  getAllCustomers(offset: number = 0) {
+    let search = cloneDeep(this.searchForm.value);
+    search.page = this.offset = offset;
+    search.size = this.size;
+    search.status = this.activeButton;
+    if (search.status === undefined) {
+      search.status = '';
+    } else {
+      search.status = search.status.toUpperCase();
+    }
+    this._customer.getCustomers(search).subscribe((data: any) => {
+      this.results = data.result.content;
+      this.totalOffset = data.result.totalPages - 1;
+    });
   }
 
   ngOnDestroy(): void {
     this._statisticChildGetSetService.clearStatistic();
+  }
+  onKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.getAllCustomers();
+    }
+  }
+
+  download() {
+    this._customer.download().subscribe((data: any) => {
+      console.log(data, 'this is the dataaaaaaaaaa');
+    });
   }
 }

@@ -1,9 +1,14 @@
 <div class="py-20 px-10 bg-gray-100 h-full">
   <div class="grid grid-cols-3 gap-10">
-    <div class="p-1">
-      <app-input placeholder="Search by FTTH Account"></app-input>
-    </div>
-
+    <form action="" [formGroup]="searchForm">
+      <div class="p-1">
+        <app-input
+          placeholder="Search by FTTH Account"
+          formControlName="ftthAccount"
+          (keydown)="onKeyDown($event)"
+        ></app-input>
+      </div>
+    </form>
     <div class="flex flex-row space-x-10">
       <div class="p-1 flex items-center">
         <button
@@ -37,6 +42,7 @@
     <div class="p-1 flex justify-end">
       <button
         class="px-3 py-2 bg-[#4485FF] text-white font-bold rounded-full focus:outline-none flex items-center"
+        (click)="download()"
       >
         Download File
         <mat-icon class="ml-2">download</mat-icon>
@@ -66,11 +72,11 @@
 
           <td class="px-4 py-3 text-center">
             <button
-              class="cursor-default px-3 py-3 text-center rounded-xl font-bold"
+              class="cursor-default px-4 py-1 text-center rounded-full"
               [ngClass]="{
-                'bg-[#F8F49B] text-[#766E19]': item.status === 'Pending',
-                'bg-[#A1CDFF] text-[#166292]': item.status === 'Revoke',
-                'bg-[#EBC1FF] text-[#B934F8]': item.status === 'Reuse'
+                'bg-[#F8F49B] text-[#766E19]': item.status === 'PENDING',
+                'bg-[#A1CDFF] text-[#166292]': item.status === 'REVOKE',
+                'bg-[#EBC1FF] text-[#B934F8]': item.status === 'REUSE'
               }"
             >
               {{ item.status }}
@@ -95,8 +101,8 @@
       </tbody>
     </table>
     <app-paginator
-      [offset]="pageNo - 1"
-      [totalOffset]="totalPages - 1"
+      [offset]="offset"
+      [totalOffset]="totalOffset"
       (change)="getAllCustomers($event)"
     ></app-paginator>
   </div>

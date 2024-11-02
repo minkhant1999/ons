@@ -35,7 +35,7 @@ export class ImportDataChildComponent implements OnInit {
 
   openCreate() {
     this._dialogRef = this.dialog.open(CreateDataComponent, {
-      width: '50%',
+      width: '30%',
       disableClose: true,
     });
     this._dialogRef.componentInstance.callGetFile.subscribe(
