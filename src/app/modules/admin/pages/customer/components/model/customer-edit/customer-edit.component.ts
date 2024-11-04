@@ -84,6 +84,7 @@ export class CustomerEditComponent implements OnInit {
           'You changed the status successfully.',
           'SUCCESS'
         );
+        this.closeEdit();
       },
       (err) => {
         this._alert.confirmSuccessFail(
@@ -91,6 +92,7 @@ export class CustomerEditComponent implements OnInit {
           'Something went wrong.',
           'FAIL'
         );
+        this.closeEdit();
       }
     );
   }
