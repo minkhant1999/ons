@@ -155,7 +155,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     this._customer
       .getCustomerStatus({ status: this.activeButton })
       .subscribe((data: any) => {
-        this.results = data.result;
+        this.results = data.result.content;
       });
   }
 
