@@ -11,12 +11,12 @@ export class ImportDataService {
 
   constructor(private http: HttpClient) {}
 
-  getFile() {
-    return this.http.get(this._getAll);
+  getFile(params: any) {
+    return this.http.get(this._getAll, { params });
   }
 
-  deleteFile() {
-    return this.http.delete(this._getAll);
+  deleteFile(id: any) {
+    return this.http.delete([this._getAll, id].join('/'));
   }
 
   importExcel(paramas: any) {

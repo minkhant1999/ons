@@ -25,7 +25,7 @@
           *ngFor="let item of tableData; let i = index"
           class="border-b border-gray-200"
         >
-          <td class="py-3 px-6 text-center">{{ i + 1 }}</td>
+          <td class="py-3 px-6 text-center">{{ offset * size + (i + 1) }}</td>
           <td class="py-3 px-6 text-center">{{ item.fileName }}</td>
           <td class="py-3 px-6 text-center">{{ item.reason }}</td>
           <td class="py-3 px-6 text-center">{{ item.createdAt }}</td>
@@ -44,13 +44,17 @@
             </div>
           </td>
           <td class="py-3 px-6 text-center">
-            <mat-icon class="cursor-pointer" (click)="onDelete()">
+            <mat-icon class="cursor-pointer" (click)="onDelete(item.fileId)">
               delete
             </mat-icon>
           </td>
         </tr>
       </tbody>
     </table>
-    <app-paginator></app-paginator>
+    <app-paginator
+      [offset]="offset"
+      [totalOffset]="totalOffset"
+      (change)="getAll($event)"
+    ></app-paginator>
   </div>
 </div>

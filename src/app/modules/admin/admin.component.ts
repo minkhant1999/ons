@@ -19,14 +19,13 @@ export class AdminComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private cookieService: CookieService
-  ) {
-    const navigation = this.router.getCurrentNavigation();
-    this.data = navigation?.extras?.state?.['data'];
-  }
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   logOut() {
+    this.cookieService.delete('vmyCode');
+    this.cookieService.delete('role');
     this.authService.logOut();
     this.router.navigate(['login']);
   }

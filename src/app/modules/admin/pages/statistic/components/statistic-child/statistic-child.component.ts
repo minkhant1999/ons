@@ -12,10 +12,20 @@ import { SelectComponent } from 'src/app/modules/custom/select/select.component'
 import { StatisticChildGetSetService } from './statistic-child-get-set.service';
 import { StatisticService } from '../../statistic.service';
 import { AutoCompleteComponent } from 'src/app/modules/custom/auto-complete/auto-complete.component';
+import { CookieService } from 'ngx-cookie-service';
+import { InputComponent } from 'src/app/modules/custom/input/input.component';
 
+type DataField = 'townshipData' | 'fbbLeaderData' | 'b2bData';
 interface SelectStatusType {
   value: string;
   label: string;
+}
+
+interface SelectStatistic {
+  label: string;
+  value2: number;
+  percentage: string;
+  backgroundColor: string;
 }
 
 @Component({
@@ -29,81 +39,89 @@ interface SelectStatusType {
     MatIconModule,
     CommonModule,
     AutoCompleteComponent,
+    InputComponent
   ],
 })
 export class StatisticChildComponent implements OnInit {
   searchTable!: FormGroup;
   staticData: any[] = [];
+  public conditionRole = '';
+
   public branchStatus: SelectStatusType[] = [];
   public townShipStatus: SelectStatusType[] = [];
   public fbbLeaderStatus: SelectStatusType[] = [];
   public d2dStaus: SelectStatusType[] = [];
-  public items = [
-    {
-      label: 'Target',
-      backgroundColor: 'bg-[#e4e4e4]',
-      value1: '-',
-      value2: 1000,
-      percentage: '100%',
-      check: 'targe',
-    },
-    {
-      label: 'Total Revoke',
-      backgroundColor: 'bg-[#A1CDFF]',
-      value1: '-',
-      value2: 90,
-      percentage: '90%',
-      check: 'Revoke',
-    },
-    {
-      label: 'Total Reuse',
-      backgroundColor: 'bg-[#EBC1FF]',
-      value1: '-',
-      value2: 10,
-      percentage: '1%',
-      check: 'Reuse',
-    },
-    {
-      label: 'Total Pending',
-      backgroundColor: 'bg-[#F8F49B]',
-      value1: '-',
-      value2: 900,
-      percentage: '50%',
-      check: 'Pending',
-    },
-  ];
+  public items: SelectStatistic[] = [];
 
-  public customerData: SelectStatusType[] = [
-    { value: 'John Doe', label: 'John Doe' },
-    { value: 'Jane Smith', label: 'Jane Smith' },
-    { value: 'Bob Brown', label: 'Bob Brown' },
-    { value: 'John Lee', label: 'John Lee' },
-    { value: 'Tom Joe', label: 'Tom Joe' },
-    { value: 'Jim Black', label: 'Jim Black' },
-  ];
+  public customerData: SelectStatusType[] = [];
+  public townshipData: SelectStatusType[] = [];
+  public fbbLeaderData: SelectStatusType[] = [];
+  public b2bData: SelectStatusType[] = [];
 
   constructor(
     private statisticService: StatisticService,
     private fb: FormBuilder,
     private router: Router,
-    private _statisticChildGetSetService: StatisticChildGetSetService
-  ) {}
+    private _statisticChildGetSetService: StatisticChildGetSetService,
+    private cookieService: CookieService
+  ) { }
 
   ngOnInit(): void {
     this.searchTable = this.fb.group({
-      testing: [''],
+      branch: [''],
+      township: [''],
+      fbbLeaderVmy: [''],
+      d2dVmy: [''],
     });
 
-    this.statisticService.getStatistic().subscribe((data: any) => {
-      if (data.errorCode === '00000') {
-        this.staticData = data.result;
-        console.log(this.staticData, 'this is the data from api');
-      }
-    });
-  }
+    this.conditionRole = this.cookieService.get('role');
+    const res = this.cookieService.get('vmyCode')
 
-  searchButton() {
-    console.log(this.searchTable.value, ' search table');
+    if (this.conditionRole === 'HO' || this.conditionRole === 'BM') {
+      this.statisticService.getBranch().subscribe((data: any) => {
+        if (data.errorCode === '00000') {
+          const result = data.result;
+          this.customerData = result.map((item: string) => ({
+            value: item,
+            label: item,
+          }));
+        }
+      });
+    } else if (this.conditionRole === 'BCM') {
+      this.statisticService.getTownship().subscribe((data: any) => {
+        if (data.errorCode === '00000') {
+          const result = data.result;
+          this.townshipData = result?.map((item: string) => ({
+            value: item,
+            label: item,
+          }));
+        }
+      });
+    } else if (this.conditionRole === 'FBB_LEADER') {
+      this.statisticService.getFBBLeader().subscribe((data: any) => {
+        if (data.errorCode === '00000') {
+          const result = data.result;
+          this.fbbLeaderData = result?.map((item: any) => ({
+            value: item.FULL_NAME,
+            label: item.VMY_CODE,
+          }));
+        }
+      });
+    } else if (this.conditionRole === 'D2D') {
+      this.statisticService.getD2D(res).subscribe((data: any) => {
+        if (data.errorCode === '00000') {
+          const result = data.result;
+          this.b2bData = result?.map((item: any) => ({
+            value: item.FULL_NAME,
+            label: item.VMY_CODE,
+          }));
+
+          this.searchTable?.get('d2dVmy')?.setValue(this.b2bData[0].value);
+
+          this.searchButton()
+        }
+      });
+    }
   }
 
   gotoDetailPage(item: any) {
@@ -111,7 +129,117 @@ export class StatisticChildComponent implements OnInit {
     this.router.navigate(['admin/app-customer']);
   }
 
-  onSuggestionSelected(selectedCustomer: any) {
-    this.searchTable.get('testing')?.setValue(selectedCustomer.value);
+  // branch
+  onSuggestionSelected(selectedBranch: any) {
+    this.fbbLeaderData = [];
+    this.b2bData = [];
+    this.townshipData = [];
+    if (
+      this.fbbLeaderData.length === 0 &&
+      this.b2bData.length === 0 &&
+      this.townshipData.length === 0
+    ) {
+      this.searchTable.get('fbbLeaderVmy')?.setValue('');
+      this.searchTable.get('d2dVmy')?.setValue('');
+      this.searchTable.get('township')?.setValue('');
+    }
+    let params = {
+      branchCode: selectedBranch.label,
+    };
+    this.statisticService.getTownship(params).subscribe((data: any) => {
+      if (data.errorCode === '00000') {
+        const result = data.result;
+        this.townshipData = result?.map((item: string) => ({
+          value: item,
+          label: item,
+        }));
+      }
+    });
+    this.searchTable.get('branch')?.setValue(selectedBranch.value);
+  }
+
+  // township
+  onTownshipSelected(selectedTownship: any) {
+    this.fbbLeaderData = [];
+    this.b2bData = [];
+    if (this.fbbLeaderData.length === 0 && this.b2bData.length === 0) {
+      this.searchTable.get('fbbLeaderVmy')?.setValue('');
+      this.searchTable.get('d2dVmy')?.setValue('');
+    }
+    let params = {
+      township: selectedTownship.label,
+    };
+    this.statisticService.getFBBLeader(params).subscribe((data: any) => {
+      if (data.errorCode === '00000') {
+        const result = data.result;
+        this.fbbLeaderData = result?.map((item: any) => ({
+          value: item.FULL_NAME,
+          label: item.VMY_CODE,
+        }));
+      }
+    });
+    this.searchTable.get('township')?.setValue(selectedTownship.value);
+  }
+
+  // FBB Leader
+  onFBBLeaderSelected(selectedFBBLeader: any) {
+    this.b2bData = [];
+    if (this.b2bData.length === 0) this.searchTable.get('d2dVmy')?.setValue('');
+    let params = {
+      fbbLeaderVmyCode: selectedFBBLeader.label,
+    };
+
+    this.statisticService.getD2D(params).subscribe((data: any) => {
+      if (data.errorCode === '00000') {
+        const result = data.result;
+        this.b2bData = result?.map((item: any) => ({
+          value: item.FULL_NAME,
+          label: item.VMY_CODE,
+        }));
+      }
+    });
+    this.searchTable.get('fbbLeaderVmy')?.setValue(selectedFBBLeader.label);
+  }
+
+  // D2D
+  onD2DSelected(selectedD2D: any) {
+    this.searchTable.get('d2dVmy')?.setValue(selectedD2D.label);
+  }
+
+  searchButton() {
+    let params = this.searchTable.value;
+
+    this.statisticService.geStatistic(params).subscribe((data: any) => {
+
+      if (data.errorCode === '00000') {
+        const result = data.result.sort((a: any, b: any) => {
+          if (a.name === 'Target') return -1;
+          if (b.name === 'Target') return 1;
+          return 0;
+        });
+
+        this.items = result?.map((item: any) => ({
+          label: item.name,
+          value2: item.count,
+          percentage: item.percentage,
+          backgroundColor: this.getBackgroundColor(item.name),
+        }));
+      }
+    });
+  }
+
+  getBackgroundColor(name: string): string {
+    switch (name) {
+      case 'PENDING':
+        return 'bg-[#F8F49B]';
+      case 'REUSE':
+        return 'bg-[#EBC1FF]';
+      case 'REVOKE':
+        return 'bg-[#A1CDFF]';
+      case 'Target':
+        return 'bg-[#e4e4e4]';
+      default:
+        return 'bg-[#e4e4e4]';
+    }
   }
 }

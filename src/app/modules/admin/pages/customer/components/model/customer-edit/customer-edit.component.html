@@ -7,81 +7,73 @@
     <div class="container mx-auto">
       <div class="flex justify-between p-1 mb-3 font-medium">
         <p>FTTH Account</p>
-        <p>ayy_gftth_htetmhm1</p>
+        <p>{{ detail?.ftthAccount }}</p>
       </div>
       <div class="flex justify-between p-1 mb-3 font-medium">
         <p>Contract ID</p>
-        <p>5000945008</p>
+        <p>{{ detail?.contractId }}</p>
       </div>
       <div class="flex justify-between p-1 mb-3 font-medium">
         <p>Customer Address</p>
         <p class="max-w-xs text-end">
-          Myo Ma Ward, Ngathaingchaung Town, Yegyi, Ayeyarwady
+          {{ detail?.customerAddress }}
         </p>
       </div>
       <div class="flex justify-between p-1 mb-3 font-medium">
         <p>Contract NO 1</p>
-        <p>09691247302</p>
+        <p>{{ detail?.contactNo1 }}</p>
       </div>
       <div class="flex justify-between p-1 mb-3 font-medium">
         <p>Contract NO 2</p>
-        <p>09691247302</p>
+        <p>{{ detail?.contactNo2 }}</p>
       </div>
       <div class="flex justify-between p-1 mb-3 font-medium">
         <p>Total Money</p>
-        <p>1000</p>
+        <p>{{ detail?.totalMoney }}</p>
       </div>
       <div class="flex justify-between p-1 mb-3 font-medium">
         <p>Branch</p>
-        <p>AYY</p>
+        <p>{{ detail?.branch }}</p>
       </div>
       <div class="flex justify-between p-1 mb-3 font-medium">
         <p>Site Code</p>
-        <p>AYY0861</p>
+        <p>{{ detail?.siteCode }}</p>
       </div>
       <div class="flex justify-between p-1 mb-3 font-medium">
         <p>Site Code & SN Code</p>
-        <p>AYY0861-DN01-SN09</p>
+        <p>{{ detail?.siteCodeAndSNCode }}</p>
       </div>
       <div class="flex justify-between p-1 mb-3 font-medium">
         <p>D2D Name</p>
-        <p>Wai Yan Kyaw</p>
+        <p>{{ detail?.d2dName }}</p>
       </div>
       <div class="flex justify-between p-1 mb-3 font-medium">
         <p>FBB Leader Name</p>
-        <p>Thant Zin Aung</p>
+        <p>{{ detail?.fbbLeaderName }}</p>
       </div>
       <div class="flex justify-between p-1 mb-3 font-medium">
         <p>Township</p>
-        <p>Yegyi</p>
+        <p>{{ detail?.township }}</p>
       </div>
       <div class="flex justify-between p-1 mb-3 font-medium">
         <p>BC Name</p>
-        <p>AYY0303-Yegyi BC</p>
+        <p>{{ detail?.bcName }}</p>
       </div>
       <div class="flex justify-between p-1 mb-3 font-medium">
         <p>Status</p>
-        <mat-radio-group [(ngModel)]="selectedOption">
-          <mat-radio-button
-            *ngFor="let option of options"
-            [value]="option"
-            color="primary"
-          >
+        <mat-radio-group [(ngModel)]="selectedOption" (change)="getStatus()">
+          <mat-radio-button *ngFor="let option of options" [value]="option" color="primary">
             {{ option }}
           </mat-radio-button>
         </mat-radio-group>
       </div>
 
       <div class="mt-5 flex justify-end space-x-3">
-        <button
-          (click)="closeEdit()"
-          class="px-3 py-2 rounded-full bg-white text-[#444444] font-bold focus:outline-none"
-        >
+        <button (click)="closeEdit()"
+          class="px-3 py-2 rounded-full bg-white text-[#444444] font-bold focus:outline-none">
           Cancel
         </button>
-        <button
-          class="px-3 py-2 rounded-full bg-[#FD6D1A] text-white font-bold focus:outline-none"
-        >
+        <button (click)="update()" class="px-3 py-2 rounded-full bg-[#FD6D1A] text-white font-bold focus:outline-none">
           Update
         </button>
       </div>

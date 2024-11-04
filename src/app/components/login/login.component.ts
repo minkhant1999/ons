@@ -1,14 +1,11 @@
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/service/auth.service';
 import { BrowserDetectionService } from './browser-detection.service';
 import { LoginServiceService } from './login-service.service';
 import { CookieService } from 'ngx-cookie-service';
-import { LanguageService } from 'src/app/modules/service/language.service';
-import { TranslateService } from '@ngx-translate/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ApiLoadingComponent } from 'src/app/modules/custom/model/loading/api-loading.component';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -25,24 +22,15 @@ export class LoginComponent implements OnInit {
   transId: string = '';
 
   constructor(
-    private renderer: Renderer2,
-    private el: ElementRef,
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
     private browserDetectionService: BrowserDetectionService,
     private _loginServiceService: LoginServiceService,
     private cookieService: CookieService,
-    private languageService: LanguageService,
-    private translate: TranslateService,
-    private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.languageService.currentLang$.subscribe((lang) => {
-      this.currentLang = lang;
-      this.translate.use(this.currentLang);
-    });
     this.browser = this.browserDetectionService.getBrowserInfo();
 
     this.form = this.fb.group({
@@ -62,6 +50,9 @@ export class LoginComponent implements OnInit {
   }
 
   pageReload() {
+    this.cookieService.delete('accessTokenONS');
+    this.cookieService.delete('groupPermission');
+    this.cookieService.delete('username');
     const reloaded = sessionStorage.getItem('reloaded');
 
     if (!reloaded) {
@@ -72,21 +63,17 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  onSubmit() {
-    const loadingRef = this.dialog.open(ApiLoadingComponent, {
-      disableClose: true,
-    });
+  onSubmit(value: string = '') {
     this.loading = true;
     let params = this.form.value;
 
     this._loginServiceService.login(params).subscribe((data: any) => {
       if (data.errorCode === '00000') {
-        loadingRef.close();
         this.loading = false;
         this.isRequestedOtp = true;
         this.transId = data.result.otpTransId;
+        this.showErrorMessage = '';
       } else {
-        loadingRef.close();
         this.loading = false;
         this.showErrorMessage = data.message;
       }
@@ -94,28 +81,18 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    const loadingRef = this.dialog.open(ApiLoadingComponent, {
-      disableClose: true,
-    });
     this.loading = true;
     let params = this.otp.value;
     params.otpTransId = this.transId;
 
     this._loginServiceService.confirmLogin(params).subscribe((res: any) => {
       if (res.errorCode === '00000') {
-        loadingRef.close();
         this.loading = false;
         this.authService.saveTokens(res.result.token);
-        this.cookieService.set(
-          'vmyCode',
-          JSON.stringify(res.result.data.vmyCode)
-        );
-        this.cookieService.set('role', JSON.stringify(res.result.data.role));
-        this.router.navigate(['admin/app-statistic'], {
-          state: { data: res.result.data },
-        });
+        this.cookieService.set('vmyCode', res.result.data.vmyCode);
+        this.cookieService.set('role', res.result.data.role);
+        this.router.navigate(['admin/app-statistic']);
       } else {
-        loadingRef.close();
         this.loading = false;
         this.showErrorMessage = res.message;
       }

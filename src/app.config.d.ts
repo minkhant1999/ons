@@ -3,8 +3,15 @@ declare module 'src/assets/app.config' {
     LOGIN: string;
     CONFIRM_LOGIN: string;
     STATISTIC: string;
+    BRANCH: string;
     GET_ALL_IMPORT_FILE: string;
     IMPORT_FILE: string;
     GET_CUSTOMERS: string;
+    TOWNSHIP: string;
+    FBBLEADER: string;
+    D2D: string;
+    GET_CUSTOMER_DETAIL: string;
+    GET_CUSTOMER_STATUS: string;
+    DOWNLOAD: string;
   };
 }

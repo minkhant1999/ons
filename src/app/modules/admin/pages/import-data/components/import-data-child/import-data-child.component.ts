@@ -22,7 +22,9 @@ import { ApiLoadingComponent } from 'src/app/modules/custom/model/loading/api-lo
 export class ImportDataChildComponent implements OnInit {
   _dialogRef!: MatDialogRef<any>;
   public tableData: any;
-
+  offset: number = 0;
+  size: number = 10;
+  totalOffset: number = 0;
   constructor(
     private dialog: MatDialog,
     private _alert: AlertService,
@@ -35,29 +37,37 @@ export class ImportDataChildComponent implements OnInit {
 
   openCreate() {
     this._dialogRef = this.dialog.open(CreateDataComponent, {
-      width: '50%',
+      width: '30%',
       disableClose: true,
     });
+    this._dialogRef.componentInstance.callGetFile.subscribe(
+      (message: string) => {
+        if (message === 'success') {
+          this.getAll();
+        }
+      }
+    );
   }
 
-  getAll() {
+  getAll(offset: number = 0) {
     const loadingRef = this.dialog.open(ApiLoadingComponent, {
       disableClose: true,
     });
-
-    this.importService.getFile().subscribe((data: any) => {
+    const page = (this.offset = offset);
+    const size = this.size;
+    this.importService.getFile({ page, size }).subscribe((data: any) => {
       if (data.errorCode === '00000') {
         loadingRef.close();
-        this.tableData = data.result;
+        this.tableData = data.result.content;
+        this.totalOffset = data.result.totalPages - 1;
       } else {
         loadingRef.close();
         this._alert.notify('Something went wrong!', 'FAIL');
       }
-      console.log(data);
     });
   }
 
-  onDelete() {
+  onDelete(id: any) {
     this._alert
       .deleteNotification(
         'Are u sure?',
@@ -66,7 +76,22 @@ export class ImportDataChildComponent implements OnInit {
       )
       .subscribe((result: boolean) => {
         if (result) {
-          console.log(result, ' hello world');
+          this.importService.deleteFile(id).subscribe((res: any) => {
+            if (res.errorCode === '00000') {
+              this._alert.deleteNotification(
+                'SUCCESS!',
+                res.message || 'You deleted successfully.',
+                'SUCCESS'
+              );
+              this.getAll();
+            } else {
+              this._alert.deleteNotification(
+                'FAILED!',
+                res.message || 'Something went wrong.',
+                'FAIL'
+              );
+            }
+          });
         }
       });
   }
