@@ -11,7 +11,7 @@ export class ImportDataService {
 
   constructor(private http: HttpClient) {}
 
-  getFile() {
+  getFile(page: number, size: number) {
     return this.http.get(this._getAll);
   }
 

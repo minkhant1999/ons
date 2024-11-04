@@ -22,7 +22,9 @@ import { ApiLoadingComponent } from 'src/app/modules/custom/model/loading/api-lo
 export class ImportDataChildComponent implements OnInit {
   _dialogRef!: MatDialogRef<any>;
   public tableData: any;
-
+  offset: number = 0;
+  size: number = 10;
+  totalOffset: number = 0;
   constructor(
     private dialog: MatDialog,
     private _alert: AlertService,
@@ -47,15 +49,17 @@ export class ImportDataChildComponent implements OnInit {
     );
   }
 
-  getAll() {
+  getAll(offset: number = 0) {
     const loadingRef = this.dialog.open(ApiLoadingComponent, {
       disableClose: true,
     });
-
-    this.importService.getFile().subscribe((data: any) => {
+    const page = (this.offset = offset);
+    const size = this.size;
+    this.importService.getFile(page, size).subscribe((data: any) => {
       if (data.errorCode === '00000') {
         loadingRef.close();
-        this.tableData = data.result;
+        this.tableData = data.result.content;
+        this.totalOffset = data.result.totalPages - 1;
       } else {
         loadingRef.close();
         this._alert.notify('Something went wrong!', 'FAIL');
