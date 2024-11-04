@@ -22,6 +22,7 @@ import { StatisticChildGetSetService } from '../../../statistic/components/stati
 import { PaginatorComponent } from 'src/app/modules/custom/paginator/paginator.component';
 import { CookieService } from 'ngx-cookie-service';
 import { cloneDeep } from 'lodash';
+import { AlertService } from 'src/app/modules/service/alert.service';
 
 @Component({
   selector: 'app-customer-child',
@@ -53,78 +54,6 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   public conditionRole: string = '';
 
   _dialogRef!: MatDialogRef<any>;
-  dataSourcePending = [
-    {
-      no: 1,
-      account: 'ayy_gftfh_htetnhm1',
-      totalMoney: 1000,
-      d2dVmy: 'VMY018499',
-      status: 'Pending',
-    },
-    {
-      no: 2,
-      account: 'ayy_gftfh_htetnhm1',
-      totalMoney: 1000,
-      d2dVmy: 'VMY018499',
-      status: 'Pending',
-    },
-    {
-      no: 3,
-      account: 'ayy_gftfh_htetnhm1',
-      totalMoney: 1000,
-      d2dVmy: 'VMY018499',
-      status: 'Pending',
-    },
-  ];
-
-  dataSourceRevoke = [
-    {
-      no: 1,
-      account: 'ayy_gftfh_htetnhm1',
-      totalMoney: 1000,
-      d2dVmy: 'VMY018499',
-      status: 'Revoke',
-    },
-    {
-      no: 2,
-      account: 'ayy_gftfh_htetnhm1',
-      totalMoney: 1000,
-      d2dVmy: 'VMY018499',
-      status: 'Revoke',
-    },
-    {
-      no: 3,
-      account: 'ayy_gftfh_htetnhm1',
-      totalMoney: 1000,
-      d2dVmy: 'VMY018499',
-      status: 'Revoke',
-    },
-  ];
-
-  dataSourceReuse = [
-    {
-      no: 1,
-      account: 'ayy_gftfh_htetnhm1',
-      totalMoney: 1000,
-      d2dVmy: 'VMY018499',
-      status: 'Reuse',
-    },
-    {
-      no: 2,
-      account: 'ayy_gftfh_htetnhm1',
-      totalMoney: 1000,
-      d2dVmy: 'VMY018499',
-      status: 'Reuse',
-    },
-    {
-      no: 3,
-      account: 'ayy_gftfh_htetnhm1',
-      totalMoney: 1000,
-      d2dVmy: 'VMY018499',
-      status: 'Reuse',
-    },
-  ];
-  currentDataSource = this.dataSourcePending;
   activeButton = '';
 
   constructor(
@@ -132,7 +61,8 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     private _statisticChildGetSetService: StatisticChildGetSetService,
     private _customer: CustomersService,
     private cookieService: CookieService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private _alert: AlertService
   ) { }
 
   ngOnInit(): void {
@@ -143,54 +73,70 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     this._statisticChildGetSetService.checkStatistic.subscribe(
       (data: string) => {
         this.activeButton = data;
-
       }
     );
     this.getAllCustomers();
+
   }
 
-  showDataSource(dataSource: any[], button: string) {
-    this.currentDataSource = dataSource;
+  showDataSource(button: string) {
     this.activeButton = button;
 
     this._customer
       .getCustomerStatus({ status: this.activeButton })
       .subscribe((data: any) => {
-        console.log(data, ' data ........ ')
-
-        // this.results = data.result
+        if (data.errorCode === '00000') {
+          this.results = data.result.content
+        } else {
+          this.results = []
+          this._alert.confirmSuccessFail(
+            'FAILED!',
+            data.message,
+            'FAIL'
+          );
+        }
       });
   }
 
   showDetail(id: any) {
-    this._customer.setId(id);
     this._dialogRef = this.dialog.open(CustomerDetailComponent, {
       width: '50%',
       disableClose: true,
+      data: { id: id }
+
     });
   }
 
   openEdit(id: any) {
-    this._customer.setId(id);
     this._dialogRef = this.dialog.open(CustomerEditComponent, {
       width: '50%',
       disableClose: true,
+      data: { id: id }
     });
+    this._dialogRef.componentInstance.editSuccess.subscribe((message: string) => {
+      if (message === 'success') this.getAllCustomers()
+    })
   }
 
   getAllCustomers(offset: number = 0) {
     let search = cloneDeep(this.searchForm.value);
+    let status = '';
+
+    if (['PENDING', 'REUSE', 'REVOKE'].includes(this.activeButton)) status = this.activeButton;
+    else if (this.activeButton !== 'TARGET' && this.activeButton !== undefined) status = '';
+
     search.page = this.offset = offset;
     search.size = this.size;
-    search.status = this.activeButton;
-    if (search.status === undefined) {
-      search.status = '';
-    } else {
-      search.status = search.status.toUpperCase();
-    }
+    search.status = status ? status.toUpperCase() : '';
+
     this._customer.getCustomers(search).subscribe((data: any) => {
-      this.results = data.result.content;
-      this.totalOffset = data.result.totalPages - 1;
+      if (data.errorCode === "00000") {
+        this.results = data.result.content;
+        this.totalOffset = data.result.totalPages - 1;
+      } else {
+        this.results = [];
+        this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
+      }
     });
   }
 

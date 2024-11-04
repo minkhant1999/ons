@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { CustomersService } from '../../customer-child/customers.service';
@@ -22,25 +22,36 @@ import { AlertService } from 'src/app/modules/service/alert.service';
   ],
 })
 export class CustomerEditComponent implements OnInit {
-  options = ['Reuse', 'Revoke'];
-  selectedOption: string = 'Reuse';
+  options = ['REUSE', 'REVOKE'];
+  selectedOption: string = '';
+  @Output() editSuccess = new EventEmitter<string>()
 
   detail: any;
   id: any;
   constructor(
     private _dialogRef: MatDialogRef<CustomerEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
 
     private _customer: CustomersService,
     private _alert: AlertService
-  ) { }
+  ) {
+    this.id = data.id
 
-  ngOnInit(): void {
-    this.id = this._customer.getId();
     this._customer.getCustomerDetail(this.id).subscribe((data: any) => {
-      this.detail = data.result;
-      this.selectedOption = data.result.status;
+      if (data.errorCode === "00000") {
+        this.detail = data.result;
+        this.selectedOption = data.result.status;
+      } else {
+        this._alert.confirmSuccessFail(
+          'FAILED!',
+          data.message,
+          'FAIL'
+        );
+      }
     });
   }
+
+  ngOnInit(): void { }
 
   closeEdit() {
     this._dialogRef.close();
@@ -65,26 +76,30 @@ export class CustomerEditComponent implements OnInit {
   }
 
   confirmUpdate() {
-    let _status: any;
-    if (this.selectedOption === 'Reuse') {
-      _status = 'REUSE';
-    } else {
-      _status = 'REVOKE';
-    }
 
     let body = {
       requestId: Date.now().toString(),
       requestTime: Date.now().toString(),
-      status: _status,
+      status: this.selectedOption,
     };
     this._customer.editStatus(body, this.id).subscribe(
       (data: any) => {
-        this._alert.confirmSuccessFail(
-          'SUCCESS!',
-          'You changed the status successfully.',
-          'SUCCESS'
-        );
-        this.closeEdit();
+        if (data.errorCode === "00000") {
+          this._alert.confirmSuccessFail(
+            'SUCCESS!',
+            data.message,
+            'SUCCESS'
+          );
+          this.closeEdit();
+          this.editSuccess.emit('success')
+        } else {
+          this._alert.confirmSuccessFail(
+            'FAILED!',
+            data.message,
+            'FAIL'
+          );
+        }
+
       },
       (err) => {
         this._alert.confirmSuccessFail(

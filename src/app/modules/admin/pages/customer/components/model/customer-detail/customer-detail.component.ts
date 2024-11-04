@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { CustomersService } from '../../customer-child/customers.service';
+import { AlertService } from 'src/app/modules/service/alert.service';
 
 @Component({
   selector: 'app-customer-detail',
@@ -16,17 +17,28 @@ export class CustomerDetailComponent implements OnInit {
   id: any;
   constructor(
     private _dialogRef: MatDialogRef<CustomerDetailComponent>,
-    private _customer: CustomersService
-  ) { }
+    private _customer: CustomersService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _alert: AlertService
 
-  ngOnInit(): void {
-    this.id = this._customer.getId();
+  ) {
+    this.id = data.id
     this._customer.getCustomerDetail(this.id).subscribe((data: any) => {
       if (data.errorCode === "00000") {
         this.detail = data.result;
+      } else {
+        this._alert.confirmSuccessFail(
+          'FAILED!',
+          data.message,
+          'FAIL'
+        );
       }
 
     });
+  }
+
+  ngOnInit(): void {
+
   }
 
   closeDetail() {
