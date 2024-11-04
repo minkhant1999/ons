@@ -5,6 +5,7 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { CustomersService } from '../../customer-child/customers.service';
+import { AlertService } from 'src/app/modules/service/alert.service';
 
 @Component({
   selector: 'app-customer-edit',
@@ -29,7 +30,8 @@ export class CustomerEditComponent implements OnInit {
   constructor(
     private _dialogRef: MatDialogRef<CustomerEditComponent>,
 
-    private _customer: CustomersService
+    private _customer: CustomersService,
+    private _alert: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -48,6 +50,20 @@ export class CustomerEditComponent implements OnInit {
     //
   }
 
+  update() {
+    this._alert
+      .confirmSuccessFail(
+        'Confirm',
+        'Are you sure do you want to update?',
+        'SURE'
+      )
+      .subscribe((value: any) => {
+        if (value) {
+          this.confirmUpdate();
+        }
+      });
+  }
+
   confirmUpdate() {
     let _status: any;
     if (this.selectedOption === 'Reuse') {
@@ -63,10 +79,18 @@ export class CustomerEditComponent implements OnInit {
     };
     this._customer.editStatus(body, this.id).subscribe(
       (data: any) => {
-        //
+        this._alert.confirmSuccessFail(
+          'SUCCESS!',
+          'You changed the status successfully.',
+          'SUCCESS'
+        );
       },
       (err) => {
-        //
+        this._alert.confirmSuccessFail(
+          'FAILED!',
+          'Something went wrong.',
+          'FAIL'
+        );
       }
     );
   }
