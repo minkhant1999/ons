@@ -12,8 +12,8 @@ import { SelectComponent } from 'src/app/modules/custom/select/select.component'
 import { StatisticChildGetSetService } from './statistic-child-get-set.service';
 import { StatisticService } from '../../statistic.service';
 import { AutoCompleteComponent } from 'src/app/modules/custom/auto-complete/auto-complete.component';
-import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { InputComponent } from 'src/app/modules/custom/input/input.component';
 
 type DataField = 'townshipData' | 'fbbLeaderData' | 'b2bData';
 interface SelectStatusType {
@@ -39,6 +39,7 @@ interface SelectStatistic {
     MatIconModule,
     CommonModule,
     AutoCompleteComponent,
+    InputComponent
   ],
 })
 export class StatisticChildComponent implements OnInit {
@@ -63,7 +64,7 @@ export class StatisticChildComponent implements OnInit {
     private router: Router,
     private _statisticChildGetSetService: StatisticChildGetSetService,
     private cookieService: CookieService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.searchTable = this.fb.group({
@@ -74,6 +75,7 @@ export class StatisticChildComponent implements OnInit {
     });
 
     this.conditionRole = this.cookieService.get('role');
+    const res = this.cookieService.get('vmyCode')
 
     if (this.conditionRole === 'HO' || this.conditionRole === 'BM') {
       this.statisticService.getBranch().subscribe((data: any) => {
@@ -106,13 +108,17 @@ export class StatisticChildComponent implements OnInit {
         }
       });
     } else if (this.conditionRole === 'D2D') {
-      this.statisticService.getD2D().subscribe((data: any) => {
+      this.statisticService.getD2D(res).subscribe((data: any) => {
         if (data.errorCode === '00000') {
           const result = data.result;
           this.b2bData = result?.map((item: any) => ({
             value: item.FULL_NAME,
             label: item.VMY_CODE,
           }));
+
+          this.searchTable?.get('d2dVmy')?.setValue(this.b2bData[0].value);
+
+          this.searchButton()
         }
       });
     }
@@ -204,65 +210,36 @@ export class StatisticChildComponent implements OnInit {
     let params = this.searchTable.value;
 
     this.statisticService.geStatistic(params).subscribe((data: any) => {
-      const backgroundColors = [
-        'bg-[#e4e4e4]',
-        'bg-[#A1CDFF]',
-        'bg-[#EBC1FF]',
-        'bg-[#F8F49B]',
-      ];
 
       if (data.errorCode === '00000') {
-        const result = data.result;
-        this.items = result?.map((item: any, index: number) => ({
+        const result = data.result.sort((a: any, b: any) => {
+          if (a.name === 'Target') return -1;
+          if (b.name === 'Target') return 1;
+          return 0;
+        });
+
+        this.items = result?.map((item: any) => ({
           label: item.name,
           value2: item.count,
           percentage: item.percentage,
-          backgroundColor: backgroundColors[index % backgroundColors.length],
+          backgroundColor: this.getBackgroundColor(item.name),
         }));
       }
     });
   }
+
+  getBackgroundColor(name: string): string {
+    switch (name) {
+      case 'PENDING':
+        return 'bg-[#F8F49B]';
+      case 'REUSE':
+        return 'bg-[#EBC1FF]';
+      case 'REVOKE':
+        return 'bg-[#A1CDFF]';
+      case 'Target':
+        return 'bg-[#e4e4e4]';
+      default:
+        return 'bg-[#e4e4e4]';
+    }
+  }
 }
-
-// private handleSelection(
-//   selectedItem: any,
-//   formControlName: string,
-//   serviceMethod: (params: any) => Observable<any>,
-//   resultDataField: DataField | null = null
-// ) {
-//   const params = { [formControlName]: selectedItem.label };
-
-//   serviceMethod(params).subscribe((data: any) => {
-//     if (data.errorCode === '00000') {
-//       const result = data.result;
-//       if (resultDataField) {
-//         (this as any)[resultDataField] = result?.map((item: string) => ({
-//           value: item,
-//           label: item
-//         }));
-//       }
-//     }
-//   });
-
-//   this.searchTable.get(formControlName)?.setValue(selectedItem.value);
-// }
-
-// branch
-// onSuggestionSelected(selectedBranch: any) {
-//   this.handleSelection(selectedBranch, 'branch', this.statisticService.getTownship.bind(this.statisticService), 'townshipData');
-// }
-
-// // township
-// onTownshipSelected(selectedTownship: any) {
-//   this.handleSelection(selectedTownship, 'township', this.statisticService.getFBBLeader.bind(this.statisticService), 'fbbLeaderData');
-// }
-
-// // FBB Leader
-// onFBBLeaderSelected(selectedFBBLeader: any) {
-//   this.handleSelection(selectedFBBLeader, 'fbbLeader', this.statisticService.getD2D.bind(this.statisticService), 'b2bData');
-// }
-
-// // D2D
-// onD2DSelected(selectedD2D: any) {
-//   this.searchTable.get('b2b')?.setValue(selectedD2D.value);
-// }
