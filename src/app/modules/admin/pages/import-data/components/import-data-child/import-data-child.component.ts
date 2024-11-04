@@ -55,7 +55,7 @@ export class ImportDataChildComponent implements OnInit {
     });
     const page = (this.offset = offset);
     const size = this.size;
-    this.importService.getFile(page, size).subscribe((data: any) => {
+    this.importService.getFile({ page, size }).subscribe((data: any) => {
       if (data.errorCode === '00000') {
         loadingRef.close();
         this.tableData = data.result.content;
