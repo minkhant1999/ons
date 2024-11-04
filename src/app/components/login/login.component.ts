@@ -50,6 +50,9 @@ export class LoginComponent implements OnInit {
   }
 
   pageReload() {
+    this.cookieService.delete('accessTokenONS');
+    this.cookieService.delete('groupPermission');
+    this.cookieService.delete('username');
     const reloaded = sessionStorage.getItem('reloaded');
 
     if (!reloaded) {
