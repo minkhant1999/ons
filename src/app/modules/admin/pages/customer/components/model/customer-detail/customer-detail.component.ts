@@ -17,12 +17,15 @@ export class CustomerDetailComponent implements OnInit {
   constructor(
     private _dialogRef: MatDialogRef<CustomerDetailComponent>,
     private _customer: CustomersService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.id = this._customer.getId();
     this._customer.getCustomerDetail(this.id).subscribe((data: any) => {
-      this.detail = data.result;
+      if (data.errorCode === "00000") {
+        this.detail = data.result;
+      }
+
     });
   }
 

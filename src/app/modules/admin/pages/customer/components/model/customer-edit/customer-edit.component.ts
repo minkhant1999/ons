@@ -32,7 +32,7 @@ export class CustomerEditComponent implements OnInit {
 
     private _customer: CustomersService,
     private _alert: AlertService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.id = this._customer.getId();

@@ -133,7 +133,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     private _customer: CustomersService,
     private cookieService: CookieService,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.conditionRole = this.cookieService.get('role');
@@ -143,6 +143,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     this._statisticChildGetSetService.checkStatistic.subscribe(
       (data: string) => {
         this.activeButton = data;
+
       }
     );
     this.getAllCustomers();
@@ -155,7 +156,9 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     this._customer
       .getCustomerStatus({ status: this.activeButton })
       .subscribe((data: any) => {
-        this.results = data.result.content;
+        console.log(data, ' data ........ ')
+
+        // this.results = data.result
       });
   }
 
