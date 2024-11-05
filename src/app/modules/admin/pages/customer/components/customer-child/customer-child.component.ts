@@ -166,7 +166,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
         a.download = 'CUSTOMER.xlsx';
         a.click();
         URL.revokeObjectURL(objectUrl);
-        this._alert.deleteNotification(
+        this._alert.confirmSuccessFail(
           'SUCCESS!',
           data.message || 'You downloaded successfully!',
           'SUCCESS'
