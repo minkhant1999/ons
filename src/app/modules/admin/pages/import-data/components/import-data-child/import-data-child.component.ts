@@ -18,7 +18,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './import-data-child.component.html',
   styleUrls: ['./import-data-child.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatIconModule, PaginatorComponent, MatDialogModule, MatProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    PaginatorComponent,
+    MatDialogModule,
+    MatProgressSpinnerModule,
+  ],
 })
 export class ImportDataChildComponent implements OnInit {
   _dialogRef!: MatDialogRef<any>;
@@ -32,7 +38,7 @@ export class ImportDataChildComponent implements OnInit {
     private dialog: MatDialog,
     private _alert: AlertService,
     private importService: ImportDataService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getAll();
@@ -40,7 +46,7 @@ export class ImportDataChildComponent implements OnInit {
 
   openCreate() {
     this._dialogRef = this.dialog.open(CreateDataComponent, {
-      width: '30%',
+      width: '25%',
       disableClose: true,
     });
     this._dialogRef.componentInstance.callGetFile.subscribe(
@@ -56,7 +62,7 @@ export class ImportDataChildComponent implements OnInit {
     const loadingRef = this.dialog.open(ApiLoadingComponent, {
       disableClose: true,
     });
-    this.tableData = []
+    this.tableData = [];
     this.isLoading = true;
 
     const page = (this.offset = offset);
@@ -66,10 +72,10 @@ export class ImportDataChildComponent implements OnInit {
         loadingRef.close();
         this.tableData = data.result.content;
         this.totalOffset = data.result.totalPages - 1;
-        this.isLoading = false
+        this.isLoading = false;
       } else {
         loadingRef.close();
-        this.isLoading = false
+        this.isLoading = false;
 
         this._alert.notify('Something went wrong!', 'FAIL');
       }
@@ -80,7 +86,7 @@ export class ImportDataChildComponent implements OnInit {
     this._alert
       .deleteNotification(
         'Are u sure?',
-        'Do you want to delete this file.',
+        'Do you want to delete this file?',
         'SURE'
       )
       .subscribe((result: boolean) => {

@@ -1,52 +1,91 @@
 <div class="w-full p-6 bg-gray-200 h-full">
-  <div class="w-full p-8 bg-white">
+  <div class="w-full p-8 bg-white rounded-md">
     <form [formGroup]="searchTable" class="grid grid-cols-3 gap-5">
       <!-- branch auto-complete  -->
-      <div *ngIf="conditionRole === 'HO' || conditionRole === 'BM'; else banBranch">
-        <app-auto-complete [label]="'Branch Name'" [placeholder]="'Enter branch name'" [suggestions]="customerData"
-          (selectedSuggestion)="onSuggestionSelected($event)"></app-auto-complete>
+      <div
+        *ngIf="conditionRole === 'HO' || conditionRole === 'BM'; else banBranch"
+      >
+        <app-auto-complete
+          [label]="'Branch Name'"
+          [placeholder]="'Enter branch name'"
+          [suggestions]="customerData"
+          (selectedSuggestion)="onSuggestionSelected($event)"
+        ></app-auto-complete>
       </div>
       <ng-template #banBranch>
-        <app-auto-complete [label]="'Branch Name'" [placeholder]="'Enter branch name'" [suggestions]="customerData"
-          (selectedSuggestion)="onSuggestionSelected($event)" [banInput]="true"></app-auto-complete>
+        <app-auto-complete
+          [label]="'Branch Name'"
+          [placeholder]="'Enter branch name'"
+          [suggestions]="customerData"
+          (selectedSuggestion)="onSuggestionSelected($event)"
+          [banInput]="true"
+        ></app-auto-complete>
       </ng-template>
       <!-- branch auto-complete  -->
 
       <!-- townsip auto-complete  -->
-      <div *ngIf="
+      <div
+        *ngIf="
           conditionRole === 'FBB_LEADER' || conditionRole === 'D2D';
           else banTownship
-        ">
-        <app-auto-complete [label]="'Township Name'" [placeholder]="'Enter Township'" [suggestions]="townshipData"
-          (selectedSuggestion)="onTownshipSelected($event)" [banInput]="true"></app-auto-complete>
+        "
+      >
+        <app-auto-complete
+          [label]="'Township Name'"
+          [placeholder]="'Enter Township'"
+          [suggestions]="townshipData"
+          (selectedSuggestion)="onTownshipSelected($event)"
+          [banInput]="true"
+        ></app-auto-complete>
       </div>
       <ng-template #banTownship>
         <div *ngIf="townshipData.length > 0; else newTownship">
-          <app-auto-complete [label]="'Township Name'" [placeholder]="'Enter Township'" [suggestions]="townshipData"
-            (selectedSuggestion)="onTownshipSelected($event)"></app-auto-complete>
+          <app-auto-complete
+            [label]="'Township Name'"
+            [placeholder]="'Enter Township'"
+            [suggestions]="townshipData"
+            (selectedSuggestion)="onTownshipSelected($event)"
+          ></app-auto-complete>
         </div>
         <ng-template #newTownship>
-          <app-auto-complete [label]="'Township Name'" [placeholder]="'Enter Township'" [suggestions]="townshipData"
-            (selectedSuggestion)="onTownshipSelected($event)"></app-auto-complete>
+          <app-auto-complete
+            [label]="'Township Name'"
+            [placeholder]="'Enter Township'"
+            [suggestions]="townshipData"
+            (selectedSuggestion)="onTownshipSelected($event)"
+          ></app-auto-complete>
         </ng-template>
       </ng-template>
       <!-- townsip auto-complete  -->
 
       <!-- fbbLeaderData auto-complete  -->
       <div *ngIf="conditionRole === 'D2D'; else banFBBLEADER">
-        <app-auto-complete [label]="'FBB Leader Name'" [placeholder]="'Enter FBB leader name'"
-          [suggestions]="fbbLeaderData" (selectedSuggestion)="onFBBLeaderSelected($event)" [banInput]="true">
+        <app-auto-complete
+          [label]="'FBB Leader Name'"
+          [placeholder]="'Enter FBB leader name'"
+          [suggestions]="fbbLeaderData"
+          (selectedSuggestion)="onFBBLeaderSelected($event)"
+          [banInput]="true"
+        >
         </app-auto-complete>
       </div>
       <ng-template #banFBBLEADER>
         <div *ngIf="fbbLeaderData.length > 0; else newTemplate">
-          <app-auto-complete [label]="'FBB Leader Name'" [placeholder]="'Enter FBB leader name'"
-            [suggestions]="fbbLeaderData" (selectedSuggestion)="onFBBLeaderSelected($event)">
+          <app-auto-complete
+            [label]="'FBB Leader Name'"
+            [placeholder]="'Enter FBB leader name'"
+            [suggestions]="fbbLeaderData"
+            (selectedSuggestion)="onFBBLeaderSelected($event)"
+          >
           </app-auto-complete>
         </div>
         <ng-template #newTemplate>
-          <app-auto-complete [label]="'FBB Leader Name'" [placeholder]="'Enter FBB leader name'"
-            [suggestions]="fbbLeaderData" (selectedSuggestion)="onFBBLeaderSelected($event)">
+          <app-auto-complete
+            [label]="'FBB Leader Name'"
+            [placeholder]="'Enter FBB leader name'"
+            [suggestions]="fbbLeaderData"
+            (selectedSuggestion)="onFBBLeaderSelected($event)"
+          >
           </app-auto-complete>
         </ng-template>
       </ng-template>
@@ -54,16 +93,28 @@
 
       <!-- fbbLeaderData auto-complete  -->
       <div *ngIf="D2DCheck; else elseD2DCheck">
-        <app-input label="D2D" [isDisabled]="true" formControlName="d2dVmy"></app-input>
+        <app-input
+          label="D2D"
+          [isDisabled]="true"
+          formControlName="d2dVmy"
+        ></app-input>
       </div>
       <ng-template #elseD2DCheck>
         <div *ngIf="b2bData.length > 0; else newD2DTemplate">
-          <app-auto-complete [label]="'D2D'" [placeholder]="'Enter D2D name'" [suggestions]="b2bData"
-            (selectedSuggestion)="onD2DSelected($event)"></app-auto-complete>
+          <app-auto-complete
+            [label]="'D2D'"
+            [placeholder]="'Enter D2D name'"
+            [suggestions]="b2bData"
+            (selectedSuggestion)="onD2DSelected($event)"
+          ></app-auto-complete>
         </div>
         <ng-template #newD2DTemplate>
-          <app-auto-complete [label]="'D2D'" [placeholder]="'Enter D2D name'" [suggestions]="b2bData"
-            (selectedSuggestion)="onD2DSelected($event)"></app-auto-complete>
+          <app-auto-complete
+            [label]="'D2D'"
+            [placeholder]="'Enter D2D name'"
+            [suggestions]="b2bData"
+            (selectedSuggestion)="onD2DSelected($event)"
+          ></app-auto-complete>
         </ng-template>
       </ng-template>
 
@@ -71,30 +122,42 @@
 
       <div></div>
       <div class="flex justify-center items-center pt-5">
-        <button (click)="searchButton()" class="rounded-full bg-blue-600 text-white w-[120px] h-[40px]">
+        <button
+          (click)="searchButton()"
+          class="rounded-full bg-[#4485FF] text-white w-[120px] h-[40px]"
+        >
           Search
         </button>
       </div>
     </form>
   </div>
 
-  <div *ngIf="items.length > 0" class="bg-white mt-10 w-2/3 mx-auto p-4 space-y-4">
-    <div *ngFor="let item of items" class="flex rounded-md p-2 w-full cursor-pointer" [ngClass]="item.backgroundColor"
-      (click)="gotoDetailPage(item.label)">
-      <div class="w-6/12">
-        <p class="text-xl text-[#444] font-bold">{{ item.label }}</p>
+  <div
+    *ngIf="items.length > 0"
+    class="bg-white mt-14 w-2/3 mx-auto p-12 space-y-6 rounded-md"
+  >
+    <div
+      *ngFor="let item of items"
+      class="flex rounded-md items-center px-6 py-4 w-full uppercase"
+      [ngClass]="item.backgroundColor"
+    >
+      <div class="w-3/12">
+        <p class="text-xl text-[#444444] font-semibold">{{ item.label }}</p>
       </div>
       <div class="w-2/12">
         <p class="text-xl">-</p>
       </div>
-      <div class="w-2/12">
+      <div class="flex justify-center items-center w-2/12">
         <p class="text-xl font-bold">{{ item.value2 }}</p>
       </div>
-      <div class="w-2/12">
+      <div class="flex justify-center items-center w-4/12">
         <p class="text-xl font-bold">{{ item.percentage }}</p>
       </div>
-      <div class="w-2/12 flex items-center pl-8">
-        <mat-icon style="color: #fd6d1a">arrow_forward</mat-icon>
+      <div class="flex justify-center items-center pl-8">
+        <!-- <mat-icon style="color: #fd6d1a">arrow_forward</mat-icon> -->
+        <button (click)="gotoDetailPage(item.label)">
+          <img src="assets/icons/onuvector.png" alt="" class="w-8" />
+        </button>
       </div>
     </div>
   </div>
