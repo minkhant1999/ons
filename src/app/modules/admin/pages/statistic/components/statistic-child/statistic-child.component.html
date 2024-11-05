@@ -53,13 +53,20 @@
       <!-- fbbLeaderData auto-complete  -->
 
       <!-- fbbLeaderData auto-complete  -->
-      <div *ngIf="b2bData.length > 0; else newD2DTemplate">
+      <div *ngIf="D2DCheck; else elseD2DCheck">
         <app-input label="D2D" [isDisabled]="true" formControlName="d2dVmy"></app-input>
       </div>
-      <ng-template #newD2DTemplate>
-        <app-auto-complete [label]="'D2D'" [placeholder]="'Enter D2D name'" [suggestions]="b2bData"
-          (selectedSuggestion)="onD2DSelected($event)"></app-auto-complete>
+      <ng-template #elseD2DCheck>
+        <div *ngIf="b2bData.length > 0; else newD2DTemplate">
+          <app-auto-complete [label]="'D2D'" [placeholder]="'Enter D2D name'" [suggestions]="b2bData"
+            (selectedSuggestion)="onD2DSelected($event)"></app-auto-complete>
+        </div>
+        <ng-template #newD2DTemplate>
+          <app-auto-complete [label]="'D2D'" [placeholder]="'Enter D2D name'" [suggestions]="b2bData"
+            (selectedSuggestion)="onD2DSelected($event)"></app-auto-complete>
+        </ng-template>
       </ng-template>
+
       <!-- fbbLeaderData auto-complete  -->
 
       <div></div>

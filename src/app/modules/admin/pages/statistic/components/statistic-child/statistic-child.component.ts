@@ -4,7 +4,6 @@ import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -58,6 +57,9 @@ export class StatisticChildComponent implements OnInit {
   public fbbLeaderData: SelectStatusType[] = [];
   public b2bData: SelectStatusType[] = [];
 
+  public D2DCheck: boolean = false
+  public insertD2DValue: string = ''
+
   constructor(
     private statisticService: StatisticService,
     private fb: FormBuilder,
@@ -108,6 +110,7 @@ export class StatisticChildComponent implements OnInit {
         }
       });
     } else if (this.conditionRole === 'D2D') {
+      this.D2DCheck = true
       this.statisticService.getD2D(res).subscribe((data: any) => {
         if (data.errorCode === '00000') {
           const result = data.result;
@@ -116,6 +119,7 @@ export class StatisticChildComponent implements OnInit {
             label: item.VMY_CODE,
           }));
 
+          this.insertD2DValue = this.b2bData[0].label
           this.searchTable?.get('d2dVmy')?.setValue(this.b2bData[0].value);
 
           this.searchButton()
@@ -208,6 +212,9 @@ export class StatisticChildComponent implements OnInit {
 
   searchButton() {
     let params = this.searchTable.value;
+    if (this.D2DCheck) params.d2dVmy = this.insertD2DValue;
+
+    console.log(params, ' params information....')
 
     this.statisticService.geStatistic(params).subscribe((data: any) => {
 
