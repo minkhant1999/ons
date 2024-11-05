@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     private browserDetectionService: BrowserDetectionService,
     private _loginServiceService: LoginServiceService,
     private cookieService: CookieService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.browser = this.browserDetectionService.getBrowserInfo();
@@ -50,11 +50,6 @@ export class LoginComponent implements OnInit {
   }
 
   pageReload() {
-    this.cookieService.delete('accessTokenONS');
-    this.cookieService.delete('groupPermission');
-    this.cookieService.delete('username');
-    this.cookieService.delete('vmyCode');
-    this.cookieService.delete('role');
     const reloaded = sessionStorage.getItem('reloaded');
 
     if (!reloaded) {
