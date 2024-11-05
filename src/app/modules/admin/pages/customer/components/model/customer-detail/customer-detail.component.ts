@@ -32,6 +32,7 @@ export class CustomerDetailComponent implements OnInit {
           data.message,
           'FAIL'
         );
+        this._dialogRef.close();
       }
 
     });
