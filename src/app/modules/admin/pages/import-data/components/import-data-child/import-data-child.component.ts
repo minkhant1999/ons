@@ -11,13 +11,14 @@ import { CreateDataComponent } from '../model/create-data/create-data.component'
 import { AlertService } from 'src/app/modules/service/alert.service';
 import { ImportDataService } from '../../import-data.service';
 import { ApiLoadingComponent } from 'src/app/modules/custom/model/loading/api-loading.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-import-data-child',
   templateUrl: './import-data-child.component.html',
   styleUrls: ['./import-data-child.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatIconModule, PaginatorComponent, MatDialogModule],
+  imports: [CommonModule, MatIconModule, PaginatorComponent, MatDialogModule, MatProgressSpinnerModule],
 })
 export class ImportDataChildComponent implements OnInit {
   _dialogRef!: MatDialogRef<any>;
@@ -25,11 +26,13 @@ export class ImportDataChildComponent implements OnInit {
   offset: number = 0;
   size: number = 10;
   totalOffset: number = 0;
+  isLoading: boolean = false;
+
   constructor(
     private dialog: MatDialog,
     private _alert: AlertService,
     private importService: ImportDataService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getAll();
@@ -53,6 +56,9 @@ export class ImportDataChildComponent implements OnInit {
     const loadingRef = this.dialog.open(ApiLoadingComponent, {
       disableClose: true,
     });
+    this.tableData = []
+    this.isLoading = true;
+
     const page = (this.offset = offset);
     const size = this.size;
     this.importService.getFile({ page, size }).subscribe((data: any) => {
@@ -60,8 +66,11 @@ export class ImportDataChildComponent implements OnInit {
         loadingRef.close();
         this.tableData = data.result.content;
         this.totalOffset = data.result.totalPages - 1;
+        this.isLoading = false
       } else {
         loadingRef.close();
+        this.isLoading = false
+
         this._alert.notify('Something went wrong!', 'FAIL');
       }
     });

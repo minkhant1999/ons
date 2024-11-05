@@ -1,9 +1,6 @@
 <div class="w-full h-full bg-gray-200">
   <div class="p-8 flex justify-end items-center">
-    <button
-      (click)="openCreate()"
-      class="bg-[#2A2F4F] rounded-full px-3 py-2 text-white font-bold flex items-center"
-    >
+    <button (click)="openCreate()" class="bg-[#2A2F4F] rounded-full px-3 py-2 text-white font-bold flex items-center">
       <span class="mr-2">Create new</span>
       <mat-icon>add_circle</mat-icon>
     </button>
@@ -20,25 +17,19 @@
           <th class="py-3 px-6 text-center">Action</th>
         </tr>
       </thead>
-      <tbody class="text-gray-700">
-        <tr
-          *ngFor="let item of tableData; let i = index"
-          class="border-b border-gray-200"
-        >
+      <tbody class="text-gray-700" *ngIf="tableData.length > 0; else noData">
+        <tr *ngFor="let item of tableData; let i = index" class="border-b border-gray-200">
           <td class="py-3 px-6 text-center">{{ offset * size + (i + 1) }}</td>
           <td class="py-3 px-6 text-center">{{ item.fileName }}</td>
           <td class="py-3 px-6 text-center">{{ item.reason }}</td>
           <td class="py-3 px-6 text-center">{{ item.createdAt }}</td>
           <td class="py-3 px-6 text-center">
             <div class="flex items-center justify-center">
-              <span
-                class="font-semibold rounded-full w-28 py-2"
-                [ngClass]="{
+              <span class="font-semibold rounded-full w-28 py-2" [ngClass]="{
                   'bg-[#F8F49B] text-[#766E19]': item.status === 'PENDING',
                   'bg-[#FFC2C2] text-[#F33333]': item.status === 'FAIL',
                   'bg-[#E2FFBF] text-[#3FA026]': item.status === 'SUCCESS'
-                }"
-              >
+                }">
                 {{ item.status }}
               </span>
             </div>
@@ -50,11 +41,23 @@
           </td>
         </tr>
       </tbody>
+      <ng-template #noData>
+        <tr>
+          <td colspan="7" class="py-16">
+            <div *ngIf="!isLoading" class="flex items-start justify-center w-full gap-2">
+              <mat-icon style="color: rgb(200, 198, 198)">error</mat-icon>
+
+              <p>{{ "No search result" }}</p>
+            </div>
+            <div *ngIf="isLoading">
+              <span class="flex justify-center">
+                <mat-spinner [diameter]="30"></mat-spinner>
+              </span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
     </table>
-    <app-paginator
-      [offset]="offset"
-      [totalOffset]="totalOffset"
-      (change)="getAll($event)"
-    ></app-paginator>
+    <app-paginator [offset]="offset" [totalOffset]="totalOffset" (change)="getAll($event)"></app-paginator>
   </div>
 </div>

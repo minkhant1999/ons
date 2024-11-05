@@ -45,9 +45,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   ],
 })
 export class CustomerChildComponent implements OnInit, OnDestroy {
-  // pageSize = 10;
-  // pageNo = 1;
-  // totalPages = 0;
   offset: number = 0;
   size: number = 10;
   totalOffset: number = 0;
@@ -65,7 +62,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private fb: FormBuilder,
     private _alert: AlertService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.conditionRole = this.cookieService.get('role');
@@ -81,15 +78,28 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   }
 
   showDataSource(button: string) {
+    this.isLoading = true;
+    this.results = []
     this.activeButton = button;
 
+    let search = {
+      page: 0,
+      size: 0,
+      status: button
+    };
+
     this._customer
-      .getCustomerStatus({ status: this.activeButton })
+      .getCustomerStatus(search)
       .subscribe((data: any) => {
         if (data.errorCode === '00000') {
           this.results = data.result.content;
+          this.totalOffset = data.result.totalPages - 1;
+          this.offset = 0
+          this.isLoading = false;
         } else {
           this.results = [];
+          this.isLoading = false;
+
           this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
         }
       });
@@ -117,7 +127,9 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   }
 
   getAllCustomers(offset: number = 0) {
+    this.results = []
     this.isLoading = true;
+
     let search = cloneDeep(this.searchForm.value);
     let status = '';
 
@@ -136,6 +148,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
         this.results = data.result.content;
         this.totalOffset = data.result.totalPages - 1;
       } else {
+        this.isLoading = false;
         this.results = [];
         this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
       }
