@@ -23,6 +23,8 @@ import { PaginatorComponent } from 'src/app/modules/custom/paginator/paginator.c
 import { CookieService } from 'ngx-cookie-service';
 import { cloneDeep } from 'lodash';
 import { AlertService } from 'src/app/modules/service/alert.service';
+import { ApiLoadingComponent } from 'src/app/modules/custom/model/loading/api-loading.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-customer-child',
@@ -39,6 +41,7 @@ import { AlertService } from 'src/app/modules/service/alert.service';
     MatDialogModule,
     PaginatorComponent,
     ReactiveFormsModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class CustomerChildComponent implements OnInit, OnDestroy {
@@ -50,9 +53,8 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   totalOffset: number = 0;
   searchForm!: FormGroup;
   results: any[] = [];
-
+  isLoading: boolean = false;
   public conditionRole: string = '';
-
   _dialogRef!: MatDialogRef<any>;
   activeButton = '';
 
@@ -63,7 +65,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private fb: FormBuilder,
     private _alert: AlertService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.conditionRole = this.cookieService.get('role');
@@ -76,7 +78,6 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
       }
     );
     this.getAllCustomers();
-
   }
 
   showDataSource(button: string) {
@@ -86,14 +87,10 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
       .getCustomerStatus({ status: this.activeButton })
       .subscribe((data: any) => {
         if (data.errorCode === '00000') {
-          this.results = data.result.content
+          this.results = data.result.content;
         } else {
-          this.results = []
-          this._alert.confirmSuccessFail(
-            'FAILED!',
-            data.message,
-            'FAIL'
-          );
+          this.results = [];
+          this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
         }
       });
   }
@@ -102,8 +99,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     this._dialogRef = this.dialog.open(CustomerDetailComponent, {
       width: '50%',
       disableClose: true,
-      data: { id: id }
-
+      data: { id: id },
     });
   }
 
@@ -111,26 +107,32 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     this._dialogRef = this.dialog.open(CustomerEditComponent, {
       width: '50%',
       disableClose: true,
-      data: { id: id }
+      data: { id: id },
     });
-    this._dialogRef.componentInstance.editSuccess.subscribe((message: string) => {
-      if (message === 'success') this.getAllCustomers()
-    })
+    this._dialogRef.componentInstance.editSuccess.subscribe(
+      (message: string) => {
+        if (message === 'success') this.getAllCustomers();
+      }
+    );
   }
 
   getAllCustomers(offset: number = 0) {
+    this.isLoading = true;
     let search = cloneDeep(this.searchForm.value);
     let status = '';
 
-    if (['PENDING', 'REUSE', 'REVOKE'].includes(this.activeButton)) status = this.activeButton;
-    else if (this.activeButton !== 'TARGET' && this.activeButton !== undefined) status = '';
+    if (['PENDING', 'REUSE', 'REVOKE'].includes(this.activeButton))
+      status = this.activeButton;
+    else if (this.activeButton !== 'TARGET' && this.activeButton !== undefined)
+      status = '';
 
     search.page = this.offset = offset;
     search.size = this.size;
     search.status = status ? status.toUpperCase() : '';
 
     this._customer.getCustomers(search).subscribe((data: any) => {
-      if (data.errorCode === "00000") {
+      if (data.errorCode === '00000') {
+        this.isLoading = false;
         this.results = data.result.content;
         this.totalOffset = data.result.totalPages - 1;
       } else {
@@ -151,9 +153,12 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   }
 
   download() {
+    const loadingRef = this.dialog.open(ApiLoadingComponent, {
+      disableClose: true,
+    });
     this._customer.download().subscribe((data: any) => {
       if (data.status === 200) {
-        console.log('mother fucker');
+        loadingRef.close();
         const blob = data.body!;
         const objectUrl = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -161,6 +166,11 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
         a.download = 'CUSTOMER.xlsx';
         a.click();
         URL.revokeObjectURL(objectUrl);
+        this._alert.deleteNotification(
+          'SUCCESS!',
+          data.message || 'You downloaded successfully!',
+          'SUCCESS'
+        );
       }
     });
   }
