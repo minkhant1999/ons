@@ -4,6 +4,8 @@
       [src]="
         data.type === 'SURE'
           ? 'assets/icons/delete-sure.png'
+          : data.type === 'FAIL'
+          ? 'assets/icons/delete-fail.png'
           : 'assets/icons/delete-success.png'
       "
       width="80px"

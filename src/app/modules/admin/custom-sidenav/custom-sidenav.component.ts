@@ -26,19 +26,17 @@ export class CustomSidenavComponent implements OnInit {
   public menuItems: MenuItem[] = [];
   public menuItem = signal<MenuItem[]>([]);
 
-  constructor(
-    private cookieService: CookieService
-  ) { }
+  constructor(private cookieService: CookieService) {}
 
   ngOnInit(): void {
     this.getPermissionMenuList();
   }
 
   public getPermissionMenuList() {
-    const result = this.role === 'HO'
-      ? menuItem
-      : menuItem.filter(item => item.label !== 'Import Data');
-
+    const result =
+      this.role === 'HO'
+        ? menuItem
+        : menuItem.filter((item) => item.label !== 'Import Data');
 
     this.menuItem.set(result);
   }
