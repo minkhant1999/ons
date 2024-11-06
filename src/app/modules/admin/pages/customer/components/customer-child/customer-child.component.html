@@ -133,8 +133,13 @@
     </div>
 
     <div class=" ">
-      <button [matMenuTriggerFor]="logout"
-        class="bg-[#ddd] w-[110px] h-12 rounded-lg flex items-center justify-between px-3">
+      <button [matMenuTriggerFor]="logout" class="w-[110px] h-12 rounded-lg flex items-center justify-between px-3"
+        [ngClass]="{
+            'bg-[#EBC1FF]': activeButton === 'REUSE',
+            'bg-[#F8F49B]': activeButton === 'PENDING',
+            'bg-[#A1CDFF]': activeButton === 'REVOKE',
+            'bg-[#ddd]': activeButton === undefined
+          }">
         <p class="text-base" *ngIf="activeButton === undefined; else activeElse">
           filter
         </p>
@@ -231,8 +236,9 @@
           <div class="w-1/12"></div>
         </div>
 
-        <div class="rounded-md flex justify-center items-center bg-[#BBF1B0] w-full p-3">
-          <button (click)="openEdit(item.id)">
+        <div *ngIf="conditionRole === 'D2D'" (click)="openEdit(item.id)"
+          class="rounded-md flex justify-center items-center bg-[#BBF1B0] w-full p-3 cursor-pointer">
+          <button>
             <img src="assets/icons/edit-icon.png" alt="" class="w-[24px]" />
           </button>
         </div>
