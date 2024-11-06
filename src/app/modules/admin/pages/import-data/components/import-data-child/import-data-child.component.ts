@@ -45,9 +45,11 @@ export class ImportDataChildComponent implements OnInit {
 
   openCreate() {
     const screenWidth = window.innerWidth;
-    let dialogWidth = '25%';
+    let dialogWidth = '30%';
     if (screenWidth <= 430) {
       dialogWidth = '90%';
+    } else if (screenWidth <= 1024) {
+      dialogWidth = '50%';
     }
     this._dialogRef = this.dialog.open(CreateDataComponent, {
       width: dialogWidth,

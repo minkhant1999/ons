@@ -13,6 +13,7 @@ export class AdminComponent implements OnInit {
   collapsed = signal(false);
   isMobile = window.innerWidth <= 430;
   isLaptop = window.innerWidth <= 1024;
+
   sidenavWidth = computed(() => {
     if (this.isMobile) {
       return this.collapsed() ? '0px' : '150px';

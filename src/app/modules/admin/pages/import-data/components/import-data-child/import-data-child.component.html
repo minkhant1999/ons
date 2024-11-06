@@ -5,27 +5,27 @@
       <mat-icon>add_circle</mat-icon>
     </button>
   </div>
-  <div class="overflow-x-auto px-8 sm:block hidden">
-    <table class="min-w-full bg-white shadow-lg">
+  <div class="px-8 sm:block hidden">
+    <table class="w-full bg-white shadow-lg">
       <thead class="uppercase shadow-md">
         <tr class="bg-[#E6E8F1] text-black">
-          <th class="py-5 px-6 text-center">No</th>
-          <th class="py-5 px-6 text-center">File Name</th>
-          <th class="py-5 px-6 text-center">Reason</th>
-          <th class="py-5 px-6 text-center">Created At</th>
-          <th class="py-5 px-6 text-center">Status</th>
-          <th class="py-5 px-6 text-center">Action</th>
+          <th class="py-5 px-3 text-center">No</th>
+          <th class="py-5 px-3 text-center">File Name</th>
+          <th class="py-5 px-3 text-center">Reason</th>
+          <th class="py-5 px-3 text-center">Created At</th>
+          <th class="py-5 px-3 text-center">Status</th>
+          <th class="py-5 px-3 text-center">Action</th>
         </tr>
       </thead>
       <tbody class="text-gray-700" *ngIf="tableData.length > 0; else noData">
         <tr *ngFor="let item of tableData; let i = index" class="border-b border-gray-200">
-          <td class="py-5 px-6 text-center">{{ offset * size + (i + 1) }}</td>
-          <td class="py-5 px-6 text-center">{{ item.fileName }}</td>
-          <td class="py-5 px-6 text-center">{{ item.reason }}</td>
-          <td class="py-5 px-6 text-center">{{ item.createdAt }}</td>
-          <td class="py-5 px-6 text-center">
+          <td class="py-5 px-3 text-center">{{ offset * size + (i + 1) }}</td>
+          <td class="py-5 px-3 text-center break-words">{{ item.fileName }}</td>
+          <td class="py-5 px-3 text-center break-words">{{ item.reason }}</td>
+          <td class="py-5 px-3 text-center">{{ item.createdAt }}</td>
+          <td class="py-5 px-3 text-center">
             <div class="flex items-center justify-center">
-              <span class="rounded-full px-6 py-1" [ngClass]="{
+              <span class="rounded-full px-3 py-1" [ngClass]="{
                   'bg-[#F8F49B] text-[#766E19]': item.status === 'PENDING',
                   'bg-[#FFC2C2] text-[#F33333]': item.status === 'FAIL',
                   'bg-[#E2FFBF] text-[#3FA026]': item.status === 'SUCCESS'
@@ -62,7 +62,11 @@
         </tr>
       </ng-template>
     </table>
-    <app-paginator [offset]="offset" [totalOffset]="totalOffset" (change)="getAll($event)"></app-paginator>
+    <!-- <app-paginator
+      [offset]="offset"
+      [totalOffset]="totalOffset"
+      (change)="getAll($event)"
+    ></app-paginator> -->
   </div>
   <div class="sm:hidden block">
     <div *ngIf="tableData.length > 0; else noResult">
@@ -150,6 +154,5 @@
       </div>
     </ng-template>
   </div>
-  <app-paginator class="sm:hidden block" [offset]="offset" [totalOffset]="totalOffset"
-    (change)="getAll($event)"></app-paginator>
+  <app-paginator [offset]="offset" [totalOffset]="totalOffset" (change)="getAll($event)"></app-paginator>
 </div>
