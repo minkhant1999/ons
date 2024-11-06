@@ -25,6 +25,7 @@ import { cloneDeep } from 'lodash';
 import { AlertService } from 'src/app/modules/service/alert.service';
 import { ApiLoadingComponent } from 'src/app/modules/custom/model/loading/api-loading.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-customer-child',
@@ -42,6 +43,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     PaginatorComponent,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
+    MatMenuModule
   ],
 })
 export class CustomerChildComponent implements OnInit, OnDestroy {
@@ -55,13 +57,15 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   _dialogRef!: MatDialogRef<any>;
   activeButton = '';
 
+  public isDropdownOpen = false;
+
   constructor(
     private dialog: MatDialog,
     private _statisticChildGetSetService: StatisticChildGetSetService,
     private _customer: CustomersService,
     private cookieService: CookieService,
     private fb: FormBuilder,
-    private _alert: AlertService
+    private _alert: AlertService,
   ) { }
 
   ngOnInit(): void {
@@ -72,10 +76,12 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     this._statisticChildGetSetService.checkStatistic.subscribe(
       (data: string) => {
         this.activeButton = data;
+
       }
     );
     this.getAllCustomers();
   }
+
 
   showDataSource(button: string) {
     this.isLoading = true;
