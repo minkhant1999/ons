@@ -33,7 +33,6 @@ export class ImportDataChildComponent implements OnInit {
   size: number = 10;
   totalOffset: number = 0;
   isLoading: boolean = false;
-
   constructor(
     private dialog: MatDialog,
     private _alert: AlertService,
@@ -45,8 +44,13 @@ export class ImportDataChildComponent implements OnInit {
   }
 
   openCreate() {
+    const screenWidth = window.innerWidth;
+    let dialogWidth = '25%';
+    if (screenWidth <= 430) {
+      dialogWidth = '90%';
+    }
     this._dialogRef = this.dialog.open(CreateDataComponent, {
-      width: '25%',
+      width: dialogWidth,
       disableClose: true,
     });
     this._dialogRef.componentInstance.callGetFile.subscribe(

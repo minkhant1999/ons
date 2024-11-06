@@ -11,7 +11,17 @@ import { AuthService } from 'src/app/service/auth.service';
 export class AdminComponent implements OnInit {
   data: any;
   collapsed = signal(false);
-  sidenavWidth = computed(() => (this.collapsed() ? '65px' : '240px'));
+  isMobile = window.innerWidth <= 430;
+  isLaptop = window.innerWidth <= 1024;
+  sidenavWidth = computed(() => {
+    if (this.isMobile) {
+      return this.collapsed() ? '0px' : '150px';
+    } else if (this.isLaptop) {
+      return this.collapsed() ? '65px' : '160px';
+    } else {
+      return this.collapsed() ? '65px' : '210px';
+    }
+  });
   code = this.cookieService.get('vmyCode');
   role = this.cookieService.get('role');
 
@@ -19,9 +29,13 @@ export class AdminComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private cookieService: CookieService
-  ) { }
+  ) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    if (this.isMobile || this.isLaptop) {
+      this.collapsed = signal(true);
+    }
+  }
 
   logOut() {
     this.cookieService.delete('vmyCode');
