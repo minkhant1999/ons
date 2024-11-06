@@ -1,4 +1,4 @@
-<div class=" md:block hidden p-10 bg-gray-100 h-full">
+<div class="md:block hidden p-10 bg-gray-100 h-full">
   <div class="grid lg:grid-cols-3 grid-cols-2 gap-6">
     <form action="" [formGroup]="searchForm">
       <div class="p-1">
@@ -64,10 +64,18 @@
 
       <tbody *ngIf="results.length > 0; else noData">
         <tr *ngFor="let item of results; let i = index" class="bg-white">
-          <td class="lg:px-4 px-2 py-5 lg:text-base text-sm text-center">{{ offset * size + (i + 1) }}</td>
-          <td class="lg:px-4 px-2 py-5 lg:text-base text-sm text-center">{{ item.ftthAccount }}</td>
-          <td class="lg:px-4 px-2 py-5 lg:text-base text-sm text-center">{{ item.totalMoney }}</td>
-          <td class="lg:px-4 px-2 py-5 lg:text-base text-sm text-center">{{ item.d2dVmy }}</td>
+          <td class="lg:px-4 px-2 py-5 lg:text-base text-sm text-center">
+            {{ offset * size + (i + 1) }}
+          </td>
+          <td class="lg:px-4 px-2 py-5 lg:text-base text-sm text-center">
+            {{ item.ftthAccount }}
+          </td>
+          <td class="lg:px-4 px-2 py-5 lg:text-base text-sm text-center">
+            {{ item.totalMoney }}
+          </td>
+          <td class="lg:px-4 px-2 py-5 lg:text-base text-sm text-center">
+            {{ item.d2dVmy }}
+          </td>
 
           <td class="lg:px-4 px-2 py-5 text-center">
             <button class="cursor-default lg:px-4 px-2 py-1 lg:text-base text-sm text-center rounded-full" [ngClass]="{
@@ -111,7 +119,7 @@
   </div>
 </div>
 
-<div class=" md:hidden block py-10 px-5 bg-gray-100 h-full">
+<div class="md:hidden block py-10 px-5 bg-gray-100 h-full">
   <div class="flex gap-4 justify-between items-center">
     <div class="w-full">
       <div class="">
@@ -124,30 +132,29 @@
       </div>
     </div>
 
-
     <div class=" ">
       <button [matMenuTriggerFor]="logout"
-        class="bg-[#ddd]  w-[110px] h-12 rounded-lg flex items-center justify-between px-3">
+        class="bg-[#ddd] w-[110px] h-12 rounded-lg flex items-center justify-between px-3">
         <p class="text-base" *ngIf="activeButton === undefined; else activeElse">
           filter
         </p>
         <ng-template #activeElse>
           <p class="text-sm">
-            {{activeButton}}
+            {{ activeButton }}
           </p>
         </ng-template>
         <mat-icon style="color: #444444">filter_alt</mat-icon>
       </button>
 
       <mat-menu #logout="matMenu" class="w-full">
-        <div style="width: 100%; ">
-          <div class="py-3 cursor-pointer text-center   hover:bg-gray-100" (click)="showDataSource('PENDING')">
+        <div style="width: 100%">
+          <div class="py-3 cursor-pointer text-center hover:bg-gray-100" (click)="showDataSource('PENDING')">
             Pending
           </div>
-          <div class="py-3 cursor-pointer text-center  hover:bg-gray-100" (click)="showDataSource('REVOKE')">
+          <div class="py-3 cursor-pointer text-center hover:bg-gray-100" (click)="showDataSource('REVOKE')">
             Revoke
           </div>
-          <div class="py-3 cursor-pointer text-center  hover:bg-gray-100" (click)="showDataSource('REUSE')">
+          <div class="py-3 cursor-pointer text-center hover:bg-gray-100" (click)="showDataSource('REUSE')">
             Reuse
           </div>
         </div>
@@ -165,17 +172,18 @@
     </button>
   </div>
 
-
   <div *ngIf="results.length > 0; else noDataResult">
     <div *ngFor="let item of results; let i = index">
       <div class="bg-white mx-2 rounded-md px-4 py-6 my-6">
         <div class="flex items-center justify-between mb-6">
           <div class="w-11/12 flex items-center">
-            <div class=" w-4/12 sm:text-base text-sm ">
+            <div class="w-4/12 sm:text-base text-sm font-semibold">
               FTTH Account
             </div>
-            <div class="w-1/12 "> : </div>
-            <div class="w-7/12 sm:text-base text-sm">{{ item.ftthAccount }}</div>
+            <div class="w-1/12">:</div>
+            <div class="w-7/12 sm:text-base text-sm">
+              {{ item.ftthAccount }}
+            </div>
           </div>
           <div class="w-1/12">
             <button (click)="showDetail(item.id)"
@@ -187,38 +195,40 @@
         </div>
 
         <div class="flex items-center justify-between mb-6">
-          <div class=" w-11/12  flex items-center">
-            <div class="w-4/12 sm:text-base text-sm">Total Money </div>
-            <div class="w-1/12"> : </div>
+          <div class="w-11/12 flex items-center">
+            <div class="w-4/12 sm:text-base text-sm font-semibold">
+              Total Money
+            </div>
+            <div class="w-1/12">:</div>
             <div class="w-7/12 sm:text-base text-sm">{{ item.totalMoney }}</div>
           </div>
           <div class="w-1/12"></div>
         </div>
 
         <div class="flex items-center justify-between mb-6">
-          <div class=" w-11/12  flex items-center">
-            <div class="w-4/12 sm:text-base text-sm">D2D VMY</div>
-            <div class="w-1/12"> : </div>
+          <div class="w-11/12 flex items-center">
+            <div class="w-4/12 sm:text-base text-sm font-semibold">D2D VMY</div>
+            <div class="w-1/12">:</div>
             <div class="w-7/12 sm:text-base text-sm">{{ item.d2dVmy }}</div>
           </div>
           <div class="w-1/12"></div>
-
         </div>
 
         <div class="flex items-center justify-between mb-6">
-          <div class=" w-11/12 flex items-center">
-            <div class="w-4/12 sm:text-base text-sm">Status</div>
-            <div class="w-1/12"> : </div>
+          <div class="w-11/12 flex items-center">
+            <div class="w-4/12 sm:text-base text-sm font-semibold">Status</div>
+            <div class="w-1/12">:</div>
             <div class="w-7/12 flex">
               <div class="cursor-default lg:px-4 px-2 py-1 sm:text-base text-sm text-center rounded-full" [ngClass]="{
                   'bg-[#F8F49B] text-[#766E19]': item.status === 'PENDING',
                   'bg-[#A1CDFF] text-[#166292]': item.status === 'REVOKE',
                   'bg-[#EBC1FF] text-[#B934F8]': item.status === 'REUSE'
-                }"> {{ item.status | titlecase }} </div>
+                }">
+                {{ item.status | titlecase }}
+              </div>
             </div>
           </div>
           <div class="w-1/12"></div>
-
         </div>
 
         <div class="rounded-md flex justify-center items-center bg-[#BBF1B0] w-full p-3">
@@ -228,7 +238,6 @@
         </div>
       </div>
     </div>
-
   </div>
   <app-paginator class="sm:hidden block" [offset]="offset" [totalOffset]="totalOffset"
     (change)="getAllCustomers($event)"></app-paginator>
@@ -241,14 +250,11 @@
     </div>
     <div *ngIf="isLoading">
       <div class="my-4 w-full">
-        <div class="animate-pulse ">
-          <div class="bg-white my-6 rounded-md w-full h-[380px]">
-          </div>
-          <div class="bg-white my-6 rounded-md w-full h-[380px]">
-          </div>
+        <div class="animate-pulse">
+          <div class="bg-white my-6 rounded-md w-full h-[380px]"></div>
+          <div class="bg-white my-6 rounded-md w-full h-[380px]"></div>
         </div>
       </div>
     </div>
   </ng-template>
-
 </div>

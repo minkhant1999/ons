@@ -43,7 +43,7 @@ import { MatMenuModule } from '@angular/material/menu';
     PaginatorComponent,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
-    MatMenuModule
+    MatMenuModule,
   ],
 })
 export class CustomerChildComponent implements OnInit, OnDestroy {
@@ -65,8 +65,8 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     private _customer: CustomersService,
     private cookieService: CookieService,
     private fb: FormBuilder,
-    private _alert: AlertService,
-  ) { }
+    private _alert: AlertService
+  ) {}
 
   ngOnInit(): void {
     this.conditionRole = this.cookieService.get('role');
@@ -76,52 +76,62 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     this._statisticChildGetSetService.checkStatistic.subscribe(
       (data: string) => {
         this.activeButton = data;
-
       }
     );
     this.getAllCustomers();
   }
 
-
   showDataSource(button: string) {
     this.isLoading = true;
-    this.results = []
+    this.results = [];
     this.activeButton = button;
 
     let search = {
       page: 0,
       size: 0,
-      status: button
+      status: button,
     };
 
-    this._customer
-      .getCustomerStatus(search)
-      .subscribe((data: any) => {
-        if (data.errorCode === '00000') {
-          this.results = data.result.content;
-          this.totalOffset = data.result.totalPages - 1;
-          this.offset = 0
-          this.isLoading = false;
-        } else {
-          this.results = [];
-          this.isLoading = false;
+    this._customer.getCustomerStatus(search).subscribe((data: any) => {
+      if (data.errorCode === '00000') {
+        this.results = data.result.content;
+        this.totalOffset = data.result.totalPages - 1;
+        this.offset = 0;
+        this.isLoading = false;
+      } else {
+        this.results = [];
+        this.isLoading = false;
 
-          this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
-        }
-      });
+        this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
+      }
+    });
   }
 
   showDetail(id: any) {
+    const screenWidth = window.innerWidth;
+    let dialogWidth = '50%';
+    if (screenWidth <= 430) {
+      dialogWidth = '90%';
+    } else if (screenWidth <= 1024) {
+      dialogWidth = '50%';
+    }
     this._dialogRef = this.dialog.open(CustomerDetailComponent, {
-      width: '50%',
+      width: dialogWidth,
       disableClose: true,
       data: { id: id },
     });
   }
 
   openEdit(id: any) {
+    const screenWidth = window.innerWidth;
+    let dialogWidth = '50%';
+    if (screenWidth <= 430) {
+      dialogWidth = '90%';
+    } else if (screenWidth <= 1024) {
+      dialogWidth = '50%';
+    }
     this._dialogRef = this.dialog.open(CustomerEditComponent, {
-      width: '50%',
+      width: dialogWidth,
       disableClose: true,
       data: { id: id },
     });
@@ -133,7 +143,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   }
 
   getAllCustomers(offset: number = 0) {
-    this.results = []
+    this.results = [];
     this.isLoading = true;
 
     let search = cloneDeep(this.searchForm.value);
