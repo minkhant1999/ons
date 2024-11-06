@@ -66,10 +66,10 @@ export class AlertService {
     if (screenWidth <= 430) {
       dialogWidth = '90%';
     } else if (screenWidth <= 1024) {
-      dialogWidth = '50%';
+      dialogWidth = '70%';
     }
     const _modal = this.dialog.open(DeleteComponent, {
-      width: '35%',
+      width: dialogWidth,
       disableClose: false,
       data: {
         title: title,
@@ -87,7 +87,7 @@ export class AlertService {
     if (screenWidth <= 430) {
       dialogWidth = '90%';
     } else if (screenWidth <= 1024) {
-      dialogWidth = '50%';
+      dialogWidth = '60%';
     }
     const _modal = this.dialog.open(ConfirmSuccessFailComponent, {
       width: dialogWidth,
