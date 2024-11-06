@@ -55,11 +55,11 @@
         <mat-icon style="color: #235884">menu</mat-icon>
       </button>
 
-      <div>
+      <div *ngIf="!isMobile">
         <span class="text-base font-bold">{{ role }}</span>
       </div>
 
-      <div class="flex items-center">
+      <div class="flex items-center mt-0.5">
         <div class="flex flex-col items-center">
           <span class="text-base font-bold">{{ code }}</span>
         </div>

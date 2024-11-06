@@ -75,8 +75,13 @@ export class AlertService {
   }
 
   confirmSuccessFail(title: string, des: string, type: string) {
+    const screenWidth = window.innerWidth;
+    let dialogWidth = '35%';
+    if (screenWidth <= 430) {
+      dialogWidth = '90%';
+    }
     const _modal = this.dialog.open(ConfirmSuccessFailComponent, {
-      width: '35%',
+      width: dialogWidth,
       disableClose: false,
       data: {
         title: title,
