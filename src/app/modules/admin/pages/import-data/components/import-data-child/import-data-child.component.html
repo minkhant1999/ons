@@ -78,11 +78,11 @@
         </tr>
       </ng-template>
     </table>
-    <app-paginator
+    <!-- <app-paginator
       [offset]="offset"
       [totalOffset]="totalOffset"
       (change)="getAll($event)"
-    ></app-paginator>
+    ></app-paginator> -->
   </div>
   <div class="sm:hidden block">
     <div *ngIf="tableData.length > 0; else noResult">
@@ -183,7 +183,6 @@
     </ng-template>
   </div>
   <app-paginator
-    class="sm:hidden block"
     [offset]="offset"
     [totalOffset]="totalOffset"
     (change)="getAll($event)"
