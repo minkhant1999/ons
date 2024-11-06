@@ -153,8 +153,6 @@
         </div>
       </mat-menu>
     </div>
-
-
   </div>
 
   <div class="flex justify-start items-center my-4">
@@ -166,4 +164,91 @@
       </div>
     </button>
   </div>
+
+
+  <div *ngIf="results.length > 0; else noDataResult">
+    <div *ngFor="let item of results; let i = index">
+      <div class="bg-white mx-2 rounded-md px-4 py-6 my-6">
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-11/12 flex items-center">
+            <div class=" w-4/12 sm:text-base text-sm">
+              FTTH Account
+            </div>
+            <div class="w-1/12 "> : </div>
+            <div class="w-7/12 sm:text-base text-sm">{{ item.ftthAccount }}</div>
+          </div>
+          <div class="w-1/12">
+            <button (click)="showDetail(item.id)"
+              class="text-gray-500 bg-[#C5D9FF] sm:w-8 sm:h-8 w-6 h-6 rounded hover:text-gray-700 mt-1 flex justify-center items-center"
+              title="Detail">
+              <img src="assets/icons/info-circle-mobile.png" class="sm:w-6 w-4" alt="" />
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between mb-6">
+          <div class=" w-11/12  flex items-center">
+            <div class="w-4/12 sm:text-base text-sm">Total Money </div>
+            <div class="w-1/12"> : </div>
+            <div class="w-7/12 sm:text-base text-sm">{{ item.totalMoney }}</div>
+          </div>
+          <div class="w-1/12"></div>
+        </div>
+
+        <div class="flex items-center justify-between mb-6">
+          <div class=" w-11/12  flex items-center">
+            <div class="w-4/12 sm:text-base text-sm">D2D VMY</div>
+            <div class="w-1/12"> : </div>
+            <div class="w-7/12 sm:text-base text-sm">{{ item.d2dVmy }}</div>
+          </div>
+          <div class="w-1/12"></div>
+
+        </div>
+
+        <div class="flex items-center justify-between mb-6">
+          <div class=" w-11/12 flex items-center">
+            <div class="w-4/12 sm:text-base text-sm">Status</div>
+            <div class="w-1/12"> : </div>
+            <div class="w-7/12 flex">
+              <div class="cursor-default lg:px-4 px-2 py-1 sm:text-base text-sm text-center rounded-full" [ngClass]="{
+                  'bg-[#F8F49B] text-[#766E19]': item.status === 'PENDING',
+                  'bg-[#A1CDFF] text-[#166292]': item.status === 'REVOKE',
+                  'bg-[#EBC1FF] text-[#B934F8]': item.status === 'REUSE'
+                }"> {{ item.status | titlecase }} </div>
+            </div>
+          </div>
+          <div class="w-1/12"></div>
+
+        </div>
+
+        <div class="rounded-md flex justify-center items-center bg-[#BBF1B0] w-full p-3">
+          <button (click)="openEdit(item.id)">
+            <img src="assets/icons/edit-icon.png" alt="" class="w-[24px]" />
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <app-paginator class="sm:hidden block" [offset]="offset" [totalOffset]="totalOffset"
+    (change)="getAllCustomers($event)"></app-paginator>
+
+  <ng-template #noDataResult>
+    <div *ngIf="!isLoading" class="flex items-start justify-center gap-2 bg-white p-6 mx-3 rounded-md">
+      <mat-icon style="color: rgb(200, 198, 198)">error</mat-icon>
+
+      <p>{{ "No import result" }}</p>
+    </div>
+    <div *ngIf="isLoading">
+      <div class="my-4 w-full">
+        <div class="animate-pulse ">
+          <div class="bg-white my-6 rounded-md w-full h-[380px]">
+          </div>
+          <div class="bg-white my-6 rounded-md w-full h-[380px]">
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
 </div>
