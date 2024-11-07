@@ -1,5 +1,5 @@
-<div class="w-full p-6 bg-gray-200 ">
-  <div class="w-full p-8 bg-white rounded-md">
+<div class="w-full p-6  ">
+  <div class="w-full p-8 bg-white rounded-md shadow-lg">
     <form [formGroup]="searchTable" class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
       <!-- branch auto-complete  -->
       <div *ngIf="conditionRole === 'HO' || conditionRole === 'BM'; else banBranch">
@@ -78,7 +78,7 @@
     </form>
   </div>
 
-  <div *ngIf="items.length > 0" class="bg-white mt-14 lg:w-2/3 mx-auto sm:p-12 p-4 space-y-6 rounded-md">
+  <div *ngIf="items.length > 0" class="bg-white mt-14 lg:w-2/3 mx-auto sm:p-12 p-4 space-y-6 rounded-md shadow-lg">
     <div *ngFor="let item of items"
       class="flex rounded-md justify-between items-center sm:px-6 px-3 sm:py-4 py-2 w-full uppercase"
       [ngClass]="item.backgroundColor">
@@ -102,4 +102,5 @@
       </div>
     </div>
   </div>
+
 </div>
