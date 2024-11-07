@@ -1,6 +1,9 @@
 <div class="w-full h-full bg-gray-100">
   <div class="p-8 flex justify-end items-center">
-    <button (click)="openCreate()" class="bg-[#2A2F4F] rounded-full px-3 py-2 text-white flex items-center">
+    <button
+      (click)="openCreate()"
+      class="bg-[#2A2F4F] rounded-full px-3 py-2 text-white flex items-center"
+    >
       <span class="mr-2">Create new</span>
       <mat-icon>add_circle</mat-icon>
     </button>
@@ -18,18 +21,24 @@
         </tr>
       </thead>
       <tbody class="text-gray-700" *ngIf="tableData.length > 0; else noData">
-        <tr *ngFor="let item of tableData; let i = index" class="border-b border-gray-200">
+        <tr
+          *ngFor="let item of tableData; let i = index"
+          class="border-b border-gray-200"
+        >
           <td class="py-5 px-3 text-center">{{ offset * size + (i + 1) }}</td>
           <td class="py-5 px-3 text-center break-words">{{ item.fileName }}</td>
           <td class="py-5 px-3 text-center break-words">{{ item.reason }}</td>
           <td class="py-5 px-3 text-center">{{ item.createdAt }}</td>
           <td class="py-5 px-3 text-center">
             <div class="flex items-center justify-center">
-              <span class="rounded-full px-3 py-1" [ngClass]="{
+              <span
+                class="rounded-full px-3 py-1"
+                [ngClass]="{
                   'bg-[#F8F49B] text-[#766E19]': item.status === 'PENDING',
                   'bg-[#FFC2C2] text-[#F33333]': item.status === 'FAIL',
                   'bg-[#E2FFBF] text-[#3FA026]': item.status === 'SUCCESS'
-                }">
+                }"
+              >
                 {{ item.status }}
               </span>
             </div>
@@ -39,7 +48,11 @@
               delete
             </mat-icon> -->
 
-            <button (click)="onDelete(item.fileId)" class="text-gray-500 hover:text-gray-700 mt-0.5" title="Edit">
+            <button
+              (click)="onDelete(item.fileId)"
+              class="text-gray-500 hover:text-gray-700 mt-0.5"
+              title="Edit"
+            >
               <img src="assets/icons/trash-icon.png" class="w-6" alt="" />
             </button>
           </td>
@@ -48,7 +61,10 @@
       <ng-template #noData>
         <tr>
           <td colspan="7" class="py-16">
-            <div *ngIf="!isLoading" class="flex items-start justify-center w-full gap-2">
+            <div
+              *ngIf="!isLoading"
+              class="flex items-start justify-center w-full gap-2"
+            >
               <mat-icon style="color: rgb(200, 198, 198)">error</mat-icon>
 
               <p>{{ "No search result" }}</p>
@@ -123,26 +139,38 @@
             </div>
             <div class="flex items-center">
               <div class="font-semibold">
-                <span class="rounded-full px-6 py-1 text-sm" [ngClass]="{
+                <span
+                  class="rounded-full px-6 py-1 text-sm"
+                  [ngClass]="{
                     'bg-[#F8F49B] text-[#766E19]': item.status === 'PENDING',
                     'bg-[#FFC2C2] text-[#F33333]': item.status === 'FAIL',
                     'bg-[#E2FFBF] text-[#3FA026]': item.status === 'SUCCESS'
-                  }">
+                  }"
+                >
                   {{ item.status | titlecase }}
                 </span>
               </div>
             </div>
           </div>
-          <div class="rounded-md flex justify-center items-center bg-[#E74141] w-full p-3">
+          <div
+            class="rounded-md flex justify-center items-center bg-[#E74141] w-full p-3"
+          >
             <button (click)="onDelete(item.fileId)">
-              <img src="assets/icons/deletemobile.png" alt="" class="w-[24px]" />
+              <img
+                src="assets/icons/deletemobile.png"
+                alt=""
+                class="w-[24px]"
+              />
             </button>
           </div>
         </div>
       </div>
     </div>
     <ng-template #noResult>
-      <div *ngIf="!isLoading" class="flex items-start justify-center gap-2 bg-white p-6 mx-3 rounded-md">
+      <div
+        *ngIf="!isLoading"
+        class="flex items-start justify-center gap-2 my-4 bg-white p-6 mx-3 rounded-md"
+      >
         <mat-icon style="color: rgb(200, 198, 198)">error</mat-icon>
 
         <p>{{ "No import result" }}</p>
@@ -154,5 +182,10 @@
       </div>
     </ng-template>
   </div>
-  <app-paginator [offset]="offset" [totalOffset]="totalOffset" (change)="getAll($event)"></app-paginator>
+  <app-paginator
+    *ngIf="tableData.length > 10"
+    [offset]="offset"
+    [totalOffset]="totalOffset"
+    (change)="getAll($event)"
+  ></app-paginator>
 </div>
