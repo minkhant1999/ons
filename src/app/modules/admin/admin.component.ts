@@ -14,15 +14,6 @@ export class AdminComponent implements OnInit {
   isMobile = window.innerWidth <= 430;
   isLaptop = window.innerWidth <= 1024;
 
-  sidenavWidth = computed(() => {
-    if (this.isMobile) {
-      return this.collapsed() ? '0px' : '150px';
-    } else if (this.isLaptop) {
-      return this.collapsed() ? '65px' : '160px';
-    } else {
-      return this.collapsed() ? '65px' : '210px';
-    }
-  });
   code = this.cookieService.get('vmyCode');
   role = this.cookieService.get('role');
 
@@ -33,10 +24,15 @@ export class AdminComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.isMobile || this.isLaptop) {
-      this.collapsed = signal(true);
-    }
+    if (this.isMobile || this.isLaptop) this.collapsed = signal(true);
+    else this.collapsed = signal(false);
   }
+
+  sidenavWidth = computed(() => {
+    if (this.isMobile) return this.collapsed() ? '0px' : '150px';
+    else if (this.isLaptop) return this.collapsed() ? '65px' : '160px';
+    else return this.collapsed() ? '65px' : '210px';
+  });
 
   logOut() {
     this.cookieService.delete('vmyCode');
