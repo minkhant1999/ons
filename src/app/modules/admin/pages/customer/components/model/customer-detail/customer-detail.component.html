@@ -2,76 +2,77 @@
   <div class="flex justify-end p-2">
     <mat-icon (click)="closeDetail()" class="cursor-pointer">close</mat-icon>
   </div>
-  <div class="py-5 px-10">
+  <div class="py-5 sm:px-10 px-2">
     <h1 class="flex justify-center font-bold text-xl">Customer Details</h1>
     <div class="container mx-auto">
-      <div class="flex justify-between p-1 mb-3 font-medium">
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
         <p>FTTH Account</p>
         <p>{{ detail?.ftthAccount }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
         <p>Contract ID</p>
         <p>{{ detail?.contractId }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
         <p>Customer Address</p>
         <p class="max-w-xs text-end">
           {{ detail?.customerAddress }}
         </p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
         <p>Contract NO 1</p>
         <p>{{ detail?.contactNo1 }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
         <p>Contract NO 2</p>
         <p>{{ detail?.contactNo2 }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
         <p>Total Money</p>
         <p>{{ detail?.totalMoney }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
         <p>Branch</p>
         <p>{{ detail?.branch }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
         <p>Site Code</p>
         <p>{{ detail?.siteCode }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
         <p>Site Code & SN Code</p>
         <p>{{ detail?.siteCodeAndSNCode }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
         <p>D2D Name</p>
         <p>{{ detail?.d2dName }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
         <p>FBB Leader Name</p>
         <p>{{ detail?.fbbLeaderName }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
         <p>Township</p>
         <p>{{ detail?.township }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
         <p>BC Name</p>
         <p>{{ detail?.bcName }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
         <p>Status</p>
-        <button
-          class="px-3 py-2 cursor-default rounded-full focus:outline-none"
-          [ngClass]="{
-            'bg-[#F8F49B] text-[#766E19]': detail.status === 'PENDING',
-            'bg-[#A1CDFF] text-[#166292]': detail.status === 'REVOKE',
-            'bg-[#EBC1FF] text-[#B934F8]': detail.status === 'REUSE'
-          }"
-        >
-          {{ detail.status }}
+        <button class="px-3 py-2 cursor-default rounded-full focus:outline-none" [ngClass]="{
+            'bg-[#F8F49B] text-[#766E19]': detail?.status === 'PENDING',
+            'bg-[#A1CDFF] text-[#166292]': detail?.status === 'REVOKE',
+            'bg-[#EBC1FF] text-[#B934F8]': detail?.status === 'REUSE'
+          }">
+          {{ detail?.status }}
         </button>
       </div>
     </div>
+  </div>
+  <div class="sm:hidden block my-4 mx-3 flex justify-center">
+    <button class="px-3 py-2 rounded-full bg-red-500 text-white font-bold focus:outline-none"
+      (click)="closeDetail()">Close</button>
   </div>
 </div>
