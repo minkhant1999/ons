@@ -1,58 +1,60 @@
 <div class="md:block hidden p-10 bg-gray-100 h-full">
-  <div class="grid lg:grid-cols-3 grid-cols-2 gap-6">
-    <form action="" [formGroup]="searchForm">
+  <div class="flex  lg:flex-nowrap flex-wrap justify-between">
+    <form action="" class="  lg:w-3/12 w-5/12 " [formGroup]="searchForm">
       <div class="p-1">
         <app-input placeholder="Search by FTTH Account" formControlName="ftthAccount"
           (keydown)="onKeyDown($event)"></app-input>
       </div>
     </form>
-    <div class="flex flex-row lg:gap-5 gap-2 items-center">
+    <div class="xl:w-5/12 lg:w-7/12 w-6/12 flex flex-row lg:justify-center justify-end gap-1 items-center  ">
       <div class="p-1 flex items-center">
-        <button class="px-3 py-2 focus:outline-none border border-[#E4E4E4] shadow-sm rounded-xl text-[#7C7C7C]"
+        <button
+          class="px-2 py-2 focus:outline-none border border-[#E4E4E4] shadow-sm text-base rounded-xl text-[#7C7C7C]"
           [ngClass]="{
-            'bg-[#F8F49B] font-bold': activeButton === 'PENDING',
-            'bg-white': activeButton !== 'PENDING'
-          }" (click)="showDataSource('PENDING')">
+                  'bg-[#F8F49B] font-bold': activeButton === 'PENDING',
+                  'bg-white': activeButton !== 'PENDING'
+                }" (click)="showDataSource('PENDING')">
           Pending
         </button>
       </div>
       <div class="p-1 flex items-center">
-        <button class="px-3 py-2 focus:outline-none border border-[#E4E4E4] shadow-sm rounded-xl text-[#7C7C7C]"
+        <button
+          class="px-2 py-2 focus:outline-none border border-[#E4E4E4] shadow-sm text-base rounded-xl text-[#7C7C7C]"
           [ngClass]="{
-            'bg-[#A1CDFF] font-bold': activeButton === 'REVOKE',
-            'bg-white': activeButton !== 'REVOKE'
-          }" (click)="showDataSource('REVOKE')">
+                  'bg-[#A1CDFF] font-bold': activeButton === 'REVOKE',
+                  'bg-white': activeButton !== 'REVOKE'
+                }" (click)="showDataSource('REVOKE')">
           Revoke
         </button>
       </div>
       <div class="p-1 flex items-center">
-        <button class="px-3 py-2 focus:outline-none border border-[#E4E4E4] shadow-sm rounded-xl text-[#7C7C7C]"
+        <button
+          class="px-2 py-2 focus:outline-none border border-[#E4E4E4] shadow-sm text-base rounded-xl text-[#7C7C7C]"
           [ngClass]="{
-            'bg-[#EBC1FF] font-bold': activeButton === 'REUSE',
-            'bg-white': activeButton !== 'REUSE'
-          }" (click)="showDataSource('REUSE')">
+                  'bg-[#EBC1FF] font-bold': activeButton === 'REUSE',
+                  'bg-white': activeButton !== 'REUSE'
+                }" (click)="showDataSource('REUSE')">
           Reuse
         </button>
       </div>
 
       <div class="p-1 flex items-center">
         <button
-          class="px-3 py-2 focus:outline-none border border-[#E4E4E4] shadow-sm rounded-xl text-[#7C7C7C] whitespace-nowrap "
+          class="px-2 py-2 focus:outline-none border border-[#E4E4E4] shadow-sm text-base rounded-xl text-[#7C7C7C] whitespace-nowrap "
           [ngClass]="{
-                  'bg-[#CBF895] font-bold': activeButton === 'RECEIVED_ONU',
-                  'bg-white': activeButton !== 'RECEIVED_ONU'
-                }" (click)="showDataSource('RECEIVED_ONU')">
+                        'bg-[#CBF895] font-bold': activeButton === 'RECEIVED_ONU',
+                        'bg-white': activeButton !== 'RECEIVED_ONU'
+                      }" (click)="showDataSource('RECEIVED_ONU')">
           Received ONU
         </button>
       </div>
     </div>
-
-    <div class="p-1 flex lg:justify-end">
-      <div class="flex justify-center items-center">
+    <div class="xl:w-2/12 lg:w-2/12 w-0/12 p-1  lg:mt-0 mt-3 ">
+      <div class="flex justify-end items-center">
         <button class="px-3 py-2.5 bg-[#4485FF] text-white rounded-full focus:outline-none flex items-center"
           (click)="download()">
           <div class="flex justify-center items-center gap-2">
-            <div>Download File</div>
+            <div class="text-nowrap text-sm">Download File</div>
             <mat-icon>download</mat-icon>
           </div>
         </button>
