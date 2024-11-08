@@ -176,7 +176,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     let search = cloneDeep(this.searchForm.value);
     let status = '';
 
-    if (['PENDING', 'REUSE', 'REVOKE'].includes(this.activeButton))
+    if (['PENDING', 'REUSE', 'REVOKE', 'RECEIVED_ONU'].includes(this.activeButton))
       status = this.activeButton;
     else if (this.activeButton !== 'TARGET' && this.activeButton !== undefined)
       status = '';

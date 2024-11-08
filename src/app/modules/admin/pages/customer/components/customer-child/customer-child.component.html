@@ -34,6 +34,17 @@
           Reuse
         </button>
       </div>
+
+      <div class="p-1 flex items-center">
+        <button
+          class="px-3 py-2 focus:outline-none border border-[#E4E4E4] shadow-sm rounded-xl text-[#7C7C7C] whitespace-nowrap "
+          [ngClass]="{
+                  'bg-[#CBF895] font-bold': activeButton === 'RECEIVED_ONU',
+                  'bg-white': activeButton !== 'RECEIVED_ONU'
+                }" (click)="showDataSource('RECEIVED_ONU')">
+          Received ONU
+        </button>
+      </div>
     </div>
 
     <div class="p-1 flex lg:justify-end">
@@ -144,15 +155,21 @@
           'bg-[#EBC1FF]': activeButton === 'REUSE',
           'bg-[#F8F49B]': activeButton === 'PENDING',
           'bg-[#A1CDFF]': activeButton === 'REVOKE',
+          'bg-[#CBF895]': activeButton === 'RECEIVED_ONU',
           'bg-[#ddd]': activeButton === undefined
         }">
         <p class="text-base" *ngIf="activeButton === undefined; else activeElse">
           filter
         </p>
         <ng-template #activeElse>
-          <p class="text-sm">
-            {{ activeButton }}
+          <p *ngIf="activeButton === 'RECEIVED_ONU'; else activeTitle" class="text-sm">
+            RECEIVED
           </p>
+          <ng-template #activeTitle>
+            <p class="text-sm">
+              {{ activeButton }}
+            </p>
+          </ng-template>
         </ng-template>
         <mat-icon style="color: #444444">filter_alt</mat-icon>
       </button>
@@ -167,6 +184,9 @@
           </div>
           <div class="py-3 cursor-pointer text-center hover:bg-gray-100" (click)="showDataSource('REUSE')">
             Reuse
+          </div>
+          <div class="py-3 cursor-pointer text-center hover:bg-gray-100" (click)="showDataSource('RECEIVED_ONU')">
+            Received
           </div>
         </div>
       </mat-menu>
@@ -249,12 +269,8 @@
             <img src="assets/icons/edit-icon.png" alt="" class="w-[24px]" />
           </button>
         </div>
-        <button
-          *ngIf="conditionRole === 'BCM'"
-          (click)="openRecieve(item.id, item.status)"
-          class="rounded-md flex justify-center items-center bg-[#BBF1B0] w-full p-3 cursor-pointer"
-          title="Edit"
-        >
+        <button *ngIf="conditionRole === 'BCM'" (click)="openRecieve(item.id, item.status)"
+          class="rounded-md flex justify-center items-center bg-[#BBF1B0] w-full p-3 cursor-pointer" title="Edit">
           <img src="assets/icons/edit-icon.png" class="w-6" alt="" />
         </button>
       </div>
