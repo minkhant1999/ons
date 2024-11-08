@@ -269,6 +269,8 @@ export class StatisticChildComponent implements OnInit {
         return 'bg-[#A1CDFF]';
       case 'Target':
         return 'bg-[#e4e4e4]';
+      case 'RECEIVED_ONU':
+        return 'bg-[#CBF895]';
       default:
         return 'bg-[#e4e4e4]';
     }

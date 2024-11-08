@@ -98,7 +98,8 @@
                 'bg-[#F8F49B] text-[#766E19]': item.status === 'PENDING',
                 'bg-[#A1CDFF] text-[#166292]': item.status === 'REVOKE',
                 'bg-[#EBC1FF] text-[#B934F8]': item.status === 'REUSE',
-                'bg-[#CBF895] text-[#378A26]': item?.status === 'RECEIVED_ONU'
+                'bg-[#CBF895] text-[#378A26]': item.status === 'RECEIVED_ONU',
+
               }"
             >
               {{ item.status }}
@@ -296,7 +297,8 @@
                 [ngClass]="{
                   'bg-[#F8F49B] text-[#766E19]': item.status === 'PENDING',
                   'bg-[#A1CDFF] text-[#166292]': item.status === 'REVOKE',
-                  'bg-[#EBC1FF] text-[#B934F8]': item.status === 'REUSE'
+                  'bg-[#EBC1FF] text-[#B934F8]': item.status === 'REUSE',
+                  'bg-[#CBF895] text-[#378A26]': item.status === 'RECEIVED_ONU',
                 }"
               >
                 {{ item.status | titlecase }}

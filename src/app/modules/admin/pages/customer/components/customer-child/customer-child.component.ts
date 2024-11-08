@@ -118,7 +118,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     this._dialogRef = this.dialog.open(CustomerDetailComponent, {
       width: dialogWidth,
       height: 'auto',
-      disableClose: true,
+      disableClose: false,
       data: { id: id },
     });
   }
@@ -131,7 +131,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
 
     this._dialogRef = this.dialog.open(CustomerEditComponent, {
       width: dialogWidth,
-      disableClose: true,
+      disableClose: false,
       data: { id: id },
     });
     this._dialogRef.componentInstance.editSuccess.subscribe(
