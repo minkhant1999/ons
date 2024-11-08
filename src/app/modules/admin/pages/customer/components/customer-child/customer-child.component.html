@@ -317,6 +317,14 @@
             <img src="assets/icons/edit-icon.png" alt="" class="w-[24px]" />
           </button>
         </div>
+        <button
+          *ngIf="conditionRole === 'BCM'"
+          (click)="openRecieve(item.id, item.status)"
+          class="rounded-md flex justify-center items-center bg-[#BBF1B0] w-full p-3 cursor-pointer"
+          title="Edit"
+        >
+          <img src="assets/icons/edit-icon.png" class="w-6" alt="" />
+        </button>
       </div>
     </div>
   </div>
