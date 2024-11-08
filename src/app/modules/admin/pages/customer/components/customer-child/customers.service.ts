@@ -14,6 +14,7 @@ export class CustomersService {
   private readonly _getCustomerDetailUrl = SERVICE_URLS.GET_CUSTOMER_DETAIL;
   private readonly _getCustomerStatusUrl = SERVICE_URLS.GET_CUSTOMER_STATUS;
   private readonly _download = SERVICE_URLS.DOWNLOAD;
+  private readonly _editRecieved = SERVICE_URLS.RECIEVED;
 
   constructor(private _http: HttpClient) {}
 
@@ -47,7 +48,12 @@ export class CustomersService {
       observe: 'response',
     });
   }
-
+  editRecievedStatus(id: any, body: any) {
+    return this._http.post(
+      [this._editRecieved, id, '/bcmReceived'].join('/'),
+      body
+    );
+  }
   // download() {
   //   return this._http.get(this._download);
   // }
