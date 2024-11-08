@@ -26,6 +26,7 @@ import { AlertService } from 'src/app/modules/service/alert.service';
 import { ApiLoadingComponent } from 'src/app/modules/custom/model/loading/api-loading.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
+import { CustomerRecieveEditComponent } from '../model/customer-recieve-edit/customer-recieve-edit.component';
 
 @Component({
   selector: 'app-customer-child',
@@ -66,7 +67,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private fb: FormBuilder,
     private _alert: AlertService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.conditionRole = this.cookieService.get('role');
@@ -109,7 +110,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
 
   showDetail(id: any) {
     const screenWidth = window.innerWidth;
-    let dialogWidth
+    let dialogWidth;
 
     if (screenWidth < 430) dialogWidth = '95%';
     else if (screenWidth > 1024) dialogWidth = '50%';
@@ -124,7 +125,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
 
   openEdit(id: any) {
     const screenWidth = window.innerWidth;
-    let dialogWidth
+    let dialogWidth;
     if (screenWidth < 430) dialogWidth = '95%';
     else if (screenWidth > 1024) dialogWidth = '50%';
 
@@ -139,7 +140,23 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
       }
     );
   }
+  openRecieve(id: any, status: any) {
+    const screenWidth = window.innerWidth;
+    let dialogWidth;
+    if (screenWidth < 430) dialogWidth = '95%';
+    else if (screenWidth > 1024) dialogWidth = '50%';
 
+    this._dialogRef = this.dialog.open(CustomerRecieveEditComponent, {
+      width: dialogWidth,
+      disableClose: true,
+      data: { id: id, status: status },
+    });
+    this._dialogRef.componentInstance.editSuccess.subscribe(
+      (message: string) => {
+        if (message === 'success') this.getAllCustomers();
+      }
+    );
+  }
   getAllCustomers(offset: number = 0) {
     this.results = [];
     this.isLoading = true;

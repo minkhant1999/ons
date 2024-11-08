@@ -1,9 +1,9 @@
 <div class="max-h-screen overflow-y-auto">
   <div class="flex justify-end p-2">
-    <mat-icon (click)="closeDetail()" class="cursor-pointer">close</mat-icon>
+    <mat-icon (click)="closeEdit()" class="cursor-pointer">close</mat-icon>
   </div>
   <div class="py-5 sm:px-10 px-2">
-    <h1 class="flex justify-center font-bold text-xl">Customer Details</h1>
+    <h1 class="flex justify-center font-bold text-xl">Customer Edit</h1>
     <div class="container mx-auto">
       <div
         class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm"
@@ -97,30 +97,41 @@
         <p>Debt</p>
         <p>{{ detail?.debt }}</p>
       </div>
-      <div
+      <!-- <div
         class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm"
       >
         <p>Status</p>
+        <mat-radio-group [(ngModel)]="selectedOption" (change)="getStatus()">
+          <mat-radio-button
+            *ngFor="let option of options"
+            [value]="option"
+            color="primary"
+          >
+            {{ option }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div> -->
+
+      <div class="mt-5 flex justify-end space-x-3">
         <button
-          class="px-3 py-2 cursor-default rounded-full focus:outline-none"
-          [ngClass]="{
-            'bg-[#F8F49B] text-[#766E19]': detail?.status === 'PENDING',
-            'bg-[#A1CDFF] text-[#166292]': detail?.status === 'REVOKE',
-            'bg-[#EBC1FF] text-[#B934F8]': detail?.status === 'REUSE',
-            'bg-[#CBF895] text-[#378A26]': detail?.status === 'RECEIVED_ONU'
-          }"
+          (click)="closeEdit()"
+          class="px-3 py-2 rounded-full bg-white text-[#444444] font-bold focus:outline-none"
         >
-          {{ detail?.status }}
+          Cancel
+        </button>
+        <!-- <button
+          (click)="update()"
+          class="px-3 py-2 rounded-full bg-[#FD6D1A] text-white font-bold focus:outline-none"
+        >
+          Update
+        </button> -->
+        <button
+          (click)="update()"
+          class="px-3 py-2 rounded-full bg-[#FD6D1A] text-white font-bold focus:outline-none"
+        >
+          Recieved ONU
         </button>
       </div>
     </div>
-  </div>
-  <div class="sm:hidden my-4 mx-3 flex justify-center">
-    <button
-      class="px-3 py-2 rounded-full bg-red-500 text-white font-bold focus:outline-none"
-      (click)="closeDetail()"
-    >
-      Close
-    </button>
   </div>
 </div>
