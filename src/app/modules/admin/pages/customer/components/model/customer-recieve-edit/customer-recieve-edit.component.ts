@@ -48,16 +48,6 @@ export class CustomerRecieveEditComponent implements OnInit {
         this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
       }
     });
-    // this._customer
-    //   .editRecievedStatus(this.id, { status: this.status })
-    //   .subscribe((data: any) => {
-    //     if (data.errorCode === '00000') {
-    //       this.detail = data.result;
-    //     } else {
-    //       this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
-    //       this._dialogRef.close();
-    //     }
-    //   });
   }
   ngOnInit(): void {
     throw new Error('Method not implemented.');
