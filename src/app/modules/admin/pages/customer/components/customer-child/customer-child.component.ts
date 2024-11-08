@@ -67,7 +67,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private fb: FormBuilder,
     private _alert: AlertService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.conditionRole = this.cookieService.get('role');
@@ -76,6 +76,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     });
     this._statisticChildGetSetService.checkStatistic.subscribe(
       (data: string) => {
+        console.log('data information ', data)
         this.activeButton = data;
       }
     );
@@ -141,21 +142,32 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     );
   }
   openRecieve(id: any, status: any) {
+    console.log(id, ' - ', status, 'hahah')
     const screenWidth = window.innerWidth;
     let dialogWidth;
     if (screenWidth < 430) dialogWidth = '95%';
     else if (screenWidth > 1024) dialogWidth = '50%';
 
-    this._dialogRef = this.dialog.open(CustomerRecieveEditComponent, {
-      width: dialogWidth,
-      disableClose: true,
-      data: { id: id, status: status },
-    });
-    this._dialogRef.componentInstance.editSuccess.subscribe(
-      (message: string) => {
-        if (message === 'success') this.getAllCustomers();
-      }
-    );
+
+    if (status === 'REVOKE') {
+      this._dialogRef = this.dialog.open(CustomerRecieveEditComponent, {
+        width: dialogWidth,
+        disableClose: true,
+        data: { id: id, status: status },
+      });
+      this._dialogRef.componentInstance.editSuccess.subscribe(
+        (message: string) => {
+          if (message === 'success') this.getAllCustomers();
+        }
+      );
+    } else if (status === 'RECEIVED_ONU') {
+      this._alert.confirmSuccessFail('can’t update again!', 'You already updated the status.', 'RECEIVED_ONU');
+    }
+    else {
+      this._alert.confirmSuccessFail('Warning!', 'Only revoke status can update.', 'WARNING');
+
+    }
+
   }
   getAllCustomers(offset: number = 0) {
     this.results = [];
