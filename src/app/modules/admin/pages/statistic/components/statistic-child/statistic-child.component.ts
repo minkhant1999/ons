@@ -1,10 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { SelectComponent } from 'src/app/modules/custom/select/select.component';
@@ -60,8 +56,10 @@ export class StatisticChildComponent implements OnInit {
   public fbbLeaderData: SelectStatusType[] = [];
   public b2bData: SelectStatusType[] = [];
 
-  public D2DCheck: boolean = false
-  public insertD2DValue: string = ''
+  public D2DCheck: boolean = false;
+  public insertD2DValue: string = '';
+  role: any;
+  isMobile = window.innerWidth <= 430;
 
   constructor(
     private statisticService: StatisticService,
@@ -71,9 +69,10 @@ export class StatisticChildComponent implements OnInit {
     private cookieService: CookieService,
     private _alert: AlertService,
     private _dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit(): void {
+    this.role = this.cookieService.get('role');
     this.searchTable = this.fb.group({
       branch: [''],
       township: [''],
@@ -81,8 +80,27 @@ export class StatisticChildComponent implements OnInit {
       d2dVmy: [''],
     });
 
+    this.statisticService.geStatistic().subscribe((data: any) => {
+      if (data.errorCode === '00000') {
+        const result = data.result.sort((a: any, b: any) => {
+          if (a.name === 'Target') return -1;
+          if (b.name === 'Target') return 1;
+          return 0;
+        });
+
+        this.items = result?.map((item: any) => ({
+          label: item.name,
+          value2: item.count,
+          percentage: item.percentage,
+          backgroundColor: this.getBackgroundColor(item.name),
+        }));
+      } else {
+        this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
+      }
+    });
+
     this.conditionRole = this.cookieService.get('role');
-    const res = this.cookieService.get('vmyCode')
+    const res = this.cookieService.get('vmyCode');
 
     if (this.conditionRole === 'HO' || this.conditionRole === 'BM') {
       this.statisticService.getBranch().subscribe((data: any) => {
@@ -121,7 +139,7 @@ export class StatisticChildComponent implements OnInit {
         }
       });
     } else if (this.conditionRole === 'D2D') {
-      this.D2DCheck = true
+      this.D2DCheck = true;
       this.statisticService.getD2D(res).subscribe((data: any) => {
         if (data.errorCode === '00000') {
           const result = data.result;
@@ -130,10 +148,10 @@ export class StatisticChildComponent implements OnInit {
             label: item.VMY_CODE,
           }));
 
-          this.insertD2DValue = this.b2bData[0].label
+          this.insertD2DValue = this.b2bData[0].label;
           this.searchTable?.get('d2dVmy')?.setValue(this.b2bData[0].value);
 
-          this.searchButton()
+          this.searchButton();
         } else {
           this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
         }
@@ -251,7 +269,6 @@ export class StatisticChildComponent implements OnInit {
           backgroundColor: this.getBackgroundColor(item.name),
         }));
         loadingRef.close();
-
       } else {
         loadingRef.close();
         this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');

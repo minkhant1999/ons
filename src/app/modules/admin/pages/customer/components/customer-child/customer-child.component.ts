@@ -67,7 +67,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private fb: FormBuilder,
     private _alert: AlertService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.conditionRole = this.cookieService.get('role');
@@ -76,7 +76,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     });
     this._statisticChildGetSetService.checkStatistic.subscribe(
       (data: string) => {
-        console.log('data information ', data)
+        console.log('data information ', data);
         this.activeButton = data;
       }
     );
@@ -111,14 +111,18 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
 
   showDetail(id: any) {
     const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
     let dialogWidth;
+    let dialogHeight;
 
-    if (screenWidth < 430) dialogWidth = '95%';
-    else if (screenWidth > 1024) dialogWidth = '50%';
+    if (screenWidth < 430 && screenHeight < 700) {
+      dialogWidth = '95%';
+      dialogHeight = '90%';
+    } else if (screenWidth > 1024) dialogWidth = '50%';
 
     this._dialogRef = this.dialog.open(CustomerDetailComponent, {
       width: dialogWidth,
-      height: 'auto',
+      height: dialogHeight,
       disableClose: false,
       data: { id: id },
     });
@@ -142,12 +146,11 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     );
   }
   openRecieve(id: any, status: any) {
-    console.log(id, ' - ', status, 'hahah')
+    console.log(id, ' - ', status, 'hahah');
     const screenWidth = window.innerWidth;
     let dialogWidth;
     if (screenWidth < 430) dialogWidth = '95%';
     else if (screenWidth > 1024) dialogWidth = '50%';
-
 
     if (status === 'REVOKE') {
       this._dialogRef = this.dialog.open(CustomerRecieveEditComponent, {
@@ -161,13 +164,18 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
         }
       );
     } else if (status === 'RECEIVED_ONU') {
-      this._alert.confirmSuccessFail('can’t update again!', 'You already updated the status.', 'RECEIVED_ONU');
+      this._alert.confirmSuccessFail(
+        'can’t update again!',
+        'You already updated the status.',
+        'RECEIVED_ONU'
+      );
+    } else {
+      this._alert.confirmSuccessFail(
+        'Warning!',
+        'Only revoke status can update.',
+        'WARNING'
+      );
     }
-    else {
-      this._alert.confirmSuccessFail('Warning!', 'Only revoke status can update.', 'WARNING');
-
-    }
-
   }
   getAllCustomers(offset: number = 0) {
     this.results = [];
@@ -176,7 +184,9 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     let search = cloneDeep(this.searchForm.value);
     let status = '';
 
-    if (['PENDING', 'REUSE', 'REVOKE', 'RECEIVED_ONU'].includes(this.activeButton))
+    if (
+      ['PENDING', 'REUSE', 'REVOKE', 'RECEIVED_ONU'].includes(this.activeButton)
+    )
       status = this.activeButton;
     else if (this.activeButton !== 'TARGET' && this.activeButton !== undefined)
       status = '';
