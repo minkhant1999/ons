@@ -1,4 +1,4 @@
-import { Component, computed, Input, OnInit, signal } from '@angular/core';
+import { Component, computed, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
 import { menuItem } from '../../service/menu-items';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -17,6 +17,7 @@ export type MenuItem = {
 })
 export class CustomSidenavComponent implements OnInit {
   sideNavCollapsed = signal(false);
+  @Output() closeSidenav = new EventEmitter<void>();
   public role = this.cookieService.get('role');
 
   @Input() set collapsed(val: boolean) {
@@ -26,7 +27,7 @@ export class CustomSidenavComponent implements OnInit {
   public menuItems: MenuItem[] = [];
   public menuItem = signal<MenuItem[]>([]);
 
-  constructor(private cookieService: CookieService) {}
+  constructor(private cookieService: CookieService) { }
 
   ngOnInit(): void {
     this.getPermissionMenuList();
@@ -42,4 +43,9 @@ export class CustomSidenavComponent implements OnInit {
   }
 
   profilePicSize = computed(() => (this.sideNavCollapsed() ? '38' : '50'));
+
+  collapseSidenav(): void {
+    // Collapse the sidenav
+    this.closeSidenav.emit()
+  }
 }

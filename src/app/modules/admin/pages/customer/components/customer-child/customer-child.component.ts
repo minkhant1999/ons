@@ -76,7 +76,6 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     });
     this._statisticChildGetSetService.checkStatistic.subscribe(
       (data: string) => {
-        console.log('data information ', data)
         this.activeButton = data;
       }
     );

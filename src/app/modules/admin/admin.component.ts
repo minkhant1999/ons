@@ -1,4 +1,4 @@
-import { Component, computed, OnInit, signal } from '@angular/core';
+import { Component, computed, HostListener, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from 'src/app/service/auth.service';
@@ -8,36 +8,57 @@ import { AuthService } from 'src/app/service/auth.service';
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
 })
+
 export class AdminComponent implements OnInit {
-  data: any;
   collapsed = signal(false);
-  isMobile = window.innerWidth <= 430;
+  isMobile = window.innerWidth <= 800;
   isLaptop = window.innerWidth <= 1024;
 
   code = this.cookieService.get('vmyCode');
   role = this.cookieService.get('role');
 
+  // Dynamically computed sidenav width
+  sidenavWidth = computed(() => {
+    if (this.isMobile) return this.collapsed() ? '0px' : '210px';
+    else return this.collapsed() ? '0px' : '210px';
+  });
+
+  sidenavMode = computed(() => (this.isMobile ? 'over' : 'side')); // Dynamically adjust sidenav mode
+  sidenavOpened = computed(() => !this.collapsed() && this.isMobile); // Dynamic opened state for mobile
+
   constructor(
     private router: Router,
     private authService: AuthService,
     private cookieService: CookieService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    if (this.isMobile || this.isLaptop) this.collapsed = signal(true);
-    else this.collapsed = signal(false);
+    this.adjustLayout();
   }
 
-  sidenavWidth = computed(() => {
-    if (this.isMobile) return this.collapsed() ? '0px' : '150px';
-    else if (this.isLaptop) return this.collapsed() ? '65px' : '160px';
-    else return this.collapsed() ? '65px' : '210px';
-  });
+  // Adjust layout properties on window resize
+  @HostListener('window:resize', [])
+  onResize(): void {
+    this.adjustLayout();
+  }
 
-  logOut() {
+  adjustLayout(): void {
+    this.isMobile = window.innerWidth <= 800;
+
+    // Automatically collapse if mobile or laptop
+    if (this.isMobile) this.collapsed.set(true);
+    else this.collapsed.set(false);
+  }
+
+  logOut(): void {
     this.cookieService.delete('vmyCode');
     this.cookieService.delete('role');
     this.authService.logOut();
     this.router.navigate(['login']);
+  }
+
+  onSidenavToggle(isOpened: boolean): void {
+    console.log(isOpened, ' testing')
+    this.collapsed.set(!isOpened);
   }
 }
