@@ -1,6 +1,6 @@
-<div class="py-20 px-10 bg-gray-100 h-full">
-  <div class="grid grid-cols-3 gap-10">
-    <form action="" [formGroup]="searchForm">
+<div class="md:block hidden p-10 bg-gray-100 h-full">
+  <div class="flex lg:flex-nowrap flex-wrap justify-between">
+    <form action="" class="lg:w-3/12 w-5/12" [formGroup]="searchForm">
       <div class="p-1">
         <app-input
           placeholder="Search by FTTH Account"
@@ -9,11 +9,16 @@
         ></app-input>
       </div>
     </form>
-    <div class="flex flex-row space-x-10">
+    <div
+      class="xl:w-5/12 lg:w-7/12 w-6/12 flex flex-row lg:justify-center justify-end gap-1 items-center"
+    >
       <div class="p-1 flex items-center">
         <button
-          class="px-3 py-2 focus:outline-none border border-[#E4E4E4] shadow-md rounded-xl text-[#7C7C7C]"
-          [ngClass]="{ 'bg-[#F8F49B] font-bold': activeButton === 'PENDING' }"
+          class="px-3 py-2 focus:outline-none border border-[#E4E4E4] shadow-sm rounded-xl text-[#7C7C7C]"
+          [ngClass]="{
+            'bg-[#F8F49B] font-bold': activeButton === 'PENDING',
+            'bg-white': activeButton !== 'PENDING'
+          }"
           (click)="showDataSource('PENDING')"
         >
           Pending
@@ -21,8 +26,11 @@
       </div>
       <div class="p-1 flex items-center">
         <button
-          class="px-3 py-2 focus:outline-none border border-[#E4E4E4] shadow-md rounded-xl text-[#7C7C7C]"
-          [ngClass]="{ 'bg-[#A1CDFF] font-bold': activeButton === 'REVOKE' }"
+          class="px-3 py-2 focus:outline-none border border-[#E4E4E4] shadow-sm rounded-xl text-[#7C7C7C]"
+          [ngClass]="{
+            'bg-[#A1CDFF] font-bold': activeButton === 'REVOKE',
+            'bg-white': activeButton !== 'REVOKE'
+          }"
           (click)="showDataSource('REVOKE')"
         >
           Revoke
@@ -30,76 +38,135 @@
       </div>
       <div class="p-1 flex items-center">
         <button
-          class="px-3 py-2 focus:outline-none border border-[#E4E4E4] shadow-md rounded-xl text-[#7C7C7C]"
-          [ngClass]="{ 'bg-[#EBC1FF] font-bold': activeButton === 'REUSE' }"
+          class="px-3 py-2 focus:outline-none border border-[#E4E4E4] shadow-sm rounded-xl text-[#7C7C7C]"
+          [ngClass]="{
+            'bg-[#EBC1FF] font-bold': activeButton === 'REUSE',
+            'bg-white': activeButton !== 'REUSE'
+          }"
           (click)="showDataSource('REUSE')"
         >
           Reuse
         </button>
       </div>
+
+      <div class="p-1 flex items-center">
+        <button
+          class="px-3 py-2 focus:outline-none border border-[#E4E4E4] shadow-sm rounded-xl text-[#7C7C7C] whitespace-nowrap"
+          [ngClass]="{
+            'bg-[#CBF895] font-bold': activeButton === 'RECEIVED_ONU',
+            'bg-white': activeButton !== 'RECEIVED_ONU'
+          }"
+          (click)="showDataSource('RECEIVED_ONU')"
+        >
+          Received ONU
+        </button>
+      </div>
     </div>
 
-    <div class="p-1 flex justify-end">
-      <button
-        class="px-3 py-2 bg-[#4485FF] text-white font-bold rounded-full focus:outline-none flex items-center"
-        (click)="download()"
-      >
-        Download File
-        <mat-icon class="ml-2">download</mat-icon>
-      </button>
+    <div class="p-1 flex lg:justify-end">
+      <div class="flex justify-center items-center">
+        <button
+          class="px-3 py-2.5 bg-[#4485FF] text-white rounded-full focus:outline-none flex items-center"
+          (click)="download()"
+        >
+          <div class="flex justify-center items-center gap-2">
+            <div class="text-nowrap text-sm">Download File</div>
+            <mat-icon>download</mat-icon>
+          </div>
+        </button>
+      </div>
     </div>
   </div>
 
   <div class="py-10">
     <table class="w-full border-collapse shadow-lg">
-      <thead>
+      <thead class="uppercase shadow-md">
         <tr class="bg-[#E6E8F1] text-left font-semibold">
-          <th class="px-4 py-3 text-center">No</th>
-          <th class="px-4 py-3 text-center">Ftth Account</th>
-          <th class="px-4 py-3 text-center">Total Money</th>
-          <th class="px-4 py-3 text-center">D2D VMY</th>
-          <th class="px-4 py-3 text-center">Status</th>
-          <th class="px-4 py-3 text-center">Action</th>
+          <th class="lg:px-4 px-2 py-5 text-center">No</th>
+          <th class="lg:px-4 px-2 py-5 text-center">Ftth Account</th>
+          <th class="lg:px-4 px-2 py-5 text-center">Total Money</th>
+          <th class="lg:px-4 px-2 py-5 text-center">D2D VMY</th>
+          <th class="lg:px-4 px-2 py-5 text-center">Status</th>
+          <th class="lg:px-4 px-2 py-5 text-center">Action</th>
         </tr>
       </thead>
 
-      <tbody>
+      <tbody *ngIf="results.length > 0; else noData">
         <tr *ngFor="let item of results; let i = index" class="bg-white">
-          <td class="px-4 py-3 text-center">{{ offset * size + (i + 1) }}</td>
-          <td class="px-4 py-3 text-center">{{ item.ftthAccount }}</td>
-          <td class="px-4 py-3 text-center">{{ item.totalMoney }}</td>
-          <td class="px-4 py-3 text-center">{{ item.d2dVmy }}</td>
+          <td class="lg:px-4 px-2 py-5 lg:text-base text-sm text-center">
+            {{ offset * size + (i + 1) }}
+          </td>
+          <td class="lg:px-4 px-2 py-5 lg:text-base text-sm text-center">
+            {{ item.ftthAccount }}
+          </td>
+          <td class="lg:px-4 px-2 py-5 lg:text-base text-sm text-center">
+            {{ item.totalMoney }}
+          </td>
+          <td class="lg:px-4 px-2 py-5 lg:text-base text-sm text-center">
+            {{ item.d2dVmy }}
+          </td>
 
-          <td class="px-4 py-3 text-center">
+          <td class="lg:px-4 px-2 py-5 text-center">
             <button
-              class="cursor-default px-4 py-1 text-center rounded-full"
+              class="cursor-default lg:px-4 px-2 py-1 lg:text-base text-sm text-center rounded-full"
               [ngClass]="{
                 'bg-[#F8F49B] text-[#766E19]': item.status === 'PENDING',
                 'bg-[#A1CDFF] text-[#166292]': item.status === 'REVOKE',
-                'bg-[#EBC1FF] text-[#B934F8]': item.status === 'REUSE'
+                'bg-[#EBC1FF] text-[#B934F8]': item.status === 'REUSE',
+                'bg-[#CBF895] text-[#378A26]': item.status === 'RECEIVED_ONU',
+
               }"
             >
               {{ item.status }}
             </button>
           </td>
 
-          <td class="px-4 py-3 items-center flex justify-center space-x-2">
+          <td class="lg:px-4 px-2 py-5 items-center flex justify-center gap-4">
             <button
               (click)="showDetail(item.id)"
-              class="text-gray-500 hover:text-gray-700"
+              class="text-gray-500 hover:text-gray-700 mt-1"
+              title="Detail"
             >
-              <mat-icon>info</mat-icon>
+              <img src="assets/icons/info-circle-icon.png" class="w-6" alt="" />
             </button>
             <button
               *ngIf="conditionRole === 'D2D'"
               (click)="openEdit(item.id)"
-              class="text-gray-500 hover:text-gray-700"
+              class="text-gray-500 hover:text-gray-700 mt-0.5"
+              title="Edit"
             >
-              <mat-icon>edit</mat-icon>
+              <img src="assets/icons/edit-icon.png" class="w-6" alt="" />
+            </button>
+            <button
+              *ngIf="conditionRole === 'BCM'"
+              (click)="openRecieve(item.id, item.status)"
+              class="text-gray-500 hover:text-gray-700 mt-0.5"
+              title="Edit"
+            >
+              <img src="assets/icons/edit-icon.png" class="w-6" alt="" />
             </button>
           </td>
         </tr>
       </tbody>
+      <ng-template #noData>
+        <tr class="bg-white">
+          <td colspan="7" class="py-16">
+            <div
+              *ngIf="!isLoading"
+              class="flex items-start justify-center w-full gap-2"
+            >
+              <mat-icon style="color: rgb(200, 198, 198)">error</mat-icon>
+
+              <p>{{ "No search result" }}</p>
+            </div>
+            <div *ngIf="isLoading">
+              <span class="flex justify-center">
+                <mat-spinner [diameter]="30"></mat-spinner>
+              </span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
     </table>
     <app-paginator
       [offset]="offset"
@@ -107,4 +174,213 @@
       (change)="getAllCustomers($event)"
     ></app-paginator>
   </div>
+</div>
+
+<div class="md:hidden block py-10 px-3 bg-gray-100 h-full">
+  <div class="flex gap-4 justify-between items-center">
+    <div class="w-full">
+      <div class="">
+        <form action="" [formGroup]="searchForm">
+          <div class="p-1">
+            <app-input
+              placeholder="Search by FTTH Account"
+              formControlName="ftthAccount"
+              (keydown)="onKeyDown($event)"
+            ></app-input>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class=" ">
+      <button
+        [matMenuTriggerFor]="logout"
+        class="w-[110px] h-12 rounded-lg flex items-center justify-between px-3"
+        [ngClass]="{
+          'bg-[#EBC1FF]': activeButton === 'REUSE',
+          'bg-[#F8F49B]': activeButton === 'PENDING',
+          'bg-[#A1CDFF]': activeButton === 'REVOKE',
+          'bg-[#CBF895]': activeButton === 'RECEIVED_ONU',
+          'bg-[#ddd]': activeButton === undefined
+        }"
+      >
+        <p
+          class="text-base"
+          *ngIf="activeButton === undefined; else activeElse"
+        >
+          filter
+        </p>
+        <ng-template #activeElse>
+          <p
+            *ngIf="activeButton === 'RECEIVED_ONU'; else activeTitle"
+            class="text-sm"
+          >
+            RECEIVED
+          </p>
+          <ng-template #activeTitle>
+            <p class="text-sm">
+              {{ activeButton }}
+            </p>
+          </ng-template>
+        </ng-template>
+        <mat-icon style="color: #444444">filter_alt</mat-icon>
+      </button>
+
+      <mat-menu #logout="matMenu" class="w-full">
+        <div style="width: 100%">
+          <div
+            class="py-3 cursor-pointer text-center hover:bg-gray-100"
+            (click)="showDataSource('PENDING')"
+          >
+            Pending
+          </div>
+          <div
+            class="py-3 cursor-pointer text-center hover:bg-gray-100"
+            (click)="showDataSource('REVOKE')"
+          >
+            Revoke
+          </div>
+          <div
+            class="py-3 cursor-pointer text-center hover:bg-gray-100"
+            (click)="showDataSource('REUSE')"
+          >
+            Reuse
+          </div>
+          <div
+            class="py-3 cursor-pointer text-center hover:bg-gray-100"
+            (click)="showDataSource('RECEIVED_ONU')"
+          >
+            Received
+          </div>
+        </div>
+      </mat-menu>
+    </div>
+  </div>
+
+  <div class="flex justify-start items-center my-4">
+    <button
+      class="px-3 py-2.5 bg-[#4485FF] text-white rounded-full focus:outline-none flex items-center"
+      (click)="download()"
+    >
+      <div class="flex justify-center items-center gap-2">
+        <div>Download</div>
+        <mat-icon>download</mat-icon>
+      </div>
+    </button>
+  </div>
+
+  <div *ngIf="results.length > 0; else noDataResult">
+    <div *ngFor="let item of results; let i = index">
+      <div class="bg-white mx-2 rounded-md px-4 py-6 my-6">
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-11/12 flex items-center">
+            <div class="w-4/12 sm:text-base text-sm font-semibold">
+              FTTH Account
+            </div>
+            <div class="w-1/12">:</div>
+            <div class="w-7/12 sm:text-base text-sm break-words">
+              {{ item.ftthAccount }}
+            </div>
+          </div>
+          <div class="w-1/12">
+            <button
+              (click)="showDetail(item.id)"
+              class="text-gray-500 bg-[#C5D9FF] sm:w-8 sm:h-8 w-6 h-6 rounded hover:text-gray-700 mt-1 flex justify-center items-center"
+              title="Detail"
+            >
+              <img
+                src="assets/icons/info-circle-mobile.png"
+                class="sm:w-6 w-4"
+                alt=""
+              />
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-11/12 flex items-center">
+            <div class="w-4/12 sm:text-base text-sm font-semibold">
+              Total Money
+            </div>
+            <div class="w-1/12">:</div>
+            <div class="w-7/12 sm:text-base text-sm">{{ item.totalMoney }}</div>
+          </div>
+          <div class="w-1/12"></div>
+        </div>
+
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-11/12 flex items-center">
+            <div class="w-4/12 sm:text-base text-sm font-semibold">D2D VMY</div>
+            <div class="w-1/12">:</div>
+            <div class="w-7/12 sm:text-base text-sm">{{ item.d2dVmy }}</div>
+          </div>
+          <div class="w-1/12"></div>
+        </div>
+
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-11/12 flex items-center">
+            <div class="w-4/12 sm:text-base text-sm font-semibold">Status</div>
+            <div class="w-1/12">:</div>
+            <div class="w-7/12 flex">
+              <div
+                class="cursor-default lg:px-4 px-2 py-1 sm:text-base text-sm text-center rounded-full"
+                [ngClass]="{
+                  'bg-[#F8F49B] text-[#766E19]': item.status === 'PENDING',
+                  'bg-[#A1CDFF] text-[#166292]': item.status === 'REVOKE',
+                  'bg-[#EBC1FF] text-[#B934F8]': item.status === 'REUSE',
+                  'bg-[#CBF895] text-[#378A26]': item.status === 'RECEIVED_ONU',
+                }"
+              >
+                {{ item.status | titlecase }}
+              </div>
+            </div>
+          </div>
+          <div class="w-1/12"></div>
+        </div>
+
+        <div
+          *ngIf="conditionRole === 'D2D'"
+          (click)="openEdit(item.id)"
+          class="rounded-md flex justify-center items-center bg-[#BBF1B0] w-full p-3 cursor-pointer"
+        >
+          <button>
+            <img src="assets/icons/edit-icon.png" alt="" class="w-[24px]" />
+          </button>
+        </div>
+        <button
+          *ngIf="conditionRole === 'BCM'"
+          (click)="openRecieve(item.id, item.status)"
+          class="rounded-md flex justify-center items-center bg-[#BBF1B0] w-full p-3 cursor-pointer"
+          title="Edit"
+        >
+          <img src="assets/icons/edit-icon.png" class="w-6" alt="" />
+        </button>
+      </div>
+    </div>
+  </div>
+  <app-paginator
+    class="sm:hidden block"
+    [offset]="offset"
+    [totalOffset]="totalOffset"
+    (change)="getAllCustomers($event)"
+  ></app-paginator>
+
+  <ng-template #noDataResult>
+    <div
+      *ngIf="!isLoading"
+      class="flex items-start justify-center gap-2 bg-white p-6 mx-3 rounded-md"
+    >
+      <mat-icon style="color: rgb(200, 198, 198)">error</mat-icon>
+
+      <p>{{ "No import result" }}</p>
+    </div>
+    <div *ngIf="isLoading">
+      <div class="my-4 w-full">
+        <div class="animate-pulse">
+          <div class="bg-white my-6 rounded-md w-full h-[380px]"></div>
+          <div class="bg-white my-6 rounded-md w-full h-[380px]"></div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 </div>

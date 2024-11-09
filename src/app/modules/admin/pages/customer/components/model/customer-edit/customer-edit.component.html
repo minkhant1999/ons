@@ -2,73 +2,84 @@
   <div class="flex justify-end p-2">
     <mat-icon (click)="closeEdit()" class="cursor-pointer">close</mat-icon>
   </div>
-  <div class="py-5 px-10">
+  <div class="py-5 sm:px-10 px-2">
     <h1 class="flex justify-center font-bold text-xl">Customer Edit</h1>
     <div class="container mx-auto">
-      <div class="flex justify-between p-1 mb-3 font-medium">
-        <p>FTTH Account</p>
-        <p>{{ detail?.ftthAccount }}</p>
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
+        <p class="w-2/6">FTTH Account</p>
+        <p class="w-4/6 text-right">{{ detail?.ftthAccount }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
-        <p>Contract ID</p>
-        <p>{{ detail?.contractId }}</p>
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
+        <p class="w-2/6">Contract ID</p>
+        <p class="w-4/6 text-right">{{ detail?.contractId }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
-        <p>Customer Address</p>
-        <p class="max-w-xs text-end">
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
+        <p class="w-2/6">Customer Address</p>
+        <p class="max-w-xs w-4/6 text-right">
           {{ detail?.customerAddress }}
         </p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
-        <p>Contract NO 1</p>
-        <p>{{ detail?.contactNo1 }}</p>
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
+        <p class="w-2/6">Contract NO 1</p>
+        <p class="w-4/6 text-right">{{ detail?.contactNo1 }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
-        <p>Contract NO 2</p>
-        <p>{{ detail?.contactNo2 }}</p>
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
+        <p class="w-2/6">Contract NO 2</p>
+        <p class="w-4/6 text-right">{{ detail?.contactNo2 }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
-        <p>Total Money</p>
-        <p>{{ detail?.totalMoney }}</p>
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
+        <p class="w-2/6">Total Money</p>
+        <p class="w-4/6 text-right">{{ detail?.totalMoney }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
-        <p>Branch</p>
-        <p>{{ detail?.branch }}</p>
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
+        <p class="w-2/6">Branch</p>
+        <p class="w-4/6 text-right">{{ detail?.branch }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
-        <p>Site Code</p>
-        <p>{{ detail?.siteCode }}</p>
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
+        <p class="w-2/6">Site Code</p>
+        <p class="w-4/6 text-right">{{ detail?.siteCode }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
-        <p>Site Code & SN Code</p>
-        <p>{{ detail?.siteCodeAndSNCode }}</p>
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
+        <p class="w-2/6">Site Code & SN Code</p>
+        <p class="w-4/6 text-right">{{ detail?.siteCodeAndSNCode }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
-        <p>D2D Name</p>
-        <p>{{ detail?.d2dName }}</p>
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
+        <p class="w-2/6">D2D Name</p>
+        <p class="w-4/6 text-right">{{ detail?.d2dName }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
-        <p>FBB Leader Name</p>
-        <p>{{ detail?.fbbLeaderName }}</p>
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
+        <p class="w-2/6">FBB Leader Name</p>
+        <p class="w-4/6 text-right">{{ detail?.fbbLeaderName }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
-        <p>Township</p>
-        <p>{{ detail?.township }}</p>
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
+        <p class="w-2/6">Township</p>
+        <p class="w-4/6 text-right">{{ detail?.township }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
-        <p>BC Name</p>
-        <p>{{ detail?.bcName }}</p>
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
+        <p class="w-2/6">BC Name</p>
+        <p class="w-4/6 text-right">{{ detail?.bcName }}</p>
       </div>
-      <div class="flex justify-between p-1 mb-3 font-medium">
-        <p>Status</p>
-        <mat-radio-group [(ngModel)]="selectedOption" (change)="getStatus()">
-          <mat-radio-button *ngFor="let option of options" [value]="option" color="primary">
-            {{ option }}
-          </mat-radio-button>
-        </mat-radio-group>
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
+        <p class="w-2/6">ONT Serial</p>
+        <p class="w-4/6 text-right">{{ detail?.ontSerial }}</p>
+      </div>
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
+        <p class="w-2/6">Debt</p>
+        <p class="w-4/6 text-right">{{ detail?.debt }}</p>
+      </div>
+      <div class="flex justify-between p-1 mb-3 font-medium sm:text-base text-sm">
+        <p class="w-2/6">Status</p>
+
+        <div class="w-4/6 text-right">
+          <mat-radio-group [(ngModel)]="selectedOption" (change)="getStatus()">
+            <mat-radio-button *ngFor="let option of options" [value]="option" color="primary">
+              {{ option }}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
       </div>
 
-      <div class="mt-5 flex justify-end space-x-3">
+      <div class="mt-5 mb-16 flex justify-end space-x-3">
         <button (click)="closeEdit()"
           class="px-3 py-2 rounded-full bg-white text-[#444444] font-bold focus:outline-none">
           Cancel

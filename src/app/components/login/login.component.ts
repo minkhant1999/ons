@@ -1,4 +1,4 @@
-import { Component, OnInit, } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/service/auth.service';
@@ -27,8 +27,8 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private browserDetectionService: BrowserDetectionService,
     private _loginServiceService: LoginServiceService,
-    private cookieService: CookieService,
-  ) { }
+    private cookieService: CookieService
+  ) {}
 
   ngOnInit(): void {
     this.browser = this.browserDetectionService.getBrowserInfo();
@@ -50,9 +50,6 @@ export class LoginComponent implements OnInit {
   }
 
   pageReload() {
-    this.cookieService.delete('accessTokenONS');
-    this.cookieService.delete('groupPermission');
-    this.cookieService.delete('username');
     const reloaded = sessionStorage.getItem('reloaded');
 
     if (!reloaded) {

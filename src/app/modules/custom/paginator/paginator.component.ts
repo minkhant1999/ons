@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -8,14 +8,16 @@ import { MatIconModule } from '@angular/material/icon';
   standalone: true,
   imports: [MatIconModule],
 })
-export class PaginatorComponent {
+export class PaginatorComponent implements OnInit {
   @Input() offset: number = 0;
   @Input() totalOffset: number = 0;
   @Output() change = new EventEmitter<number>();
 
+  ngOnInit(): void {
+  }
+
   nextPage() {
     this.changePage(this.offset + 1);
-    console.log(this.offset, 'this.offset');
   }
 
   prevPage() {

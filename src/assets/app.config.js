@@ -14,4 +14,5 @@ export const SERVICE_URLS = {
   GET_CUSTOMER_DETAIL: `${BASE_URL}/data`,
   GET_CUSTOMER_STATUS: `${BASE_URL}/data`,
   DOWNLOAD: `${BASE_URL}/data/export/excel`,
+  RECIEVED: `${BASE_URL}/data`,
 };

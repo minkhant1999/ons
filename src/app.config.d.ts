@@ -13,5 +13,6 @@ declare module 'src/assets/app.config' {
     GET_CUSTOMER_DETAIL: string;
     GET_CUSTOMER_STATUS: string;
     DOWNLOAD: string;
+    RECIEVED: string;
   };
 }

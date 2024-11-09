@@ -1,11 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { SelectComponent } from 'src/app/modules/custom/select/select.component';
@@ -14,6 +9,9 @@ import { StatisticService } from '../../statistic.service';
 import { AutoCompleteComponent } from 'src/app/modules/custom/auto-complete/auto-complete.component';
 import { CookieService } from 'ngx-cookie-service';
 import { InputComponent } from 'src/app/modules/custom/input/input.component';
+import { AlertService } from 'src/app/modules/service/alert.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ApiLoadingComponent } from 'src/app/modules/custom/model/loading/api-loading.component';
 
 type DataField = 'townshipData' | 'fbbLeaderData' | 'b2bData';
 interface SelectStatusType {
@@ -39,7 +37,7 @@ interface SelectStatistic {
     MatIconModule,
     CommonModule,
     AutoCompleteComponent,
-    InputComponent
+    InputComponent,
   ],
 })
 export class StatisticChildComponent implements OnInit {
@@ -58,15 +56,23 @@ export class StatisticChildComponent implements OnInit {
   public fbbLeaderData: SelectStatusType[] = [];
   public b2bData: SelectStatusType[] = [];
 
+  public D2DCheck: boolean = false;
+  public insertD2DValue: string = '';
+  role: any;
+  isMobile = window.innerWidth <= 430;
+
   constructor(
     private statisticService: StatisticService,
     private fb: FormBuilder,
     private router: Router,
     private _statisticChildGetSetService: StatisticChildGetSetService,
-    private cookieService: CookieService
-  ) { }
+    private cookieService: CookieService,
+    private _alert: AlertService,
+    private _dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
+    this.role = this.cookieService.get('role');
     this.searchTable = this.fb.group({
       branch: [''],
       township: [''],
@@ -74,8 +80,27 @@ export class StatisticChildComponent implements OnInit {
       d2dVmy: [''],
     });
 
+    this.statisticService.geStatistic().subscribe((data: any) => {
+      if (data.errorCode === '00000') {
+        const result = data.result.sort((a: any, b: any) => {
+          if (a.name === 'Target') return -1;
+          if (b.name === 'Target') return 1;
+          return 0;
+        });
+
+        this.items = result?.map((item: any) => ({
+          label: item.name,
+          value2: item.count,
+          percentage: item.percentage,
+          backgroundColor: this.getBackgroundColor(item.name),
+        }));
+      } else {
+        this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
+      }
+    });
+
     this.conditionRole = this.cookieService.get('role');
-    const res = this.cookieService.get('vmyCode')
+    const res = this.cookieService.get('vmyCode');
 
     if (this.conditionRole === 'HO' || this.conditionRole === 'BM') {
       this.statisticService.getBranch().subscribe((data: any) => {
@@ -85,6 +110,8 @@ export class StatisticChildComponent implements OnInit {
             value: item,
             label: item,
           }));
+        } else {
+          this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
         }
       });
     } else if (this.conditionRole === 'BCM') {
@@ -95,6 +122,8 @@ export class StatisticChildComponent implements OnInit {
             value: item,
             label: item,
           }));
+        } else {
+          this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
         }
       });
     } else if (this.conditionRole === 'FBB_LEADER') {
@@ -105,9 +134,12 @@ export class StatisticChildComponent implements OnInit {
             value: item.FULL_NAME,
             label: item.VMY_CODE,
           }));
+        } else {
+          this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
         }
       });
     } else if (this.conditionRole === 'D2D') {
+      this.D2DCheck = true;
       this.statisticService.getD2D(res).subscribe((data: any) => {
         if (data.errorCode === '00000') {
           const result = data.result;
@@ -116,9 +148,12 @@ export class StatisticChildComponent implements OnInit {
             label: item.VMY_CODE,
           }));
 
+          this.insertD2DValue = this.b2bData[0].label;
           this.searchTable?.get('d2dVmy')?.setValue(this.b2bData[0].value);
 
-          this.searchButton()
+          this.searchButton();
+        } else {
+          this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
         }
       });
     }
@@ -153,6 +188,8 @@ export class StatisticChildComponent implements OnInit {
           value: item,
           label: item,
         }));
+      } else {
+        this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
       }
     });
     this.searchTable.get('branch')?.setValue(selectedBranch.value);
@@ -176,6 +213,8 @@ export class StatisticChildComponent implements OnInit {
           value: item.FULL_NAME,
           label: item.VMY_CODE,
         }));
+      } else {
+        this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
       }
     });
     this.searchTable.get('township')?.setValue(selectedTownship.value);
@@ -196,6 +235,8 @@ export class StatisticChildComponent implements OnInit {
           value: item.FULL_NAME,
           label: item.VMY_CODE,
         }));
+      } else {
+        this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
       }
     });
     this.searchTable.get('fbbLeaderVmy')?.setValue(selectedFBBLeader.label);
@@ -207,10 +248,13 @@ export class StatisticChildComponent implements OnInit {
   }
 
   searchButton() {
+    const loadingRef = this._dialog.open(ApiLoadingComponent, {
+      disableClose: true,
+    });
     let params = this.searchTable.value;
+    if (this.D2DCheck) params.d2dVmy = this.insertD2DValue;
 
     this.statisticService.geStatistic(params).subscribe((data: any) => {
-
       if (data.errorCode === '00000') {
         const result = data.result.sort((a: any, b: any) => {
           if (a.name === 'Target') return -1;
@@ -224,6 +268,10 @@ export class StatisticChildComponent implements OnInit {
           percentage: item.percentage,
           backgroundColor: this.getBackgroundColor(item.name),
         }));
+        loadingRef.close();
+      } else {
+        loadingRef.close();
+        this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
       }
     });
   }
@@ -238,6 +286,8 @@ export class StatisticChildComponent implements OnInit {
         return 'bg-[#A1CDFF]';
       case 'Target':
         return 'bg-[#e4e4e4]';
+      case 'RECEIVED_ONU':
+        return 'bg-[#CBF895]';
       default:
         return 'bg-[#e4e4e4]';
     }
