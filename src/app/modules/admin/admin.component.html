@@ -20,6 +20,22 @@
           <span class="material-icons" style="color: #376e9a">account_circle</span>
         </button>
       </div>
+
+      <mat-menu #logout="matMenu">
+        <button mat-menu-item (click)="logOut()">
+          <div style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                  ">
+            <span class="material-icons" style="margin-right: 8px">logout</span>
+            Logout
+          </div>
+        </button>
+      </mat-menu>
+
+
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
