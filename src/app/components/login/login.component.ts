@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     private browserDetectionService: BrowserDetectionService,
     private _loginServiceService: LoginServiceService,
     private cookieService: CookieService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.browser = this.browserDetectionService.getBrowserInfo();
