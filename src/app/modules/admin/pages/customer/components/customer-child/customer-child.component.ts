@@ -67,7 +67,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private fb: FormBuilder,
     private _alert: AlertService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.conditionRole = this.cookieService.get('role');
@@ -110,18 +110,15 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
 
   showDetail(id: any) {
     const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
     let dialogWidth;
-    let dialogHeight;
 
-    if (screenWidth < 430 && screenHeight < 700) {
+    if (screenWidth < 430) {
       dialogWidth = '95%';
-      dialogHeight = '90%';
     } else if (screenWidth > 1024) dialogWidth = '50%';
 
     this._dialogRef = this.dialog.open(CustomerDetailComponent, {
       width: dialogWidth,
-      height: dialogHeight,
+      height: 'auto',
       disableClose: false,
       data: { id: id },
     });
