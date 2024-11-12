@@ -58,7 +58,6 @@ export class AdminComponent implements OnInit {
   }
 
   onSidenavToggle(isOpened: boolean): void {
-    console.log(isOpened, ' testing')
     this.collapsed.set(!isOpened);
   }
 }

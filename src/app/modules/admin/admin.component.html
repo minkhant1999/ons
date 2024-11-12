@@ -16,11 +16,70 @@
         <div class="flex flex-col items-center">
           <span class="text-base font-bold">{{ code }}</span>
         </div>
-        <button mat-icon-button>
+        <button mat-icon-button [matMenuTriggerFor]="logout">
           <span class="material-icons" style="color: #376e9a">account_circle</span>
         </button>
       </div>
+
+      <mat-menu #logout="matMenu">
+        <button mat-menu-item (click)="logOut()">
+          <div style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                  ">
+            <span class="material-icons" style="margin-right: 8px">logout</span>
+            Logout
+          </div>
+        </button>
+      </mat-menu>
+
+
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<!-- <mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav opened mode="side" class="sidenav" [style.width]="sidenavWidth()">
+    <app-custom-sidenav [collapsed]="collapsed()" />
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content" [style.margin-left]="sidenavWidth()">
+    <mat-toolbar class="mat-elevation-z3 flex justify-between toolbar">
+      <button mat-icon-button (click)="collapsed.set(!collapsed())">
+        <mat-icon style="color: #235884">menu</mat-icon>
+      </button>
+
+      <div *ngIf="!isMobile">
+        <span class="text-base font-bold">{{ role }}</span>
+      </div>
+
+      <div class="flex items-center mt-0.5">
+        <div class="flex flex-col items-center">
+          <span class="text-base font-bold">{{ code }}</span>
+        </div>
+        <button mat-icon-button [matMenuTriggerFor]="logout">
+          <span class="material-icons" style="color: #376e9a">account_circle</span>
+        </button>
+      </div>
+
+      <mat-menu #logout="matMenu">
+        <button mat-menu-item (click)="logOut()">
+          <div style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 100%;
+            ">
+            <span class="material-icons" style="margin-right: 8px">logout</span>
+            Logout
+          </div>
+        </button>
+      </mat-menu>
+    </mat-toolbar>
+
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container> -->
