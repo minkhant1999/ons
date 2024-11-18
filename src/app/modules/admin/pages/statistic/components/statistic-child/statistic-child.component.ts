@@ -55,7 +55,9 @@ export class StatisticChildComponent implements OnInit {
   public townshipData: SelectStatusType[] = [];
   public fbbLeaderData: SelectStatusType[] = [];
   public b2bData: SelectStatusType[] = [];
-
+  revokeValue: any;
+  receivedValue: any;
+  totalRevokeValue: any;
   public D2DCheck: boolean = false;
   public insertD2DValue: string = '';
   role: any;
@@ -94,6 +96,49 @@ export class StatisticChildComponent implements OnInit {
           percentage: item.percentage,
           backgroundColor: this.getBackgroundColor(item.name),
         }));
+        console.log(this.items, 'this is the item');
+        const revokeItem = this.items.find((item) => item.label === 'REVOKE');
+        const receivedOnuItem = this.items.find(
+          (item) => item.label === 'RECEIVED_ONU'
+        );
+
+        // Log their corresponding value2 values if found
+        if (revokeItem) {
+          console.log('REVOKE value2:', revokeItem.value2);
+          this.revokeValue = revokeItem.value2;
+        } else {
+          console.log('REVOKE item not found');
+        }
+
+        if (receivedOnuItem) {
+          console.log('RECEIVED_ONU value2:', receivedOnuItem.value2);
+          this.receivedValue = receivedOnuItem.value2;
+        } else {
+          console.log('RECEIVED_ONU item not found');
+        }
+        if (this.revokeValue && this.receivedValue) {
+          this.totalRevokeValue = this.revokeValue + this.receivedValue;
+          console.log(this.totalRevokeValue, 'this is the total revoke');
+        } else {
+          console.log(
+            'One or both values are missing, unable to calculate total.'
+          );
+        }
+        this.items = this.items.map((item: any) => {
+          if (item.label === 'REVOKE') {
+            return {
+              ...item,
+              value2: this.totalRevokeValue, // Set value2 to the calculated totalRevokeValue
+            };
+          }
+          return item; // Return the item as it is for all other labels
+        });
+
+        // Log the updated items
+        console.log(
+          this.items,
+          'this is the updated items with totalRevokeValue'
+        );
       } else {
         this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
       }
