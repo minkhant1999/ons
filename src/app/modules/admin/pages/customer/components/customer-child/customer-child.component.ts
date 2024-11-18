@@ -25,6 +25,8 @@ import { cloneDeep } from 'lodash';
 import { AlertService } from 'src/app/modules/service/alert.service';
 import { ApiLoadingComponent } from 'src/app/modules/custom/model/loading/api-loading.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatMenuModule } from '@angular/material/menu';
+import { CustomerRecieveEditComponent } from '../model/customer-recieve-edit/customer-recieve-edit.component';
 
 @Component({
   selector: 'app-customer-child',
@@ -42,6 +44,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     PaginatorComponent,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
+    MatMenuModule,
   ],
 })
 export class CustomerChildComponent implements OnInit, OnDestroy {
@@ -55,6 +58,8 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   _dialogRef!: MatDialogRef<any>;
   activeButton = '';
 
+  public isDropdownOpen = false;
+
   constructor(
     private dialog: MatDialog,
     private _statisticChildGetSetService: StatisticChildGetSetService,
@@ -62,7 +67,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private fb: FormBuilder,
     private _alert: AlertService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.conditionRole = this.cookieService.get('role');
@@ -79,44 +84,55 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
 
   showDataSource(button: string) {
     this.isLoading = true;
-    this.results = []
+    this.results = [];
     this.activeButton = button;
 
     let search = {
       page: 0,
       size: 0,
-      status: button
+      status: button,
     };
 
-    this._customer
-      .getCustomerStatus(search)
-      .subscribe((data: any) => {
-        if (data.errorCode === '00000') {
-          this.results = data.result.content;
-          this.totalOffset = data.result.totalPages - 1;
-          this.offset = 0
-          this.isLoading = false;
-        } else {
-          this.results = [];
-          this.isLoading = false;
+    this._customer.getCustomerStatus(search).subscribe((data: any) => {
+      if (data.errorCode === '00000') {
+        this.results = data.result.content;
+        this.totalOffset = data.result.totalPages - 1;
+        this.offset = 0;
+        this.isLoading = false;
+      } else {
+        this.results = [];
+        this.isLoading = false;
 
-          this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
-        }
-      });
+        this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
+      }
+    });
   }
 
   showDetail(id: any) {
+    const screenWidth = window.innerWidth;
+    let dialogWidth;
+
+    if (screenWidth < 430) {
+      dialogWidth = '95%';
+    } else if (screenWidth > 1024) dialogWidth = '50%';
+
     this._dialogRef = this.dialog.open(CustomerDetailComponent, {
-      width: '50%',
-      disableClose: true,
+      width: dialogWidth,
+      height: 'auto',
+      disableClose: false,
       data: { id: id },
     });
   }
 
   openEdit(id: any) {
+    const screenWidth = window.innerWidth;
+    let dialogWidth;
+    if (screenWidth < 430) dialogWidth = '95%';
+    else if (screenWidth > 1024) dialogWidth = '50%';
+
     this._dialogRef = this.dialog.open(CustomerEditComponent, {
-      width: '50%',
-      disableClose: true,
+      width: dialogWidth,
+      disableClose: false,
       data: { id: id },
     });
     this._dialogRef.componentInstance.editSuccess.subscribe(
@@ -125,15 +141,48 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
       }
     );
   }
+  openRecieve(id: any, status: any) {
+    console.log(id, ' - ', status, 'hahah');
+    const screenWidth = window.innerWidth;
+    let dialogWidth;
+    if (screenWidth < 430) dialogWidth = '95%';
+    else if (screenWidth > 1024) dialogWidth = '50%';
 
+    if (status === 'REVOKE') {
+      this._dialogRef = this.dialog.open(CustomerRecieveEditComponent, {
+        width: dialogWidth,
+        disableClose: true,
+        data: { id: id, status: status },
+      });
+      this._dialogRef.componentInstance.editSuccess.subscribe(
+        (message: string) => {
+          if (message === 'success') this.getAllCustomers();
+        }
+      );
+    } else if (status === 'RECEIVED_ONU') {
+      this._alert.confirmSuccessFail(
+        'can’t update again!',
+        'You already updated the status.',
+        'RECEIVED_ONU'
+      );
+    } else {
+      this._alert.confirmSuccessFail(
+        'Warning!',
+        'Only revoke status can update.',
+        'WARNING'
+      );
+    }
+  }
   getAllCustomers(offset: number = 0) {
-    this.results = []
+    this.results = [];
     this.isLoading = true;
 
     let search = cloneDeep(this.searchForm.value);
     let status = '';
 
-    if (['PENDING', 'REUSE', 'REVOKE'].includes(this.activeButton))
+    if (
+      ['PENDING', 'REUSE', 'REVOKE', 'RECEIVED_ONU'].includes(this.activeButton)
+    )
       status = this.activeButton;
     else if (this.activeButton !== 'TARGET' && this.activeButton !== undefined)
       status = '';
