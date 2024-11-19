@@ -7,16 +7,17 @@ import { SERVICE_URLS } from 'src/assets/app.config';
   providedIn: 'root',
 })
 export class StatisticService {
-  private readonly _statistic = SERVICE_URLS.STATISTIC
+  private readonly _statistic = SERVICE_URLS.STATISTIC;
   private readonly _branch = SERVICE_URLS.BRANCH;
-  private readonly _township = SERVICE_URLS.TOWNSHIP
-  private readonly _fbbLeader = SERVICE_URLS.FBBLEADER
-  private readonly _b2b = SERVICE_URLS.D2D
+  private readonly _township = SERVICE_URLS.TOWNSHIP;
+  private readonly _fbbLeader = SERVICE_URLS.FBBLEADER;
+  private readonly _b2b = SERVICE_URLS.D2D;
+  private readonly _extraTable = SERVICE_URLS.EXTRA_TABLE;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   geStatistic(params: any = {}): Observable<any> {
-    return this.http.get(`${this._statistic}`, { params })
+    return this.http.get(`${this._statistic}`, { params });
   }
 
   getBranch(params: any = {}): Observable<any> {
@@ -24,14 +25,17 @@ export class StatisticService {
   }
 
   getTownship(params: any = {}): Observable<any> {
-    return this.http.get(`${this._township}`, { params })
+    return this.http.get(`${this._township}`, { params });
   }
 
   getFBBLeader(params: any = {}): Observable<any> {
-    return this.http.get(`${this._fbbLeader}`, { params })
+    return this.http.get(`${this._fbbLeader}`, { params });
   }
 
   getD2D(params: any = {}): Observable<any> {
-    return this.http.get(`${this._b2b}`, { params })
+    return this.http.get(`${this._b2b}`, { params });
+  }
+  extraTable(params: any = {}): Observable<any> {
+    return this.http.get(`${this._extraTable}`, { params });
   }
 }

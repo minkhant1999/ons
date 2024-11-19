@@ -15,4 +15,5 @@ export const SERVICE_URLS = {
   GET_CUSTOMER_STATUS: `${BASE_URL}/data`,
   DOWNLOAD: `${BASE_URL}/data/export/excel`,
   RECIEVED: `${BASE_URL}/data`,
+  EXTRA_TABLE: `${BASE_URL}/data/counter`
 };

@@ -14,5 +14,6 @@ declare module 'src/assets/app.config' {
     GET_CUSTOMER_STATUS: string;
     DOWNLOAD: string;
     RECIEVED: string;
+    EXTRA_TABLE: string;
   };
 }

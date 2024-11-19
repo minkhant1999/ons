@@ -10,8 +10,9 @@ import { AutoCompleteComponent } from 'src/app/modules/custom/auto-complete/auto
 import { CookieService } from 'ngx-cookie-service';
 import { InputComponent } from 'src/app/modules/custom/input/input.component';
 import { AlertService } from 'src/app/modules/service/alert.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ApiLoadingComponent } from 'src/app/modules/custom/model/loading/api-loading.component';
+import { ExtraTableDetailComponent } from '../extra-table-detail/extra-table-detail.component';
 
 interface SelectStatusType {
   value: string;
@@ -19,7 +20,7 @@ interface SelectStatusType {
 }
 
 interface SelectStatistic {
-  name: string
+  name: string;
   label: string;
   value2: number;
   percentage: string;
@@ -43,9 +44,11 @@ interface SelectStatistic {
 export class StatisticChildComponent implements OnInit {
   searchTable!: FormGroup;
   staticData: any[] = [];
+  extraTableData: any[] = [];
   public conditionRole = '';
-  public refillData = ''
+  public refillData = '';
   public isDataLoaded = false;
+  _dialogRef!: MatDialogRef<any>;
 
   public branchStatus: SelectStatusType[] = [];
   public townShipStatus: SelectStatusType[] = [];
@@ -70,8 +73,8 @@ export class StatisticChildComponent implements OnInit {
     private _statisticChildGetSetService: StatisticChildGetSetService,
     private cookieService: CookieService,
     private _alert: AlertService,
-    private _dialog: MatDialog,
-  ) { }
+    private _dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.role = this.cookieService.get('role');
@@ -81,6 +84,7 @@ export class StatisticChildComponent implements OnInit {
       fbbLeaderVmy: [''],
       d2dVmy: [''],
     });
+    this.extraTable();
 
     this.conditionRole = this.cookieService.get('role');
     const res = this.cookieService.get('vmyCode');
@@ -94,10 +98,10 @@ export class StatisticChildComponent implements OnInit {
             label: item,
           }));
           if (this.conditionRole === 'BM') {
-            this.refillData = this.customerData[0].value
-            this.initialState(this.customerData[0].value)
+            this.refillData = this.customerData[0].value;
+            this.initialState(this.customerData[0].value);
           } else {
-            this.initialState()
+            this.initialState();
           }
           this.isDataLoaded = true;
         } else {
@@ -113,10 +117,9 @@ export class StatisticChildComponent implements OnInit {
             label: item,
           }));
 
-          this.refillData = this.townshipData[0].value
-          this.initialState(this.townshipData[0].value)
+          this.refillData = this.townshipData[0].value;
+          this.initialState(this.townshipData[0].value);
           this.isDataLoaded = true;
-
         } else {
           this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
         }
@@ -130,11 +133,10 @@ export class StatisticChildComponent implements OnInit {
             label: item.VMY_CODE,
           }));
 
-          this.refillData = this.fbbLeaderData[0].value
-          this.initialState(this.fbbLeaderData[0].label)
+          this.refillData = this.fbbLeaderData[0].value;
+          this.initialState(this.fbbLeaderData[0].label);
 
           this.isDataLoaded = true;
-
         } else {
           this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
         }
@@ -154,7 +156,6 @@ export class StatisticChildComponent implements OnInit {
 
           this.searchButton();
           this.isDataLoaded = true;
-
         } else {
           this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
         }
@@ -166,8 +167,7 @@ export class StatisticChildComponent implements OnInit {
     let params = this.searchTable.value;
     if (this.conditionRole === 'BCM') params.township = value;
     else if (this.conditionRole === 'BM') params.branch = value;
-    else if (this.conditionRole === 'FBB_LEADER') params.fbbLeaderVmy = value
-
+    else if (this.conditionRole === 'FBB_LEADER') params.fbbLeaderVmy = value;
 
     this.statisticService.geStatistic(params).subscribe((data: any) => {
       if (data.errorCode === '00000') {
@@ -184,7 +184,6 @@ export class StatisticChildComponent implements OnInit {
           percentage: item.percentage,
           backgroundColor: this.getBackgroundColor(item.label),
         }));
-
       } else {
         this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
       }
@@ -327,5 +326,24 @@ export class StatisticChildComponent implements OnInit {
       default:
         return 'bg-[#e4e4e4]';
     }
+  }
+  extraTable() {
+    this.statisticService.extraTable().subscribe((data: any) => {
+      if (data.errorCode === '00000') {
+        this.extraTableData = data.result;
+      }
+    });
+  }
+  getD2D(vmy: any) {
+    const screenWidth = window.innerWidth;
+    let dialogWidth;
+    if (screenWidth < 430) dialogWidth = '95%';
+    else if (screenWidth > 1024) dialogWidth = '55%';
+
+    this._dialogRef = this._dialog.open(ExtraTableDetailComponent, {
+      width: dialogWidth,
+      disableClose: false,
+      data: { vmy: vmy },
+    });
   }
 }
