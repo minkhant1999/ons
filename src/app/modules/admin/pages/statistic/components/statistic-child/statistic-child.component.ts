@@ -128,13 +128,12 @@ export class StatisticChildComponent implements OnInit {
           if (item.label === 'REVOKE') {
             return {
               ...item,
-              value2: this.totalRevokeValue, // Set value2 to the calculated totalRevokeValue
+              value2: this.totalRevokeValue, 
             };
           }
-          return item; // Return the item as it is for all other labels
+          return item; 
         });
 
-        // Log the updated items
         console.log(
           this.items,
           'this is the updated items with totalRevokeValue'
