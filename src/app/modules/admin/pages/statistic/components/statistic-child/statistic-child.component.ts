@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -13,13 +13,13 @@ import { AlertService } from 'src/app/modules/service/alert.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ApiLoadingComponent } from 'src/app/modules/custom/model/loading/api-loading.component';
 
-type DataField = 'townshipData' | 'fbbLeaderData' | 'b2bData';
 interface SelectStatusType {
   value: string;
   label: string;
 }
 
 interface SelectStatistic {
+  name: string
   label: string;
   value2: number;
   percentage: string;
@@ -44,6 +44,8 @@ export class StatisticChildComponent implements OnInit {
   searchTable!: FormGroup;
   staticData: any[] = [];
   public conditionRole = '';
+  public refillData = ''
+  public isDataLoaded = false;
 
   public branchStatus: SelectStatusType[] = [];
   public townShipStatus: SelectStatusType[] = [];
@@ -55,9 +57,7 @@ export class StatisticChildComponent implements OnInit {
   public townshipData: SelectStatusType[] = [];
   public fbbLeaderData: SelectStatusType[] = [];
   public b2bData: SelectStatusType[] = [];
-  revokeValue: any;
-  receivedValue: any;
-  totalRevokeValue: any;
+
   public D2DCheck: boolean = false;
   public insertD2DValue: string = '';
   role: any;
@@ -70,8 +70,8 @@ export class StatisticChildComponent implements OnInit {
     private _statisticChildGetSetService: StatisticChildGetSetService,
     private cookieService: CookieService,
     private _alert: AlertService,
-    private _dialog: MatDialog
-  ) {}
+    private _dialog: MatDialog,
+  ) { }
 
   ngOnInit(): void {
     this.role = this.cookieService.get('role');
@@ -80,67 +80,6 @@ export class StatisticChildComponent implements OnInit {
       township: [''],
       fbbLeaderVmy: [''],
       d2dVmy: [''],
-    });
-
-    this.statisticService.geStatistic().subscribe((data: any) => {
-      if (data.errorCode === '00000') {
-        const result = data.result.sort((a: any, b: any) => {
-          if (a.name === 'Target') return -1;
-          if (b.name === 'Target') return 1;
-          return 0;
-        });
-
-        this.items = result?.map((item: any) => ({
-          label: item.name,
-          value2: item.count,
-          percentage: item.percentage,
-          backgroundColor: this.getBackgroundColor(item.name),
-        }));
-        console.log(this.items, 'this is the item');
-        const revokeItem = this.items.find((item) => item.label === 'REVOKE');
-        const receivedOnuItem = this.items.find(
-          (item) => item.label === 'RECEIVED_ONU'
-        );
-
-        // Log their corresponding value2 values if found
-        if (revokeItem) {
-          console.log('REVOKE value2:', revokeItem.value2);
-          this.revokeValue = revokeItem.value2;
-        } else {
-          console.log('REVOKE item not found');
-        }
-
-        if (receivedOnuItem) {
-          console.log('RECEIVED_ONU value2:', receivedOnuItem.value2);
-          this.receivedValue = receivedOnuItem.value2;
-        } else {
-          console.log('RECEIVED_ONU item not found');
-        }
-        if (this.revokeValue && this.receivedValue) {
-          this.totalRevokeValue = this.revokeValue + this.receivedValue;
-          console.log(this.totalRevokeValue, 'this is the total revoke');
-        } else {
-          console.log(
-            'One or both values are missing, unable to calculate total.'
-          );
-        }
-        this.items = this.items.map((item: any) => {
-          if (item.label === 'REVOKE') {
-            return {
-              ...item,
-              value2: this.totalRevokeValue, 
-            };
-          }
-          return item; 
-        });
-
-        console.log(
-          this.items,
-          'this is the updated items with totalRevokeValue'
-        );
-      } else {
-        this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
-      }
     });
 
     this.conditionRole = this.cookieService.get('role');
@@ -154,6 +93,13 @@ export class StatisticChildComponent implements OnInit {
             value: item,
             label: item,
           }));
+          if (this.conditionRole === 'BM') {
+            this.refillData = this.customerData[0].value
+            this.initialState(this.customerData[0].value)
+          } else {
+            this.initialState()
+          }
+          this.isDataLoaded = true;
         } else {
           this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
         }
@@ -166,6 +112,11 @@ export class StatisticChildComponent implements OnInit {
             value: item,
             label: item,
           }));
+
+          this.refillData = this.townshipData[0].value
+          this.initialState(this.townshipData[0].value)
+          this.isDataLoaded = true;
+
         } else {
           this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
         }
@@ -178,6 +129,12 @@ export class StatisticChildComponent implements OnInit {
             value: item.FULL_NAME,
             label: item.VMY_CODE,
           }));
+
+          this.refillData = this.fbbLeaderData[0].value
+          this.initialState(this.fbbLeaderData[0].label)
+
+          this.isDataLoaded = true;
+
         } else {
           this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
         }
@@ -196,11 +153,42 @@ export class StatisticChildComponent implements OnInit {
           this.searchTable?.get('d2dVmy')?.setValue(this.b2bData[0].value);
 
           this.searchButton();
+          this.isDataLoaded = true;
+
         } else {
           this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
         }
       });
     }
+  }
+
+  initialState(value: string = '') {
+    let params = this.searchTable.value;
+    if (this.conditionRole === 'BCM') params.township = value;
+    else if (this.conditionRole === 'BM') params.branch = value;
+    else if (this.conditionRole === 'FBB_LEADER') params.fbbLeaderVmy = value
+
+
+    this.statisticService.geStatistic(params).subscribe((data: any) => {
+      if (data.errorCode === '00000') {
+        const result = data.result.sort((a: any, b: any) => {
+          if (a.name === 'Target') return -1;
+          if (b.name === 'Target') return 1;
+          return 0;
+        });
+
+        this.items = result?.map((item: any) => ({
+          name: item.label,
+          label: item.name,
+          value2: item.count,
+          percentage: item.percentage,
+          backgroundColor: this.getBackgroundColor(item.label),
+        }));
+
+      } else {
+        this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
+      }
+    });
   }
 
   gotoDetailPage(item: any) {
@@ -261,6 +249,7 @@ export class StatisticChildComponent implements OnInit {
         this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
       }
     });
+
     this.searchTable.get('township')?.setValue(selectedTownship.value);
   }
 
@@ -307,10 +296,11 @@ export class StatisticChildComponent implements OnInit {
         });
 
         this.items = result?.map((item: any) => ({
+          name: item.label,
           label: item.name,
           value2: item.count,
           percentage: item.percentage,
-          backgroundColor: this.getBackgroundColor(item.name),
+          backgroundColor: this.getBackgroundColor(item.label),
         }));
         loadingRef.close();
       } else {
@@ -326,12 +316,14 @@ export class StatisticChildComponent implements OnInit {
         return 'bg-[#F8F49B]';
       case 'REUSE':
         return 'bg-[#EBC1FF]';
-      case 'REVOKE':
+      case 'REVOKE_NOT_SEND_STOCK':
         return 'bg-[#A1CDFF]';
       case 'Target':
         return 'bg-[#e4e4e4]';
       case 'RECEIVED_ONU':
         return 'bg-[#CBF895]';
+      case 'TOTAL_REVOKE':
+        return 'bg-[#FFAC8E]';
       default:
         return 'bg-[#e4e4e4]';
     }

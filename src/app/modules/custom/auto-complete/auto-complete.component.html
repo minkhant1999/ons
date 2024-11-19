@@ -5,32 +5,18 @@
     </label>
 
     <div class="relative" (click)="handleShowSuggestion()">
-      <input
-        type="text"
+      <input type="text"
         class="appearance-none border border-[#E4E4E4] shadow-sm rounded-[8px] w-full py-3.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        [formControl]="searchControl"
-        (focus)="showSuggestions = true; onFocus()"
-        (blur)="hideSuggestions()"
-        (keydown)="onKeydown($event)"
-        [placeholder]="placeholder"
-        [readonly]="suggestions.length > 0 ? false : true"
-        [ngClass]="{ 'bg-[#EDEDED]': banInput }"
-      />
+        [formControl]="searchControl" (focus)="showSuggestions = true; onFocus()" (blur)="hideSuggestions()"
+        (keydown)="onKeydown($event)" [placeholder]="placeholder" [readonly]="suggestions.length > 0 ? false : true"
+        [ngClass]="{ 'bg-[#EDEDED]': banInput }" />
       <mat-icon class="absolute right-2 top-3">keyboard_arrow_down</mat-icon>
     </div>
 
-    <ul
-      *ngIf="showSuggestions && filteredSuggestions.length > 0"
-      class="suggestion-list"
-    >
-      <li
-        *ngFor="let suggestion of filteredSuggestions; let i = index"
-        (mousedown)="onSelectSuggestion(suggestion)"
-        (mouseenter)="currentIndex = i"
-        [ngClass]="{ highlighted: currentIndex === i }"
-        class="suggestion-item"
-        class="suggestion-item"
-      >
+    <ul *ngIf="showSuggestions && filteredSuggestions.length > 0" class="suggestion-list">
+      <li *ngFor="let suggestion of filteredSuggestions; let i = index" (mousedown)="onSelectSuggestion(suggestion)"
+        (mouseenter)="currentIndex = i" [ngClass]="{ highlighted: currentIndex === i }" class="suggestion-item"
+        class="suggestion-item">
         {{ suggestion }}
       </li>
     </ul>
