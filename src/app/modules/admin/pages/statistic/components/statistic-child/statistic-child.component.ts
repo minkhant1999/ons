@@ -143,23 +143,25 @@ export class StatisticChildComponent implements OnInit {
       });
     } else if (this.conditionRole === 'D2D') {
       this.D2DCheck = true;
-      this.statisticService.getD2D(res).subscribe((data: any) => {
-        if (data.errorCode === '00000') {
-          const result = data.result;
-          this.b2bData = result?.map((item: any) => ({
-            value: item.FULL_NAME,
-            label: item.VMY_CODE,
-          }));
+      this.statisticService
+        .getD2D({ fbbLeaderVmyCode: res })
+        .subscribe((data: any) => {
+          if (data.errorCode === '00000') {
+            const result = data.result;
+            this.b2bData = result?.map((item: any) => ({
+              value: item.FULL_NAME,
+              label: item.VMY_CODE,
+            }));
 
-          this.insertD2DValue = this.b2bData[0].label;
-          this.searchTable?.get('d2dVmy')?.setValue(this.b2bData[0].value);
+            this.insertD2DValue = this.b2bData[0].label;
+            this.searchTable?.get('d2dVmy')?.setValue(this.b2bData[0].value);
 
-          this.searchButton();
-          this.isDataLoaded = true;
-        } else {
-          this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
-        }
-      });
+            this.searchButton();
+            this.isDataLoaded = true;
+          } else {
+            this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
+          }
+        });
     }
   }
 
