@@ -203,37 +203,121 @@
   </div> -->
 
   <!-- table -->
-  <!-- <div class="my-16 md:block hidden">
+  <div
+    class="my-16 md:block hidden"
+    *ngIf="
+      conditionRole === 'BM' ||
+      conditionRole === 'BCM' ||
+      conditionRole === 'HO'
+    "
+  >
     <table class="shadow-lg">
       <tr class="bg-[#E6E8F1]">
-        <th>Branch</th>
+        <th *ngIf="conditionRole !== 'BCM'">Branch</th>
+        <th *ngIf="conditionRole === 'BCM'">FBB Leaders</th>
         <th>Total Customer</th>
-        <th>Total Pending</th>
+        <th>Pending</th>
         <th>Reuse</th>
         <th>Revoke</th>
         <th>Received ONU</th>
+        <th *ngIf="conditionRole === 'BCM'">Action</th>
       </tr>
-      <tr>
-        <td>HO</td>
-        <td>100</td>
-        <td>5</td>
-        <td>8</td>
-        <td>10</td>
-        <td>2</td>
-      </tr>
-
-      <tr>
-        <td>FBB</td>
-        <td>100</td>
-        <td>5</td>
-        <td>8</td>
-        <td>10</td>
-        <td>2</td>
+      <tr *ngFor="let item of extraTableData">
+        <td *ngIf="conditionRole === 'HO'">{{ item.branch }}</td>
+        <td *ngIf="conditionRole === 'BCM'">{{ item.fbbLeaderVMY }}</td>
+        <td *ngIf="conditionRole === 'BM'">{{ item.bc }}</td>
+        <td>{{ item.total }}</td>
+        <td>{{ item.pending }}</td>
+        <td>{{ item.reuse }}</td>
+        <td>{{ item.revoke }}</td>
+        <td>{{ item.received }}</td>
+        <td *ngIf="conditionRole === 'BCM'">
+          <button
+            (click)="getD2D(item.fbbLeaderVMY)"
+            class="flex items-center justify-center p-1 w-full"
+          >
+            <img src="assets/icons/info-circle-icon.png" class="w-4" alt="" />
+          </button>
+        </td>
       </tr>
     </table>
   </div>
+  <div
+    class="my-16 md:hidden block"
+    *ngIf="
+      conditionRole === 'BM' ||
+      conditionRole === 'BCM' ||
+      conditionRole === 'HO'
+    "
+    style="overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%"
+  >
+    <table class="shadow-lg w-full">
+      <thead>
+        <tr class="bg-[#E6E8F1] text-[14px]">
+          <th
+            *ngIf="conditionRole !== 'BCM'"
+            class="sticky left-0 bg-[#d4d9f1]"
+            style="position: sticky; left: 0"
+          >
+            Branch
+          </th>
+          <th
+            *ngIf="conditionRole === 'BCM'"
+            class="sticky left-0 bg-[#d4d9f1]"
+            style="position: sticky; left: 0"
+          >
+            FBB Leaders
+          </th>
+          <th>Total Customer</th>
+          <th>Pending</th>
+          <th>Reuse</th>
+          <th>Revoke</th>
+          <th>Received ONU</th>
+          <th *ngIf="conditionRole === 'BCM'">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of extraTableData" class="text-[12px]">
+          <td
+            *ngIf="conditionRole === 'HO'"
+            class="sticky left-0 bg-[#E6E8F1]"
+            style="position: sticky; left: 0"
+          >
+            {{ item.branch }}
+          </td>
+          <td
+            *ngIf="conditionRole === 'BCM'"
+            class="sticky left-0 bg-[#E6E8F1]"
+            style="position: sticky; left: 0"
+          >
+            {{ item.fbbLeaderVMY }}
+          </td>
+          <td
+            *ngIf="conditionRole === 'BM'"
+            class="sticky left-0 bg-[#E6E8F1]"
+            style="position: sticky; left: 0"
+          >
+            {{ item.bc }}
+          </td>
+          <td>{{ item.total }}</td>
+          <td>{{ item.pending }}</td>
+          <td>{{ item.reuse }}</td>
+          <td>{{ item.revoke }}</td>
+          <td>{{ item.received }}</td>
+          <td *ngIf="conditionRole === 'BCM'">
+            <button
+              (click)="getD2D(item.fbbLeaderVMY)"
+              class="flex items-center justify-center p-1 w-full"
+            >
+              <img src="assets/icons/info-circle-icon.png" class="w-4" alt="" />
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-  <div class="">
+  <!-- <div class="">
     <div
       class="p-4 my-12 text-sm md:text-md bg-[#E6E8F1] shadow-lg rounded-md md:hidden block"
     >
