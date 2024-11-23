@@ -73,7 +73,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   _dialogRef!: MatDialogRef<any>;
   activeButton = '';
   public refillData = '';
-
+  matchedData: any;
   public isDropdownOpen = false;
 
   branch: any;
@@ -165,6 +165,8 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
             this.refillData = matchedData[0].value;
             this.initialState(matchedData[0].value);
           }
+
+          // console.log(this.fbbLeaderData, 'this is the fbbleader data');
 
           // console.log(this.refillData, 'This is the refillData data');
           this.isDataLoaded = true;
@@ -305,7 +307,6 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     }
   }
   getAllCustomers(offset: number = 0) {
-    console.log('when this is reached');
     this.results = [];
     this.isLoading = true;
 
@@ -323,7 +324,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     search.page = this.offset = offset;
     search.size = this.size;
     search.status = status ? status.toUpperCase() : '';
-
+    search.fbbLeaderVmy = this.matchedData[0].label;
     if (this.D2DCheck) search.d2dVmy = this.insertD2DValue;
     this._customer.getCustomers(search).subscribe((data: any) => {
       if (data.errorCode === '00000') {
@@ -417,6 +418,14 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
           value: item.FULL_NAME,
           label: item.VMY_CODE,
         }));
+        console.log(this.fbbLeaderData, 'this is the fbb leader data');
+        this.matchedData = this.fbbLeaderData.filter((item) =>
+          this.data2.includes(item.label)
+        );
+        console.log(this.matchedData, 'this is matchedData');
+        this.refillData = this.matchedData[0].value;
+        console.log(this.refillData, 'this is this.refillData');
+        this.getAllCustomers();
       } else {
         this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
       }
