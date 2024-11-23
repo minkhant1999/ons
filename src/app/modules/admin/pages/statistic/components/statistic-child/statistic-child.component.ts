@@ -192,11 +192,27 @@ export class StatisticChildComponent implements OnInit {
     });
   }
 
+  // gotoDetailPage(item: any) {
+  //   this._statisticChildGetSetService.setStatistic(item);
+  //   const data = this.searchTable.get('branch')?.value;
+  //   this._statisticChildGetSetService.setStatistic(data);
+  //   this.router.navigate(['admin/app-customer']);
+  // }
   gotoDetailPage(item: any) {
-    this._statisticChildGetSetService.setStatistic(item);
+    const branch = this.searchTable.get('branch')?.value;
+    const data1 = this.searchTable.get('township')?.value;
+    const data2 = this.searchTable.get('fbbLeaderVmy')?.value;
+    const data3 = this.searchTable.get('d2dVmy')?.value;
+
+    // Create an object with all the data
+    const dataToSend = { item, branch, data1, data2, data3 };
+
+    // Set the data in the service
+    this._statisticChildGetSetService.setStatistic(dataToSend);
+
+    // Navigate to the second component
     this.router.navigate(['admin/app-customer']);
   }
-
   // branch
   onSuggestionSelected(selectedBranch: any) {
     this.fbbLeaderData = [];

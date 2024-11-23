@@ -76,6 +76,11 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
 
   public isDropdownOpen = false;
 
+  branch: any;
+  data1: any;
+  data2: any;
+  data3: any;
+  data4: any;
   constructor(
     private dialog: MatDialog,
     private _statisticChildGetSetService: StatisticChildGetSetService,
@@ -93,15 +98,30 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
       township: [''],
       fbbLeaderVmy: [''],
       d2dVmy: [''],
-    });
-    this.searchForm = this.fb.group({
       ftthAccount: [''],
     });
-    this._statisticChildGetSetService.checkStatistic.subscribe(
-      (data: string) => {
-        this.activeButton = data;
-      }
-    );
+    // this.searchForm = this.fb.group({
+    //   branch: [''],
+    //   township: [''],
+    //   fbbLeaderVmy: [''],
+    //   d2dVmy: [''],
+    // });
+    // this._statisticChildGetSetService.checkStatistic.subscribe(
+    //   (data: string) => {
+    //     this.activeButton = data;
+    //   }
+    // );
+    this._statisticChildGetSetService.checkStatistic.subscribe((data) => {
+      this.activeButton = data?.item;
+      this.branch = data?.branch;
+      this.data1 = data?.data1;
+      this.data2 = data?.data2;
+      this.data3 = data?.data3;
+      this.data4 = data?.data4;
+
+      console.log('Data from the first component:', data);
+    });
+
     this.conditionRole = this.cookieService.get('role');
     const res = this.cookieService.get('vmyCode');
 
@@ -132,9 +152,21 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
             value: item,
             label: item,
           }));
+          console.log(this.data1, 'this is the branch dataaaaaaaaaaa');
 
-          this.refillData = this.townshipData[0].value;
-          this.initialState(this.townshipData[0].value);
+          if (this.data1 === undefined) {
+            this.refillData = this.townshipData[0].value;
+            this.initialState(this.townshipData[0].value);
+          } else {
+            const matchedData = this.townshipData.filter((item) =>
+              this.data1.includes(item.value)
+            );
+
+            this.refillData = matchedData[0].value;
+            this.initialState(matchedData[0].value);
+          }
+
+          // console.log(this.refillData, 'This is the refillData data');
           this.isDataLoaded = true;
         } else {
           this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
@@ -172,14 +204,13 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
             this.insertD2DValue = this.b2bData[0].label;
             this.searchTable?.get('d2dVmy')?.setValue(this.b2bData[0].value);
 
-            this.searchButton();
+            this.getAllCustomers();
             this.isDataLoaded = true;
           } else {
             this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
           }
         });
     }
-    this.getAllCustomers();
   }
 
   showDataSource(button: string) {
@@ -274,10 +305,12 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     }
   }
   getAllCustomers(offset: number = 0) {
+    console.log('when this is reached');
     this.results = [];
     this.isLoading = true;
 
-    let search = cloneDeep(this.searchForm.value);
+    let search = cloneDeep(this.searchTable.value);
+
     let status = '';
 
     if (
@@ -291,6 +324,7 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     search.size = this.size;
     search.status = status ? status.toUpperCase() : '';
 
+    if (this.D2DCheck) search.d2dVmy = this.insertD2DValue;
     this._customer.getCustomers(search).subscribe((data: any) => {
       if (data.errorCode === '00000') {
         this.isLoading = false;
@@ -418,31 +452,23 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     this.searchTable.get('d2dVmy')?.setValue(selectedD2D.label);
   }
 
-  searchButton() {
-    console.log('this is  serach click');
-  }
-  initialState(value: string = '') {
-    // let params = this.searchTable.value;
-    // if (this.conditionRole === 'BCM') params.township = value;
-    // else if (this.conditionRole === 'BM') params.branch = value;
-    // else if (this.conditionRole === 'FBB_LEADER') params.fbbLeaderVmy = value;
-    // this.statisticService.geStatistic(params).subscribe((data: any) => {
-    //   if (data.errorCode === '00000') {
-    //     const result = data.result.sort((a: any, b: any) => {
-    //       if (a.name === 'Target') return -1;
-    //       if (b.name === 'Target') return 1;
-    //       return 0;
-    //     });
-    //     this.items = result?.map((item: any) => ({
-    //       name: item.label,
-    //       label: item.name,
-    //       value2: item.count,
-    //       percentage: item.percentage,
-    //       backgroundColor: this.getBackgroundColor(item.label),
-    //     }));
-    //   } else {
-    //     this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
-    //   }
-    // });
+  initialState(value: string = '', offset: number = 0) {
+    let params = this.searchTable.value;
+    params.page = this.offset = offset;
+    params.size = this.size;
+
+    if (this.conditionRole === 'BCM') params.township = value;
+    else if (this.conditionRole === 'BM') params.branch = value;
+    else if (this.conditionRole === 'FBB_LEADER') params.fbbLeaderVmy = value;
+    this._customer.getCustomers(params).subscribe((data: any) => {
+      if (data.errorCode === '00000') {
+        this.results = data.result.content;
+        this.totalOffset = data.result.totalPages - 1;
+
+        console.log(data, 'this is the data initialized');
+      } else {
+        this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
+      }
+    });
   }
 }

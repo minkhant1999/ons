@@ -9,7 +9,8 @@ import { SERVICE_URLS } from 'src/assets/app.config';
 export class CustomersService {
   id: any;
 
-  private readonly _getAllCustomerUrl = SERVICE_URLS.GET_CUSTOMERS;
+  private readonly _getAllCustomerUrl = SERVICE_URLS.GET_CUSTOMERS_EXTRA;
+  // private readonly _getAllCustomerExtraUrl = SERVICE_URLS.GET_CUSTOMERS_EXTRA;
 
   private readonly _getCustomerDetailUrl = SERVICE_URLS.GET_CUSTOMER_DETAIL;
   private readonly _getCustomerStatusUrl = SERVICE_URLS.GET_CUSTOMER_STATUS;
@@ -21,7 +22,9 @@ export class CustomersService {
   getCustomers(params: any) {
     return this._http.get(this._getAllCustomerUrl, { params });
   }
-
+  // getCustomersExtra(params: any) {
+  //   return this._http.get(this._getAllCustomerExtraUrl, { params });
+  // }
   setId(id: any) {
     this.id = id;
   }

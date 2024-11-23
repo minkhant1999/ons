@@ -127,10 +127,16 @@
 
       <!-- fbbLeaderData auto-complete  -->
 
-      <div></div>
+      <div class="p-1 mt-5">
+        <app-input
+          placeholder="Search by FTTH Account"
+          formControlName="ftthAccount"
+          (keydown)="onKeyDown($event)"
+        ></app-input>
+      </div>
       <div class="flex justify-center items-center pt-5">
         <button
-          (click)="searchButton()"
+          (click)="getAllCustomers()"
           class="rounded-full bg-[#4485FF] text-white w-[120px] h-[40px]"
         >
           Search
@@ -166,7 +172,7 @@
     </div>
   </div>
   <div class="flex lg:flex-nowrap flex-wrap justify-between mt-8">
-    <form action="" class="lg:w-3/12 w-5/12" [formGroup]="searchForm">
+    <!-- <form action="" class="lg:w-3/12 w-5/12" [formGroup]="searchForm">
       <div class="p-1">
         <app-input
           placeholder="Search by FTTH Account"
@@ -174,7 +180,7 @@
           (keydown)="onKeyDown($event)"
         ></app-input>
       </div>
-    </form>
+    </form> -->
     <div
       class="xl:w-5/12 lg:w-7/12 w-6/12 flex flex-row lg:justify-center justify-end gap-1 items-center"
     >

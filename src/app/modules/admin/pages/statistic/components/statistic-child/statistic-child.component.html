@@ -272,7 +272,7 @@
         <td>{{ item.reuse }}</td>
         <td>{{ item.revoke }}</td>
         <td>{{ item.received }}</td>
-        <td>percent</td>
+        <td>{{ item.completedPercent }}</td>
         <td
           *ngIf="
             conditionRole === 'BM' ||
@@ -362,7 +362,7 @@
           <td>{{ item.reuse }}</td>
           <td>{{ item.revoke }}</td>
           <td>{{ item.received }}</td>
-          <td>percent</td>
+          <td>{{ item.completedPercent }}</td>
           <td
             *ngIf="
               conditionRole === 'BCM' ||
