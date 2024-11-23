@@ -244,8 +244,9 @@
   >
     <table class="shadow-lg">
       <tr class="bg-[#E6E8F1]">
-        <th *ngIf="conditionRole !== 'BCM'">Branch</th>
+        <th *ngIf="conditionRole === 'HO'">Branch</th>
         <th *ngIf="conditionRole === 'BCM'">FBB Leaders</th>
+        <th *ngIf="conditionRole === 'BM'">BC</th>
         <th>Total Customer</th>
         <th>Pending</th>
         <th>Reuse</th>

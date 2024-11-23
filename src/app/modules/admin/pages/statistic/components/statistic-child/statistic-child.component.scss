@@ -14,8 +14,10 @@ table {
     // border: 1px solid #dadada;
     text-align: center;
     padding: 20px;
+    background-color: #cfcece;
+
   }
   
-//   tr:nth-child(even) {
-//     // background-color: #dddddd;
-//   }
+  tr:nth-child(odd) {
+    background-color: #f1f1f1;
+  }
