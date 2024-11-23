@@ -252,7 +252,16 @@
         <th>Reuse</th>
         <th>Revoke</th>
         <th>Received ONU</th>
-        <th *ngIf="conditionRole === 'BCM'">Action</th>
+        <th>% Completed</th>
+        <th
+          *ngIf="
+            conditionRole === 'BM' ||
+            conditionRole === 'BCM' ||
+            conditionRole === 'HO'
+          "
+        >
+          Action
+        </th>
       </tr>
       <tr *ngFor="let item of extraTableData">
         <td *ngIf="conditionRole === 'HO'">{{ item.branch }}</td>
@@ -263,7 +272,14 @@
         <td>{{ item.reuse }}</td>
         <td>{{ item.revoke }}</td>
         <td>{{ item.received }}</td>
-        <td *ngIf="conditionRole === 'BCM'">
+        <td>percent</td>
+        <td
+          *ngIf="
+            conditionRole === 'BM' ||
+            conditionRole === 'BCM' ||
+            conditionRole === 'HO'
+          "
+        >
           <button
             (click)="getD2D(item.fbbLeaderVMY)"
             class="flex items-center justify-center p-1 w-full"
@@ -305,7 +321,17 @@
           <th>Reuse</th>
           <th>Revoke</th>
           <th>Received ONU</th>
-          <th *ngIf="conditionRole === 'BCM'">Action</th>
+          <th>% Completed</th>
+
+          <th
+            *ngIf="
+              conditionRole === 'BCM' ||
+              conditionRole === 'HO' ||
+              conditionRole === 'BM'
+            "
+          >
+            Action
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -336,7 +362,14 @@
           <td>{{ item.reuse }}</td>
           <td>{{ item.revoke }}</td>
           <td>{{ item.received }}</td>
-          <td *ngIf="conditionRole === 'BCM'">
+          <td>percent</td>
+          <td
+            *ngIf="
+              conditionRole === 'BCM' ||
+              conditionRole === 'HO' ||
+              conditionRole === 'BM'
+            "
+          >
             <button
               (click)="getD2D(item.fbbLeaderVMY)"
               class="flex items-center justify-center p-1 w-full"
