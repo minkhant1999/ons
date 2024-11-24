@@ -5,7 +5,9 @@
   <div class="p-6">
     <table class="shadow-lg">
       <tr class="bg-[#E6E8F1] shadow-md">
-        <th>D2D</th>
+        <th *ngIf="conditionRole === 'BCM'">D2D</th>
+        <th *ngIf="conditionRole === 'HO'">BC</th>
+        <th *ngIf="conditionRole === 'BM'">FBB Leader</th>
         <th>Total Customer</th>
         <th>Pending</th>
         <th>Reuse</th>
