@@ -74,6 +74,8 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
   activeButton = '';
   public refillData = '';
   matchedData: any;
+  matchedDataD2d: any;
+  matchedDataHO: any;
   public isDropdownOpen = false;
 
   branch: any;
@@ -118,8 +120,6 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
       this.data2 = data?.data2;
       this.data3 = data?.data3;
       this.data4 = data?.data4;
-
-      console.log('Data from the first component:', data);
     });
 
     this.conditionRole = this.cookieService.get('role');
@@ -137,7 +137,16 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
             this.refillData = this.customerData[0].value;
             this.initialState(this.customerData[0].value);
           } else {
-            this.initialState();
+            if (this.branch === undefined) {
+                this.initialState();
+            }
+            else {
+              const matchedData = this.customerData.filter((item) =>
+                this.branch.includes(item.value)
+              );
+              this.refillData = matchedData[0].value;
+              this.initialState(matchedData[0].value);
+            }
           }
           this.isDataLoaded = true;
         } else {
@@ -152,7 +161,6 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
             value: item,
             label: item,
           }));
-          console.log(this.data1, 'this is the branch dataaaaaaaaaaa');
 
           if (this.data1 === undefined) {
             this.refillData = this.townshipData[0].value;
@@ -166,9 +174,6 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
             this.initialState(matchedData[0].value);
           }
 
-          // console.log(this.fbbLeaderData, 'this is the fbbleader data');
-
-          // console.log(this.refillData, 'This is the refillData data');
           this.isDataLoaded = true;
         } else {
           this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
@@ -275,7 +280,6 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     );
   }
   openRecieve(id: any, status: any) {
-    console.log(id, ' - ', status, 'hahah');
     const screenWidth = window.innerWidth;
     let dialogWidth;
     if (screenWidth < 430) dialogWidth = '95%';
@@ -324,7 +328,20 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     search.page = this.offset = offset;
     search.size = this.size;
     search.status = status ? status.toUpperCase() : '';
+    if(
+      this.matchedData
+    ) {
     search.fbbLeaderVmy = this.matchedData[0].label;
+      
+    }
+    
+    if (this.matchedDataD2d) {
+    search.d2dVmy = this.matchedDataD2d[0].label;
+    }
+    else if (this.matchedDataD2d === undefined || this.matchedDataD2d === null) {
+       search.d2dVmy = '';
+    }
+    
     if (this.D2DCheck) search.d2dVmy = this.insertD2DValue;
     this._customer.getCustomers(search).subscribe((data: any) => {
       if (data.errorCode === '00000') {
@@ -395,6 +412,12 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
           value: item,
           label: item,
         }));
+
+        this.matchedData = this.townshipData.filter((item) =>
+          this.data1.includes(item.label)
+        );
+        this.refillData = this.matchedData[0].value;
+        this.getAllCustomers();
       } else {
         this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
       }
@@ -418,13 +441,10 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
           value: item.FULL_NAME,
           label: item.VMY_CODE,
         }));
-        console.log(this.fbbLeaderData, 'this is the fbb leader data');
         this.matchedData = this.fbbLeaderData.filter((item) =>
           this.data2.includes(item.label)
         );
-        console.log(this.matchedData, 'this is matchedData');
         this.refillData = this.matchedData[0].value;
-        console.log(this.refillData, 'this is this.refillData');
         this.getAllCustomers();
       } else {
         this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
@@ -449,6 +469,12 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
           value: item.FULL_NAME,
           label: item.VMY_CODE,
         }));
+        this.matchedDataD2d = this.b2bData.filter((item) =>
+          this.data3.includes(item.label)
+        );
+        this.refillData = this.matchedDataD2d[0].value;
+        this.getAllCustomers();
+
       } else {
         this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
       }
@@ -469,12 +495,12 @@ export class CustomerChildComponent implements OnInit, OnDestroy {
     if (this.conditionRole === 'BCM') params.township = value;
     else if (this.conditionRole === 'BM') params.branch = value;
     else if (this.conditionRole === 'FBB_LEADER') params.fbbLeaderVmy = value;
+    else if( this.conditionRole === 'HO') params.branch = value
     this._customer.getCustomers(params).subscribe((data: any) => {
       if (data.errorCode === '00000') {
         this.results = data.result.content;
         this.totalOffset = data.result.totalPages - 1;
 
-        console.log(data, 'this is the data initialized');
       } else {
         this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
       }
