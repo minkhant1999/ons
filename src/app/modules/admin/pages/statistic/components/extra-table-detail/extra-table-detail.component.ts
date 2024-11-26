@@ -26,14 +26,27 @@ export class ExtraTableDetailComponent implements OnInit {
   extraTableData: any[] = [];
   ngOnInit(): void {
     this.conditionRole = this.cookieService.get('role');
-
-    this.service
-      .extraTable({ fbbLeaderVMY: this.vmy })
-      .subscribe((data: any) => {
+    if (this.conditionRole === 'HO') {
+      this.service.extraTable({ branch: this.vmy }).subscribe((data: any) => {
         if (data.errorCode === '00000') {
           this.extraTableData = data.result;
         }
       });
+    } else if (this.conditionRole === 'BCM') {
+      this.service
+        .extraTable({ fbbLeaderVMY: this.vmy })
+        .subscribe((data: any) => {
+          if (data.errorCode === '00000') {
+            this.extraTableData = data.result;
+          }
+        });
+    } else if (this.conditionRole === 'BM') {
+      this.service.extraTable({ bc: this.vmy }).subscribe((data: any) => {
+        if (data.errorCode === '00000') {
+          this.extraTableData = data.result;
+        }
+      });
+    }
   }
   closeEdit() {
     this._dialogRef.close();

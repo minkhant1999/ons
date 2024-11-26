@@ -281,7 +281,22 @@
           "
         >
           <button
+            *ngIf="conditionRole === 'BCM'"
             (click)="getD2D(item.fbbLeaderVMY)"
+            class="flex items-center justify-center p-1 w-full"
+          >
+            <img src="assets/icons/info-circle-icon.png" class="w-4" alt="" />
+          </button>
+          <button
+            *ngIf="conditionRole === 'HO'"
+            (click)="getD2D(item.branch)"
+            class="flex items-center justify-center p-1 w-full"
+          >
+            <img src="assets/icons/info-circle-icon.png" class="w-4" alt="" />
+          </button>
+          <button
+            *ngIf="conditionRole === 'BM'"
+            (click)="getD2D(item.bc)"
             class="flex items-center justify-center p-1 w-full"
           >
             <img src="assets/icons/info-circle-icon.png" class="w-4" alt="" />
