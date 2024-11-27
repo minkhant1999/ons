@@ -1,0 +1,384 @@
+<div class="p-12">
+  <h1 class="text-3xl font-bold flex justify-center">
+    FTTH Reuse/ Revoke Procedure Guide
+  </h1>
+
+  <div class="container mx-auto mt-6 px-40">
+    <h1 class="text-[#FD6D1A] font-bold text-2xl">I. Main Process</h1>
+    <div class="mt-3">
+      <h1 class="font-bold"># Step 1</h1>
+      <p class="text-[#444444]">
+        HO assigns targets to each province and distributes them to individual
+        D2D and FBB Leaders.
+      </p>
+    </div>
+
+    <div class="mt-3">
+      <h1 class="font-bold"># Step 2</h1>
+      <p class="text-[#444444]">
+        Coordinate D2D staff to approach customers home and encourage them to
+        make payment to Reuse or Revoke ONU.
+      </p>
+    </div>
+
+    <div class="mt-3">
+      <h1 class="font-bold">
+        If the customer agrees to make payment and continue using the service
+        (Reuse):
+      </h1>
+      <p class="text-[#444444] flex p-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="size-6"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        <span class="ml-3"
+          >Prompt the customer to make a payment with good promotion and good
+          quality internet.</span
+        >
+      </p>
+      <p class="text-[#444444] flex p-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="size-6"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        <span class="ml-3"
+          >Once the payment is completed, update the status to "Reuse" in the
+          system.</span
+        >
+      </p>
+    </div>
+
+    <div class="mt-3">
+      <h1 class="font-bold">
+        If the customer does not agree to make payment (Revoke):
+      </h1>
+      <p class="text-[#444444] flex p-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="size-6"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        <span class="ml-3">Retrieve the ONU device from the customer HOME</span>
+      </p>
+      <p class="text-[#444444] flex p-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="size-6"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        <span class="ml-3"
+          >Update the tool status to "ONU Revoke on link.
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <div class="container mx-auto mt-6 px-40">
+    <h1 class="text-[#FD6D1A] font-bold text-2xl">
+      II. Guideline to use the tool
+    </h1>
+
+    <div class="flex justify-center items-center space-x-7">
+      <div class="flex justify-center mt-3" (click)="scrollTo()">
+        <img
+          src="assets/image/left.png"
+          alt=""
+          class="w-[40px] h-[40px] cursor-pointer"
+        />
+      </div>
+
+      <div class="flex justify-center mt-3">
+        <img [src]="guidelineImage" alt="" class="w-[700px] h-[341.95px]" />
+      </div>
+
+      <div class="flex justify-center mt-3" (click)="scrollTo()">
+        <img
+          src="assets/image/right.png"
+          alt=""
+          class="w-[40px] h-[40px] cursor-pointer"
+        />
+      </div>
+    </div>
+
+    <div *ngIf="right" class="mt-3 flex flex-col items-center justify-center">
+      <h1 class="font-bold"># Step 1</h1>
+
+      <div>
+        <p>
+          <span class="text-[#444444]">ACCESS LINK: </span>
+          <a
+            class="text-blue-500 underline"
+            href="https://account.mytel.com.mm/fbb-onu/#/login"
+            target="_blank"
+            >https://account.mytel.com.mm/fbb-onu/#/login</a
+          >
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="left" class="mt-3 flex flex-col items-center justify-center">
+      <h1 class="font-bold"># Step 2</h1>
+
+      <div>
+        <p class="text-[#444444]">Type VMY CODE and log in with OTP.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mx-auto mt-6 px-40">
+    <h1 class="text-[#FD6D1A] font-bold text-2xl">
+      III. Guideline for FBB Leader or BCM approve
+    </h1>
+
+    <div class="flex justify-center items-center space-x-7">
+      <div class="flex justify-center mt-3" (click)="scrollToFBB()">
+        <img
+          src="assets/image/left.png"
+          alt=""
+          class="w-[40px] h-[40px] cursor-pointer"
+        />
+      </div>
+
+      <div class="flex justify-center mt-3">
+        <img [src]="guidelineImageFBB" alt="" class="w-[700px] h-[341.95px]" />
+      </div>
+
+      <div class="flex justify-center mt-3" (click)="scrollToFBB()">
+        <img
+          src="assets/image/right.png"
+          alt=""
+          class="w-[40px] h-[40px] cursor-pointer"
+        />
+      </div>
+    </div>
+
+    <div
+      *ngIf="rightFBB"
+      class="mt-3 flex flex-col items-center justify-center"
+    >
+      <h1 class="font-bold"># Step 1</h1>
+
+      <div>
+        <p class="text-[#444444]">FBB Leader/ BCM click on tab Customers.</p>
+      </div>
+    </div>
+
+    <div *ngIf="leftFBB" class="mt-3 flex flex-col items-center justify-center">
+      <h1 class="font-bold"># Step 2</h1>
+
+      <div>
+        <p class="text-[#444444]">Click to filter >> choose “REVOKE”.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mx-auto mt-6 px-40">
+    <h1 class="text-[#FD6D1A] font-bold text-2xl">
+      IV. UPDATE ONU REUSE/REVOKE STATUS
+    </h1>
+
+    <h2 class="font-bold text-xl mt-3">
+      Step 3 : ONU Device Retrieval Process
+    </h2>
+
+    <div class="mt-3">
+      <h2 class="text-xl font-bold py-2"># Step 3.1</h2>
+      <p class="text-[#444444]">
+        Update the "ONU REVOKE" status in the management software.
+      </p>
+    </div>
+
+    <div class="mt-3">
+      <h2 class="text-xl font-bold py-2"># Step 3.2</h2>
+      <p class="text-[#444444]">
+        The FBB Leader terminates the contract on the bccs system with the
+        reason
+        <span class="text-[#FD6D1A] font-bold">“KHYC-Terminate process”.</span>
+      </p>
+    </div>
+
+    <div class="mt-3">
+      <h2 class="text-xl font-bold py-2"># Step 3.3</h2>
+      <p class="text-[#444444]">
+        The FBB leader Terminate ticket will receive to partner staff and they
+        need to finish terminate task in MBCCS with the reason
+        <span class="text-[#FD6D1A] font-bold">“Withdrawal Good”.</span>
+      </p>
+    </div>
+
+    <div class="mt-3">
+      <h2 class="text-xl font-bold py-2"># Step 3.4</h2>
+      <p class="text-[#444444]">
+        At the end of each day, D2D staff and the FBB Leader sign the ONU
+        handover record and deliver it to the BC warehouse.
+      </p>
+    </div>
+
+    <div class="mt-3">
+      <h2 class="text-xl font-bold py-2"># Step 3.5</h2>
+      <p class="text-[#444444]">
+        When BC receive ONU physical, BCM will go to portal and click on the
+        portal list revoked and choose BUTTON “RECEIVED ONU”.
+      </p>
+    </div>
+
+    <div class="mt-3">
+      <h2 class="text-xl font-bold py-2"># Step 3.6</h2>
+      <p class="text-[#444444]">
+        The BC warehouse forwards the ONU device to the branch warehouse.
+      </p>
+    </div>
+
+    <div class="mt-3">
+      <h2 class="text-xl font-bold py-2"># Step 3.7</h2>
+      <p class="text-[#444444]">
+        The branch warehouse consolidates and sends the ONU devices to the HO
+        warehouse for centralized management.
+      </p>
+    </div>
+
+    <div class="mt-3">
+      <h2 class="text-xl font-bold py-2">Note that:</h2>
+      <p class="text-[#444444] p-2 flex">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="size-6"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+        <span class="ml-2">
+          When D2D go to customers and collect ONU should ask customers pay the
+          debt remain first to request reuse, if customers not agree check with
+          customers which time set up internet, Policy: if the customers using
+          less than 6 months and request Terminate contract > Customers have to
+          pay 50,000 MMK.
+        </span>
+      </p>
+      <p class="text-[#444444] p-2 flex">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="size-6"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+        <span class="ml-2">
+          If customers have debt, and customers don’t wanna use again Mytel
+          Wifi, D2D Collect ONU back and update on the system. For the debt,
+          Mytel HO will base on the receive ONU (physical received) Submit
+          statement for clear that debt.
+        </span>
+      </p>
+      <p class="text-[#444444] p-2 flex">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="size-6"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+        <span class="ml-2">
+          This procedure ensures accurate, transparent retrieval of ONU modems,
+          and guarantees that devices are retrieved and stored according to
+          proper regulations.
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <div class="container mx-auto mt-6 px-40">
+    <h1 class="text-[#FD6D1A] font-bold text-2xl">
+      V. GUIDELINE PROCESS FOR PAYMENT INCENTIVE FOR D2D
+    </h1>
+
+    <p class="text-[#444444] p-2 flex">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        class="size-6"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      <span class="ml-2">
+        1 ONU RECEIVED SUCCESS PHYSICAL CONFIRM BY BRANCH (FBB LEADER, DBC,
+        BRANCH DIRECTOR) WILL RECEIVE 2,000 BONUS.
+      </span>
+    </p>
+
+    <p class="text-[#444444] p-2 flex">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        class="size-6"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      <span class="ml-2">
+        End of the month, Branch will base on the list receive ONU of system and
+        physical receive, will submit the list ONU receive via Voffice to send
+        to HO before 4th of the month , sign by Branch Director. After that, HO
+        will calculate the Incentive base on that file. 
+      </span>
+    </p>
+  </div>
+</div>

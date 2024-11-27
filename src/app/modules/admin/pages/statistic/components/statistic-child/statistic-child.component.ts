@@ -350,6 +350,7 @@ export class StatisticChildComponent implements OnInit {
         return 'bg-[#e4e4e4]';
     }
   }
+
   extraTable() {
     this.statisticService.extraTable().subscribe((data: any) => {
       if (data.errorCode === '00000') {
@@ -357,6 +358,7 @@ export class StatisticChildComponent implements OnInit {
       }
     });
   }
+
   getD2D(vmy: any) {
     const screenWidth = window.innerWidth;
     let dialogWidth;
@@ -368,5 +370,9 @@ export class StatisticChildComponent implements OnInit {
       disableClose: false,
       data: { vmy: vmy },
     });
+  }
+
+  goToGuideline() {
+    this.router.navigate(['/admin/guideline']);
   }
 }
