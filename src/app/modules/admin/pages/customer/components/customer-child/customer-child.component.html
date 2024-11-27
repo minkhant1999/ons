@@ -522,7 +522,7 @@
 
 <div class="md:hidden block py-10 px-3 bg-gray-100 h-full">
   <div class="flex gap-4 justify-between items-center">
-    <div class="w-full">
+    <!-- <div class="w-full">
       <div class="">
         <form action="" [formGroup]="searchForm">
           <div class="p-1">
@@ -534,9 +534,9 @@
           </div>
         </form>
       </div>
-    </div>
+    </div> -->
 
-    <div class=" ">
+    <div class="mx-2">
       <button
         [matMenuTriggerFor]="logout"
         class="w-[110px] h-12 rounded-lg flex items-center justify-between px-3"
@@ -599,18 +599,18 @@
         </div>
       </mat-menu>
     </div>
-  </div>
 
-  <div class="flex justify-start items-center my-4">
-    <button
-      class="px-3 py-2.5 bg-[#4485FF] text-white rounded-full focus:outline-none flex items-center"
-      (click)="download()"
-    >
-      <div class="flex justify-center items-center gap-2">
-        <div>Download</div>
-        <mat-icon>download</mat-icon>
-      </div>
-    </button>
+    <div class="flex justify-start items-center my-4">
+      <button
+        class="px-3 py-2.5 bg-[#4485FF] text-white rounded-full focus:outline-none flex items-center"
+        (click)="download()"
+      >
+        <div class="flex justify-center items-center gap-2">
+          <div>Download</div>
+          <mat-icon>download</mat-icon>
+        </div>
+      </button>
+    </div>
   </div>
 
   <div *ngIf="results.length > 0; else noDataResult">
