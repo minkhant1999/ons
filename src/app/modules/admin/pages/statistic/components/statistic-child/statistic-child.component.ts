@@ -98,8 +98,10 @@ export class StatisticChildComponent implements OnInit {
             label: item,
           }));
           if (this.conditionRole === 'BM') {
-            this.refillData = this.customerData[0].value;
-            this.initialState(this.customerData[0].value);
+            // this.refillData = this.customerData[0].value;
+            // this.initialState(this.customerData[0].value);
+            this.refillData = '';
+            this.initialState();
           } else {
             this.initialState();
           }
@@ -117,8 +119,10 @@ export class StatisticChildComponent implements OnInit {
             label: item,
           }));
 
-          this.refillData = this.townshipData[0].value;
-          this.initialState(this.townshipData[0].value);
+          // this.refillData = this.townshipData[0].value;
+          // this.initialState(this.townshipData[0].value);
+          this.refillData = '';
+          this.initialState();
           this.isDataLoaded = true;
         } else {
           this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
@@ -133,9 +137,10 @@ export class StatisticChildComponent implements OnInit {
             label: item.VMY_CODE,
           }));
 
-          this.refillData = this.fbbLeaderData[0].value;
-          this.initialState(this.fbbLeaderData[0].label);
-
+          // this.refillData = this.fbbLeaderData[0].value;
+          // this.initialState(this.fbbLeaderData[0].label);
+          this.refillData = '';
+          this.initialState();
           this.isDataLoaded = true;
         } else {
           this._alert.confirmSuccessFail('FAILED!', data.message, 'FAIL');
